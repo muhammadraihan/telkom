@@ -44,6 +44,18 @@
                 </a>
             </li>
             @hasanyrole('superadmin')
+            <li>
+                <a href="{{route('kelengkapan.index')}}" title="kelengkapan Managements"
+                    data-filter-tags="kelengkapan managements">
+                    <span class="nav-link-text" data-i18n="nav.users_managements">Kelengkapan Management</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{route('stock_item.index')}}" title="Stock Item Managements"
+                    data-filter-tags="stock item managements">
+                    <span class="nav-link-text" data-i18n="nav.users_managements">Stock Item Management</span>
+                </a>
+            </li>
             <li class="nav-title">ACL & Settings</li>
             <li class="">
                 <a href="#" title="Theme Settings" data-filter-tags="theme settings">
