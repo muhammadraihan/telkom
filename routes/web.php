@@ -29,6 +29,8 @@ Route::group(['prefix' => 'backoffice', 'middleware' => ['auth']], function() {
     Route::resource('users','UserController');
     Route::resource('permissions', 'PermissionController');
     Route::resource('roles', 'RoleController');
+    Route::resource('stock_item', 'Stock_itemController');
+    Route::resource('kelengkapan', 'KelengkapanController');
 
     // user Profile
     Route::get('profile', 'UserController@profile')->name('profile');
