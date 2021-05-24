@@ -50,10 +50,18 @@ class Buffer_stock extends Model
     }
 
     public function userCreate(){
-        return $this->belongsTo(User:class, 'created_by', 'uuid');
+        return $this->belongsTo(User::class, 'created_by', 'uuid');
     }
 
     public function userEdit(){
         return $this->belongsTo(User::class, 'edited_by', 'uuid');
+    }
+
+    public function kota(){
+        return $this->belongsTo(Kota::class, 'office_city', 'uuid');
+    }
+
+    public function stockItem(){
+        return $this->belongsTo(Stock_item::class, 'stock_item_uuid', 'uuid');
     }
 }

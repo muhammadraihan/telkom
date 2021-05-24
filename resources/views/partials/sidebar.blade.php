@@ -45,6 +45,30 @@
             </li>
             @hasanyrole('superadmin')
             <li>
+                <a href="{{route('ticketing.index')}}" title="Ticketing Managements"
+                    data-filter-tags="ticketing managements">
+                    <span class="nav-link-text" data-i18n="nav.users_managements">Ticketing Management</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{route('teknisi.index')}}" title="Technician Job Order Managements"
+                    data-filter-tags="technician job order managements">
+                    <span class="nav-link-text" data-i18n="nav.users_managements">Technician Job Order Management</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{route('customer.index')}}" title="Customer Managements"
+                    data-filter-tags="customer managements">
+                    <span class="nav-link-text" data-i18n="nav.users_managements">Customer Management</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{route('customer_type.index')}}" title="Customer Type Managements"
+                    data-filter-tags="customer type managements">
+                    <span class="nav-link-text" data-i18n="nav.users_managements">Customer Type Management</span>
+                </a>
+            </li>
+            <li>
                 <a href="{{route('kelengkapan.index')}}" title="kelengkapan Managements"
                     data-filter-tags="kelengkapan managements">
                     <span class="nav-link-text" data-i18n="nav.users_managements">Kelengkapan Management</span>
@@ -54,6 +78,12 @@
                 <a href="{{route('stock_item.index')}}" title="Stock Item Managements"
                     data-filter-tags="stock item managements">
                     <span class="nav-link-text" data-i18n="nav.users_managements">Stock Item Management</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{route('buffer_stock.index')}}" title="Buffer Stock Managements"
+                    data-filter-tags="buffer stock managements">
+                    <span class="nav-link-text" data-i18n="nav.users_managements">Buffer Stock Management</span>
                 </a>
             </li>
             <li class="nav-title">ACL & Settings</li>
