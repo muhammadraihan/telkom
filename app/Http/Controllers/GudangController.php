@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Technician_job_order;
 use App\Models\Ticketing;
 use App\Models\Repair_item;
-use App\Models\Technician_job_order;
+use App\Models\Item_replace;
+use App\Models\Gudang_job_order;
 
 use Auth;
 use DataTables;
@@ -113,7 +114,10 @@ class GudangController extends Controller
      */
     public function edit($id)
     {
-        //
+        $repair_item = Repair_item::all()->pluck('barcode', 'barcode');
+        $item_replace = Item_replace::all()->pluck('item_repair_uuid', 'item_repair_uuid');
+        $gudang = Gudang_job_order::uuid($id);
+        return view('gudang.edit', compact('repair_item', 'item_replace', 'gudang'));
     }
 
     /**
@@ -125,7 +129,32 @@ class GudangController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $rules = [
+            'repair_item_uuid' => 'required',
+            'item_status' => 'required',
+            'keterangan' => 'required',
+            'job_status' => 'required'
+        ];
+
+        $messages = [
+            '*.required' => 'Field tidak boleh kosong !',
+            '*.min' => 'Nama tidak boleh kurang dari 2 karakter !',
+        ];
+
+        $this->validate($request, $rules, $messages);
+
+        $gudang = Gudang_job_order::uuid($id);
+        $gudang->repair_item_uuid = $request->repair_item_uuid;
+        $gudang->item_status = $request->item_status;
+        $gudang->keterangan = $request->keterangan;
+        $gudang->item_replace_uuid = $request->item_replace_uuid;
+        $gudang->job_status = 0;
+        $gudang->edited_at = Auth::user()->uuid;
+
+        $gudang->save();
+
+        toastr()->success('Gudang Job Order Edited','Success');
+        return redirect()->route('gudang.index');
     }
 
     /**

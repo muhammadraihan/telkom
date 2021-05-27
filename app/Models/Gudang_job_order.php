@@ -58,7 +58,7 @@ class Gudang_job_order extends Model
     }
 
     public function repairItem(){
-        return $this->belongsTo(Repair_item::class, 'repair_item_uuid', 'uuid');
+        return $this->belongsTo(Repair_item::class, 'repair_item_uuid', 'barcode');
     }
 
     public function itemReplace(){

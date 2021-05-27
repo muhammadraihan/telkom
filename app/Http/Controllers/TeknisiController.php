@@ -104,9 +104,12 @@ class TeknisiController extends Controller
         $teknisi->item_status = $request->item_status;
         if ($teknisi->item_status == 1){
             $repair_item = Repair_item::where('barcode', $teknisi->repair_item_uuid)->update(['can_repair' => '1']);
+            $tiketing = Ticketing::where
+        }else{
+            $repair_item = Repair_item::where('barcode', $teknisi->repair_item_uuid)->update(['can_repair' => '0']);
         }
         $teknisi->keterangan = $request->keterangan;
-        $teknisi->job_status = 0;
+        $teknisi->job_status = 1;
         $teknisi->created_by = Auth::user()->uuid;
 
         $teknisi->save();   
@@ -115,6 +118,8 @@ class TeknisiController extends Controller
         $gudang->repair_item_uuid = $teknisi->repair_item_uuid;
         if ($repair_item = Repair_item::select('barcode', $teknisi->repair_item_uuid)->where('can_repair' == '1')){
             $gudang->item_status = 4;
+        }else ($repair_item = Repair_item::select('barcode', $teknisi->repair_item_uuid)->where('can_repair' == '0')) {
+            $gudang->item_status = 1;
         }
         $gudang->keterangan = $teknisi->keterangan;
         $gudang->item_replace_uuid = $request->item_replace_uuid;

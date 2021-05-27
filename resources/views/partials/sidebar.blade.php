@@ -57,6 +57,12 @@
                 </a>
             </li>
             <li>
+                <a href="{{route('gudang.index')}}" title="Gudang Job Order Managements"
+                    data-filter-tags="gudang job order managements">
+                    <span class="nav-link-text" data-i18n="nav.users_managements">Gudang Job Order Management</span>
+                </a>
+            </li>
+            <li>
                 <a href="{{route('customer.index')}}" title="Customer Managements"
                     data-filter-tags="customer managements">
                     <span class="nav-link-text" data-i18n="nav.users_managements">Customer Management</span>
