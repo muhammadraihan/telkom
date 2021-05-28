@@ -16,6 +16,7 @@ use Hash;
 use Image;
 use Response;
 use URL;
+use Helper;
 
 class TicketingController extends Controller
 {
@@ -56,7 +57,7 @@ class TicketingController extends Controller
                         }elseif($row->job_status == 3){
                             return 'Menunggu penggantian dari vendor';
                         }elseif($row->job_status == 4){
-                            return 'Telah diperbaiki oleh vendor';
+                            return 'Telah diperbaiki oleh teknisi';
                         }else{
                             return 'Telah dikirim ke customer';
                         }
@@ -114,24 +115,26 @@ class TicketingController extends Controller
 
         $this->validate($request, $rules, $messages);
         // dd($request->all());
+        $randomTicket = Helper::GenerateTicketNumber(13);
 
         $tickteting = new Ticketing();
         $tickteting->uuid_pelanggan = $request->uuid_pelanggan;
+        $tickteting->ticket_number = 'TKT' . '-' . $randomTicket;
         $tickteting->keterangan = $request->keterangan;
         $tickteting->ticket_status = 0;
-        $tickteting->job_status = 1;
         $tickteting->created_by = Auth::user()->uuid;
 
         $tickteting->save();
 
         $repair_item = new Repair_item();
+        $repair_item->ticket_uuid = $tickteting->uuid;
         $repair_item->item_model = $request->item_model;
         $repair_item->item_merk = $request->item_merk;
         $repair_item->item_type = $request->item_type;
         $repair_item->part_number = $request->part_number;
         $repair_item->serial_number = $request->serial_number;
         $repair_item->barcode = $request->barcode;
-        $repair_item->kelengkapan = json_encode($request['kelengkapan']);
+        $repair_item->kelengkapan = $request['kelengkapan'];
         $repair_item->kerusakan = $request->kerusakan;
         $repair_item->status_garansi = $request->status_garansi;
         $repair_item->created_by = Auth::user()->uuid;

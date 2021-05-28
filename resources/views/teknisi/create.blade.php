@@ -33,9 +33,9 @@
                     'needs-validation','novalidate']) !!}
                     <div class="form-group col-md-4 mb-3">
                         {{ Form::label('repair_item_uuid','Repair Item',['class' => 'required form-label'])}}
-                        {!! Form::select('repair_item_uuid', $repair_item, '', ['class' => 'pelanggan
-                        form-control'.($errors->has('repair_item_uuid') ? 'is-invalid':''), 'required'
-                        => '', 'placeholder' => 'Select Repair Item ...']) !!}
+                        @foreach($repair_item as $item)
+                        <input type="text" class="required form-label" value="{{$item->uuid}}">{{$item->ticket->ticket_number}}
+                        @endforeach
                         @if ($errors->has('repair_item_uuid'))
                         <div class="invalid-feedback">{{ $errors->first('repair_item_uuid') }}</div>
                         @endif

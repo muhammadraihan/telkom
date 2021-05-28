@@ -11,7 +11,7 @@
     <div class="col-xl-6">
         <div id="panel-1" class="panel">
             <div class="panel-hdr">
-            <h2>Edit <span class="fw-300"><i>{{$teknisi->repair_item_uuid}}</i></span></h2>
+            <h2>Edit <span class="fw-300"><i>{{$repair_item->ticket->ticket_number}}</i></span></h2>
                 <div class="panel-toolbar">
                     <a class="nav-link active" href="{{route('teknisi.index')}}"><i class="fal fa-arrow-alt-left">
                         </i>
@@ -26,20 +26,18 @@
                     <div class="panel-tag">
                         Form with <code>*</code> can not be empty.
                     </div>
-                    {!! Form::open(['route' => ['teknisi.update',$teknisi->uuid],'method' => 'PUT','class' =>
+                    {!! Form::open(['route' => ['teknisi.update',$repair_item->uuid],'method' => 'PUT','class' =>
                     'needs-validation','novalidate']) !!}
                     <div class="form-group col-md-4 mb-3">
                         {{ Form::label('repair_item_uuid','Repair Item',['class' => 'required form-label'])}}
-                        {!! Form::select('repair_item_uuid', $repair_item, $teknisi->repair_item_uuid, ['class' => 'pelanggan
-                        form-control'.($errors->has('repair_item_uuid') ? 'is-invalid':''), 'required'
-                        => '', 'placeholder' => 'Select Repair Item ...']) !!}
+                        {{ Form::text('repair_item_uuid', $repair_item->ticket->ticket_number,['placeholder' => 'Tiket Number','class' => 'form-control '.($errors->has('repair_item_uuid') ? 'is-invalid':''),'required', 'autocomplete' => 'off'])}}
                         @if ($errors->has('repair_item_uuid'))
                         <div class="invalid-feedback">{{ $errors->first('repair_item_uuid') }}</div>
                         @endif
                     </div>
                     <div class="form-group col-md-4 mb-3">
                         {{ Form::label('item_status','Status Item',['class' => 'required form-label'])}}
-                        {!! Form::select('item_status', array('0' => 'Butuh perbaikan dari vendor', '1' => 'Item telah diperbaiki oleh teknisi'), $teknisi->item_status, ['class' => 'garansi form-control'.($errors->has('item_status') ? 'is-invalid':''), 'required'
+                        {!! Form::select('item_status', array('0' => 'Butuh perbaikan dari vendor', '1' => 'Item telah diperbaiki oleh teknisi'), '', ['class' => 'garansi form-control'.($errors->has('item_status') ? 'is-invalid':''), 'required'
                         => '', 'placeholder' => 'Select Status item ...']) !!}
                         @if ($errors->has('item_status'))
                         <div class="invalid-feedback">{{ $errors->first('item_status') }}</div>
@@ -47,7 +45,7 @@
                     </div>
                     <div class="form-group col-md-4 mb-3">
                         {{ Form::label('keterangan','Keterangan',['class' => 'required form-label'])}}
-                        {{ Form::text('keterangan', $teknisi->keterangan,['placeholder' => 'Keterangan','class' => 'form-control '.($errors->has('keterangan') ? 'is-invalid':''),'required', 'autocomplete' => 'off'])}}
+                        {{ Form::text('keterangan', '',['placeholder' => 'Keterangan','class' => 'form-control '.($errors->has('keterangan') ? 'is-invalid':''),'required', 'autocomplete' => 'off'])}}
                         @if ($errors->has('keterangan'))
                         <div class="invalid-feedback">{{ $errors->first('keterangan') }}</div>
                         @endif

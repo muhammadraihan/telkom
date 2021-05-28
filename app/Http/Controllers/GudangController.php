@@ -34,7 +34,7 @@ class GudangController extends Controller
             return Datatables::of($data)
                     ->addIndexColumn()
                     ->editColumn('created_by',function($row){
-                        return $row->userCreate->name;
+                        return $row->userCreate->name ?? null;
                     })
                     ->editColumn('edited_by',function($row){
                         return $row->userEdit->name ?? null;

@@ -57,7 +57,7 @@ class Technician_job_order extends Model
         return $this->belongsTo(User::class, 'edited_by', 'uuid');
     }
 
-    public function repairItem(){
-        return $this->belongsTo(Repair_item::class, 'repair_item_uuid', 'barcode');
+    public function ticketing(){
+        return $this->belongsTo(Ticketing::class, 'repair_item_uuid', 'uuid');
     }
 }
