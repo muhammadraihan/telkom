@@ -60,4 +60,8 @@ class Item_replace extends Model
     public function itemRepair(){
         return $this->belongsTo(Repair_item::class, 'item_repair_uuid', 'uuid');
     }
+
+    public function stock(){
+        return $this->belongsTo(Stock_item::class, 'item_replace_detail_from_stock', 'uuid');
+    }
 }

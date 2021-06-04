@@ -77,7 +77,7 @@
                     }
             },
             "columns": [
-            {data: 'DT_RowIndex', name: 'DT_RowIndex'},
+            {data: 'rownum', name: 'rownum'},
             {data: 'repair_item_uuid', name: 'repair_item_uuid'},
             {data: 'item_status', name: 'item_status'},
             {data: 'keterangan', name: 'keterangan'},

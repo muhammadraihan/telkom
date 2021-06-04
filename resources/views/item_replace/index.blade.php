@@ -1,6 +1,6 @@
 @extends('layouts.page')
 
-@section('title', 'Ticketing Management')
+@section('title', 'Item Replace Management')
 
 @section('css')
 <link rel="stylesheet" media="screen, print" href="{{asset('css/datagrid/datatables/datatables.bundle.css')}}">
@@ -9,9 +9,9 @@
 @section('content')
 <div class="subheader">
     <h1 class="subheader-title">
-        <i class='subheader-icon fal fa-users'></i> Module: <span class='fw-300'>Ticketing</span>
+        <i class='subheader-icon fal fa-users'></i> Module: <span class='fw-300'>Item Replace</span>
         <small>
-            Module for manage Ticketing.
+            Module for manage Item Replace.
         </small>
     </h1>
 </div>
@@ -20,13 +20,9 @@
         <div id="panel-1" class="panel">
             <div class="panel-hdr">
             <h2>
-                    Ticketing <span class="fw-300"><i>List</i></span>
+                    Item Replace <span class="fw-300"><i>List</i></span>
                 </h2>
                 <div class="panel-toolbar">
-                    <a class="nav-link active" href="{{route('ticketing.create')}}"><i class="fal fa-plus-circle">
-                        </i>
-                        <span class="nav-link-text">Add New</span>
-                    </a>
                     <button class="btn btn-panel" data-action="panel-fullscreen" data-toggle="tooltip"
                         data-offset="0,10" data-original-title="Fullscreen"></button>
                 </div>
@@ -38,13 +34,8 @@
         <thead>
             <tr>
                 <th>No</th>
-                <th>Pelanggan</th>
-                <th>Nomor Tiket</th>
-                <th>Keterangan</th>
-                <th>Tiket Status</th>
-                <th>Job Status</th>
-                <th>Created By</th>
-                <th>Edited By</th>
+                <th>Ticket Number</th>
+                <th>Item Status</th>
                 <th width="120px">Action</th>
                 </tr>
                         </thead>
@@ -73,7 +64,7 @@
             "responsive": true,
             "order": [[ 0, "asc" ]],
             "ajax":{
-                url:'{{route('ticketing.index')}}',
+                url:'{{route('itemreplace.index')}}',
                 type : "GET",
                 dataType: 'json',
                 error: function(data){
@@ -82,13 +73,8 @@
             },
             "columns": [
             {data: 'rownum', name: 'rownum'},
-            {data: 'uuid_pelanggan', name: 'uuid_pelanggan'},
-            {data: 'ticket_number', name: 'ticket_number'},
-            {data: 'keterangan', name: 'keterangan'},
-            {data: 'ticket_status', name: 'ticket_status'},
-            {data: 'job_status', name: 'job_status'},
-            {data: 'created_by', name: 'created_by'},
-            {data: 'edited_by', name: 'edited_by'},
+            {data: 'repair_item_uuid', name: 'repair_item_uuid'},
+            {data: 'item_status', name: 'item_status'},
             {data: 'action', name: 'action', orderable: false, searchable: false},
         ]
     });

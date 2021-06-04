@@ -29,7 +29,10 @@ class TicketingController extends Controller
     {
         $tickteting = Ticketing::all();
         if (request()->ajax()) {
-            $data = Ticketing::latest()->get();
+            DB::statement(DB::raw('set @rownum=0'));
+            $data = Ticketing::select([DB::raw('@rownum  := @rownum  + 1 AS rownum'),
+            'id','uuid','uuid_pelanggan','ticket_number','keterangan', 'ticket_status', 'job_status', 'created_by', 'edited_by'])
+            ->where('ticket_status', '=', '0');
 
             return Datatables::of($data)
                     ->addIndexColumn()

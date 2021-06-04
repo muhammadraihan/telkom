@@ -37,6 +37,8 @@ Route::group(['prefix' => 'backoffice', 'middleware' => ['auth']], function() {
     Route::resource('ticketing', 'TicketingController');
     Route::resource('teknisi', 'TeknisiController');
     Route::resource('gudang', 'GudangController');
+    Route::resource('itemreplace', 'Item_replaceController');
+    Route::get('stockdetail', 'Item_replaceController@detailStock')->name('get.detailStock');
 
     // user Profile
     Route::get('profile', 'UserController@profile')->name('profile');

@@ -45,6 +45,12 @@
             </li>
             @hasanyrole('superadmin')
             <li>
+                <a href="{{route('itemreplace.index')}}" title="Item Replace Managements"
+                    data-filter-tags="item replace managements">
+                    <span class="nav-link-text" data-i18n="nav.users_managements">Item Replace Management</span>
+                </a>
+            </li>
+            <li>
                 <a href="{{route('ticketing.index')}}" title="Ticketing Managements"
                     data-filter-tags="ticketing managements">
                     <span class="nav-link-text" data-i18n="nav.users_managements">Ticketing Management</span>

@@ -35,7 +35,8 @@ class TeknisiController extends Controller
             DB::statement(DB::raw('set @rownum=0'));
             $data = Repair_item::select([DB::raw('@rownum  := @rownum  + 1 AS rownum'),
             'id','uuid','ticket_uuid','item_model','item_merk', 'item_type', 'part_number', 'serial_number', 'kelengkapan', 'kerusakan'])
-            ->where('status_garansi', '=', '0');
+            ->where('status_garansi', '=', '0')
+            ->where('can_repair', '=', '0');
             
             return Datatables::of($data)
                     ->addColumn('ticket_number', function($row){
@@ -100,8 +101,7 @@ class TeknisiController extends Controller
     {
         // $teknisi = Technician_job_order::uuid($id);
         $repair_item = Repair_item::uuid($id);
-        $repair_items = Repair_item::with(['ticket'])->get();
-        return view('teknisi.edit', compact('repair_item', 'repair_items'));
+        return view('teknisi.edit', compact('repair_item'));
     }
 
     /**

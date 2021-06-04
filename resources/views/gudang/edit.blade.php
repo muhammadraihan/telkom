@@ -29,10 +29,8 @@
                     {!! Form::open(['route' => ['gudang.update',$gudang->uuid],'method' => 'PUT','class' =>
                     'needs-validation','novalidate']) !!}
                     <div class="form-group col-md-4 mb-3">
-                        {{ Form::label('repair_item_uuid','Repair Item',['class' => 'required form-label'])}}
-                        {!! Form::select('repair_item_uuid', $repair_item, $gudang->repair_item_uuid, ['class' => 'pelanggan
-                        form-control'.($errors->has('repair_item_uuid') ? 'is-invalid':''), 'required'
-                        => '', 'placeholder' => 'Select Repair Item ...']) !!}
+                        {{ Form::label('repair_item_uuid','Ticket Number',['class' => 'required form-label'])}}
+                        {{ Form::text('repair_item_uuid', $gudang->repair_item_uuid,['placeholder' => 'Ticket Number','class' => 'form-control '.($errors->has('repair_item_uuid') ? 'is-invalid':''),'required', 'autocomplete' => 'off'])}}
                         @if ($errors->has('repair_item_uuid'))
                         <div class="invalid-feedback">{{ $errors->first('repair_item_uuid') }}</div>
                         @endif
@@ -64,7 +62,7 @@
                     </div>
                     <div class="form-group col-md-4 mb-3">
                         {{ Form::label('job_status','Job Status',['class' => 'required form-label'])}}
-                        {!! Form::select('job_status', array('0' => 'Open', '2' => 'Closed'), $gudang->item_status, ['class' => 'garansi form-control'.($errors->has('job_status') ? 'is-invalid':''), 'required'
+                        {!! Form::select('job_status', array('0' => 'Open', '1' => 'Closed'), $gudang->job_status, ['class' => 'garansi form-control'.($errors->has('job_status') ? 'is-invalid':''), 'required'
                         => '', 'placeholder' => 'Select Status item ...']) !!}
                         @if ($errors->has('job_status'))
                         <div class="invalid-feedback">{{ $errors->first('job_status') }}</div>
