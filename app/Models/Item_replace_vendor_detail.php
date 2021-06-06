@@ -15,6 +15,10 @@ class Item_replace_vendor_detail extends Model
         'vendor_name', 'item_model', 'item_merk', 'item_type', 'part_number', 'serial_number', 'barcode', 'kelengkapan', 'created_by', 'edited_by'
     ];
 
+    protected $casts = [
+        'kelengkapan' => 'array'
+    ];
+
     protected static $logAttributes = ['*'];
 
     /**

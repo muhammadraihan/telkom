@@ -43,19 +43,97 @@
                     <span class="nav-link-text">Dashboard</span>
                 </a>
             </li>
+            @hasanyrole('superadmin|gudang')
+            
+            @endhasanyrole
+            @hasanyrole('superadmin|cs')
+            <li class="">
+                <a href="#" title="Theme Settings" data-filter-tags="theme settings">
+                    <i class="fal fa-user-alt"></i>
+                    <span class="nav-link-text" data-i18n="nav.theme_settings">Customer Management</span>
+                </a>
+                <ul>
+                    <li>
+                        <a href="{{route('customer.index')}}" title="Customer"
+                            data-filter-tags="customer">
+                            <i class="fal fa-user-plus"></i>
+                            <span class="nav-link-text" data-i18n="nav.users_managements">Customer</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{route('customer_type.index')}}" title="Customer Type"
+                            data-filter-tags="customer type">
+                            <i class="fal fa-users"></i>
+                            <span class="nav-link-text" data-i18n="nav.users_managements">Customer Type</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            @endhasanyrole
+            @hasanyrole('superadmin|gudang')
+            <li>
+                <a href="{{route('gudang.index')}}" title="Gudang Job Order Managements"
+                    data-filter-tags="gudang job order managements">
+                    <i class="fal fa-boxes"></i>
+                    <span class="nav-link-text" data-i18n="nav.users_managements">Gudang Job Order Management</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{route('itemreplace.index')}}" title="Item Replace Managements"
+                    data-filter-tags="item replace managements">
+                    <i class="fal fa-retweet"></i>
+                    <span class="nav-link-text" data-i18n="nav.users_managements">Item Replace Management</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="#" title="Theme Settings" data-filter-tags="theme settings">
+                    <i class="fal fa-list"></i>
+                    <span class="nav-link-text" data-i18n="nav.theme_settings">Stock Item Management</span>
+                </a>
+                <ul>
+                    <li>
+                        <a href="{{route('buffer_stock.index')}}" title="Buffer Stock Managements"
+                            data-filter-tags="buffer stock managements">
+                            <i class="fal fa-suitcase"></i>
+                            <span class="nav-link-text" data-i18n="nav.users_managements">Buffer Stock</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{route('kelengkapan.index')}}" title="kelengkapan Managements"
+                            data-filter-tags="kelengkapan managements">
+                            <i class="fal fa-clipboard-check"></i>
+                            <span class="nav-link-text" data-i18n="nav.users_managements">Kelengkapan</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{route('stock_item.index')}}" title="Stock Item Managements"
+                            data-filter-tags="stock item managements">
+                            <i class="fal fa-list-alt"></i>
+                            <span class="nav-link-text" data-i18n="nav.users_managements">Stock Item</span>
+                        </a>
+                    </li> 
+                </ul>
+            </li> 
+            @endhasanyrole
+            @hasanyrole('superadmin|teknisi')          
+            <li>
+                <a href="{{route('teknisi.index')}}" title="Technician Job Order Managements"
+                    data-filter-tags="technician job order managements">
+                    <i class="fal fa-cogs"></i>
+                    <span class="nav-link-text" data-i18n="nav.users_managements">Technician Job Order Management</span>
+                </a>
+            </li>
+            @endhasanyrole
+            @hasanyrole('superadmin|cs')
+            <li>
+                <a href="{{route('ticketing.index')}}" title="Ticketing Managements"
+                    data-filter-tags="ticketing managements">
+                    <i class="fal fa-ticket-alt"></i>
+                    <span class="nav-link-text" data-i18n="nav.users_managements">Ticketing Management</span>
+                </a>
+            </li>     
+            @endhasanyrole
             @hasanyrole('superadmin')
-            <li>
-                <a href="{{route('kelengkapan.index')}}" title="kelengkapan Managements"
-                    data-filter-tags="kelengkapan managements">
-                    <span class="nav-link-text" data-i18n="nav.users_managements">Kelengkapan Management</span>
-                </a>
-            </li>
-            <li>
-                <a href="{{route('stock_item.index')}}" title="Stock Item Managements"
-                    data-filter-tags="stock item managements">
-                    <span class="nav-link-text" data-i18n="nav.users_managements">Stock Item Management</span>
-                </a>
-            </li>
             <li class="nav-title">ACL & Settings</li>
             <li class="">
                 <a href="#" title="Theme Settings" data-filter-tags="theme settings">
@@ -85,8 +163,6 @@
                     </li>
                 </ul>
             </li>
-            @endhasanyrole
-            @hasanyrole('superadmin')
             <li class="">
                 <a href="{{route('logs')}}" title="System Log" data-filter-tags="System Log">
                     <i class="fal fa-shield-check"></i>

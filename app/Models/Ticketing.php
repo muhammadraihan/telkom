@@ -58,6 +58,6 @@ class Ticketing extends Model
     }
 
     public function customer(){
-        return $this->belongsTo(Customer::class 'uuid_pelanggan', 'uuid');
+        return $this->belongsTo(Customer::class, 'uuid_pelanggan', 'jenis_pelanggan');
     }
 }

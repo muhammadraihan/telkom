@@ -50,14 +50,14 @@ class Technician_job_order extends Model
     }
 
     public function userCreate(){
-        return $this->belongsTo(User:class, 'created_by', 'uuid');
+        return $this->belongsTo(User::class, 'created_by', 'uuid');
     }
 
     public function userEdit(){
         return $this->belongsTo(User::class, 'edited_by', 'uuid');
     }
 
-    public function repairItem(){
-        return $this->belongsTo(Repair_item::class, 'repaire_item_uuid', 'uuid');
+    public function ticketing(){
+        return $this->belongsTo(Ticketing::class, 'repair_item_uuid', 'uuid');
     }
 }

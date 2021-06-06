@@ -14,6 +14,11 @@ class Repair_item extends Model
     protected $fillable = [
         'ticket_uuid', 'item_model', 'item_merk', 'item_type', 'part_number', 'serial_number', 'barcode', 'kelengkapan', 'kerusakan', 'status_garansi', 'can_repair', 'created_by', 'edited_by'
     ];
+
+    protected $casts = [
+        'kelengkapan' => 'array'
+    ];
+    
     protected static $logAttributes = ['*'];
 
     /**

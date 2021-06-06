@@ -100,7 +100,11 @@
 <script src="{{asset('js/formplugins/select2/select2.bundle.js')}}"></script>
 <script>
     $(document).ready(function(){
-        $('.select2').select2();
+        $('.pelanggan').select2();
+        $('.tiket').select2();
+        $('.job').select2();
+        $('.garansi').select2();
+        $('.repair').select2();
         
         // Generate a password string
         function randString(){

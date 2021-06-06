@@ -56,4 +56,8 @@ class Customer extends Model
     public function userEdit(){
         return $this->belongsTo(User::class, 'edited_by', 'uuid');
     }
+
+    public function customerType(){
+        return $this->belongsTo(Customer_type::class, 'jenis_pelanggan', 'name');
+    }
 }
