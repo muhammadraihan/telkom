@@ -7,6 +7,7 @@ use App\Models\Ticketing;
 use App\Models\Customer;
 use App\Models\Repair_item;
 use App\Models\Kelengkapan;
+use App\Models\Gudang_job_order;
 
 use Auth;
 use DataTables;
@@ -42,7 +43,7 @@ class TicketingController extends Controller
                         return $row->userEdit->name ?? null;
                     })
                     ->editColumn('uuid_pelanggan',function($row){
-                        return $row->customer->jenis_pelanggan ?? null;
+                        return $row->customer->nomor_pelanggan ?? null;
                     })
                     ->editColumn('ticket_status', function($row){
                         if($row->ticket_status == 0){
@@ -88,7 +89,7 @@ class TicketingController extends Controller
     public function create()
     {
         $kelengkapan = Kelengkapan::all();
-        $pelanggan = Customer::all()->pluck('jenis_pelanggan', 'jenis_pelanggan');
+        $pelanggan = Customer::all()->pluck('nomor_pelanggan', 'uuid');
         return view('ticketing.create',compact('pelanggan', 'kelengkapan'));
     }
 
@@ -150,6 +151,18 @@ class TicketingController extends Controller
         $repair_item->created_by = Auth::user()->uuid;
         
         $repair_item->save();
+
+        if($repair_item->status_garansi == 1){
+            $gudang = new Gudang_job_order();
+            $gudang->repair_item_uuid = $repair_item->uuid;
+            $gudang->item_status = $ticketing->job_status;
+            $gudang->keterangan = $ticketing->keterangan;
+            $gudang->item_replace_uuid = $request->item_replace_uuid;
+            $gudang->job_status = 0;
+            $gudang->created_by = Auth::user()->uuid;
+
+            $gudang->save();
+        }
         
         toastr()->success('New Ticketing Added','Success');
         return redirect()->route('ticketing.index');

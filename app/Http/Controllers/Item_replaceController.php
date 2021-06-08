@@ -6,6 +6,7 @@ use App\Models\Gudang_job_order;
 use App\Models\Kelengkapan;
 use App\Models\Stock_item;
 use App\Models\Item_replace_vendor_detail;
+use App\Models\Repair_item;
 
 use Illuminate\Http\Request;
 use Auth;
@@ -33,7 +34,7 @@ class Item_replaceController extends Controller
             
             DB::statement(DB::raw('set @rownum=0'));
             $data = Gudang_job_order::select([DB::raw('@rownum  := @rownum  + 1 AS rownum'),
-            'id','uuid','repair_item_uuid','item_status'])
+            'id','uuid','repair_item_uuid','item_status', 'created_by', 'edited_by'])
             ->where('item_status', '=', '3');
             
             return Datatables::of($data)
@@ -41,6 +42,12 @@ class Item_replaceController extends Controller
                         if($row->item_status == 3){
                             return 'Menunggu Penggantian Dari Vendor';
                         }
+                    })
+                    ->editColumn('created_by',function($row){
+                        return $row->userCreate->name;
+                    })
+                    ->editColumn('edited_by',function($row){
+                        return $row->userEdit->name ?? null;
                     })
                     ->addColumn('action', function($row){
                         return '<a class="btn btn-success btn-sm btn-icon waves-effect waves-themed" href="'.route('itemreplace.edit',$row->uuid).'"><i class="fal fa-edit"></i></a>';
@@ -120,9 +127,11 @@ class Item_replaceController extends Controller
         ];
 
         $this->validate($request, $rules, $messages);
+
+        $repair_item = Gudang_job_order::uuid($id);
         
         $item_replace = new Item_replace();
-        $item_replace->item_repair_uuid = $request->item_repair_uuid;
+        $item_replace->item_repair_uuid = $repair_item->repair_item_uuid;
         $item_replace->replace_from = $request->replace_from;
         if($item_replace->replace_from == 1){
             $rules = [
@@ -151,6 +160,7 @@ class Item_replaceController extends Controller
             $vendor->serial_number = $request->serial_number;
             $vendor->barcode = $request->barcode;
             $vendor->kelengkapan = $request['kelengkapan'];
+            $vendor->created_by = Auth::user()->uuid;
     
             $vendor->save(); 
             $item_replace->item_replace_detail_from_vendor = $vendor->uuid;
@@ -158,8 +168,8 @@ class Item_replaceController extends Controller
         }elseif($item_replace->replace_from == 3){
             $item_replace->item_replace_detail_from_stock = $request->item_replace_detail_from_stock;
         }
-        // $teknisi->created_by = Auth::user()->uuid;   
-            $item_replace->save();     
+        $item_replace->created_by = Auth::user()->uuid;   
+        $item_replace->save();     
         
         toastr()->success('Item Replace Added','Success');
         return redirect()->route('itemreplace.index');

@@ -114,7 +114,6 @@ class TeknisiController extends Controller
     public function update(Request $request, $id)
     {
         $rules = [
-            'repair_item_uuid' => 'required',
             'item_status' => 'required',
             'keterangan' => 'required'
         ];
@@ -126,27 +125,25 @@ class TeknisiController extends Controller
 
         $this->validate($request, $rules, $messages);
 
+        $repair_item = Repair_item::uuid($id);
+
         $teknisi = new Technician_job_order();
-        $teknisi->repair_item_uuid = $request->repair_item_uuid;
+        $teknisi->repair_item_uuid = $repair_item->uuid;
         $teknisi->item_status = $request->item_status;
-        if ($teknisi->item_status == 1){
-            $repair_item = DB::table('ticketings')
+        if ($teknisi->item_status == 1){            
+            $ticketing = DB::table('ticketings')
                             ->join('repair_items', 'repair_items.ticket_uuid', 'like', 'ticketings.uuid')
-                            ->where('ticketings.ticket_number', '=', $teknisi->repair_item_uuid)
-                            ->update(['repair_items.can_repair' => '1']);
-            
-            $ticketing = Ticketing::where('ticket_number', $teknisi->repair_item_uuid)->update(['job_status' => '5']);
+                            ->where('repair_items.uuid', '=', $teknisi->repair_item_uuid)
+                            ->update(['ticketings.job_status' => '5', 'repair_items.can_repair' => '1']);
         }else{
             $repair_item = DB::table('ticketings')
                             ->join('repair_items', 'repair_items.ticket_uuid', 'like', 'ticketings.uuid')
-                            ->where('ticketings.ticket_number', '=', $teknisi->repair_item_uuid)
-                            ->update(['repair_items.can_repair' => '0']);
-            
-            $ticketing = Ticketing::where('ticket_number', $teknisi->repair_item_uuid)->update(['job_status' => '1']);
+                            ->where('repair_items.uuid', '=', $teknisi->repair_item_uuid)
+                            ->update(['repair_items.can_repair' => '0', 'ticketings.job_status' => '1']);
         }
         $teknisi->keterangan = $request->keterangan;
         $teknisi->job_status = 1;
-        // $teknisi->created_by = Auth::user()->uuid;
+        $teknisi->created_by = Auth::user()->uuid;
 
         $teknisi->save();   
         
@@ -160,7 +157,7 @@ class TeknisiController extends Controller
         $gudang->keterangan = $teknisi->keterangan;
         $gudang->item_replace_uuid = $request->item_replace_uuid;
         $gudang->job_status = 0;
-        // $gudang->created_at = Auth::user()->uuid;
+        $gudang->created_by = Auth::user()->uuid;
 
         $gudang->save();
 
