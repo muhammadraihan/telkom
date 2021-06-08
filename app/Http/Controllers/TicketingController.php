@@ -64,6 +64,8 @@ class TicketingController extends Controller
                             return 'Telah diperbaiki oleh teknisi';
                         }elseif($row->job_status == 6){
                             return 'Telah dikirim ke customer';
+                        }elseif($row->job_status == 7){
+                            return 'Item telah diperbaiki oleh vendor';
                         }
                     })
                     ->addColumn('action', function($row){

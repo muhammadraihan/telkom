@@ -51,8 +51,10 @@ class GudangController extends Controller
                              return 'Menunggu penggantian dari vendor';
                          }elseif($row->item_status == 4){
                              return 'Item telah diperbaiki oleh teknisi';
-                         }else{
+                         }elseif($row->item_status == 5){
                              return 'Item telah diperbaiki oleh vendor';
+                         }elseif($row->item_status == 6){
+                             return 'Item telah diganti oleh vendor';
                          }
                     })
                     ->editColumn('job_status', function($row){
@@ -148,15 +150,21 @@ class GudangController extends Controller
         if($gudang->item_status == 1){
             $jobstatus = Ticketing::where('ticket_number', 'like', $gudang->repair_item_uuid)->update(['job_status' => '1']);
         }elseif($gudang->item_status == 2){
-            $jobstatus = Ticketing::where('ticket_number', 'like', $gudang->repair_item_uuid)->update(['job_status' => '2']);
-        }elseif($gudang->item_status == 3){
             $jobstatus = Ticketing::where('ticket_number', 'like', $gudang->repair_item_uuid)->update(['job_status' => '3']);
+        }elseif($gudang->item_status == 3){
+            $jobstatus = Ticketing::where('ticket_number', 'like', $gudang->repair_item_uuid)->update(['job_status' => '4']);
+        }elseif($gudang->item_status == 5){
+            $jobstatus = Ticketing::where('ticket_number', 'like', $gudang->repair_item_uuid)->update(['job_status' => '7']);
+            $canrepair = DB::table('ticketings')
+                        ->join('repair_items', 'repair_items.ticket_uuid', 'like', 'ticketings.uuid')
+                        ->where('ticketings.ticket_number', '=', $gudang->repair_item_uuid)
+                        ->update(['repair_items.can_repair' => '1']);
         }
         $gudang->keterangan = $request->keterangan;
         $gudang->item_replace_uuid = $request->item_replace_uuid;
         $gudang->job_status = $request->job_status;
         if($gudang->job_status == 1){
-            $jobstatus = Ticketing::where('ticket_number', 'like', $gudang->repair_item_uuid)->update(['job_status' => '5']);
+            $jobstatus = Ticketing::where('ticket_number', 'like', $gudang->repair_item_uuid)->update(['job_status' => '6']);
             $tiketstatus = Ticketing::where('ticket_number', 'like', $gudang->repair_item_uuid)->update(['ticket_status' => '1']);
         }
 

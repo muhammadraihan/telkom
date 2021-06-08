@@ -38,7 +38,7 @@
                     <div class="form-group col-md-4 mb-3">
                         {{ Form::label('item_status','Status Item',['class' => 'required form-label'])}}
                         {!! Form::select('item_status', array('1' => 'Butuh perbaikan dari vendor', '2' => 'Menunggu perbaikan dari vendor', '3' => 'Menunggu penggantian dari vendor',
-                        '4' => 'Item telah diperbaiki oleh teknisi', '5' => 'Item telah digantioleh vendor'), $gudang->item_status, ['class' => 'garansi form-control'.($errors->has('item_status') ? 'is-invalid':''), 'required'
+                        '4' => 'Item telah diperbaiki oleh teknisi', '5' => 'Item telah diperbaiki oleh vendor', '6' => 'Item telah diganti oleh vendor'), $gudang->item_status, ['class' => 'garansi form-control'.($errors->has('item_status') ? 'is-invalid':''), 'required'
                         => '', 'placeholder' => 'Select Status item ...']) !!}
                         @if ($errors->has('item_status'))
                         <div class="invalid-feedback">{{ $errors->first('item_status') }}</div>
