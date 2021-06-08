@@ -36,7 +36,7 @@ class TeknisiController extends Controller
             $data = Repair_item::select([DB::raw('@rownum  := @rownum  + 1 AS rownum'),
             'id','uuid','ticket_uuid','item_model','item_merk', 'item_type', 'part_number', 'serial_number', 'kelengkapan', 'kerusakan'])
             ->where('status_garansi', '=', '0')
-            ->where('can_repair', '=', '0');
+            ->whereNull('can_repair');
             
             return Datatables::of($data)
                     ->addColumn('ticket_number', function($row){
@@ -135,12 +135,14 @@ class TeknisiController extends Controller
                             ->where('ticketings.ticket_number', '=', $teknisi->repair_item_uuid)
                             ->update(['repair_items.can_repair' => '1']);
             
-            $ticketing = Ticketing::where('ticket_number', $teknisi->repair_item_uuid)->update(['job_status' => '4']);
+            $ticketing = Ticketing::where('ticket_number', $teknisi->repair_item_uuid)->update(['job_status' => '5']);
         }else{
             $repair_item = DB::table('ticketings')
                             ->join('repair_items', 'repair_items.ticket_uuid', 'like', 'ticketings.uuid')
                             ->where('ticketings.ticket_number', '=', $teknisi->repair_item_uuid)
                             ->update(['repair_items.can_repair' => '0']);
+            
+            $ticketing = Ticketing::where('ticket_number', $teknisi->repair_item_uuid)->update(['job_status' => '1']);
         }
         $teknisi->keterangan = $request->keterangan;
         $teknisi->job_status = 1;
