@@ -28,12 +28,26 @@
                     </div>
                     {!! Form::open(['route' => ['teknisi.update',$repair_item->uuid],'method' => 'PUT','class' =>
                     'needs-validation','novalidate']) !!}
-                    <div class="form-group col-md-4 mb-3">
-                        {{ Form::label('repair_item_uuid','Repair Item',['class' => 'required form-label'])}}
-                        {{ Form::text('repair_item_uuid', $repair_item->ticket->ticket_number,['placeholder' => 'Tiket Number','class' => 'form-control '.($errors->has('repair_item_uuid') ? 'is-invalid':''),'required', 'autocomplete' => 'off'])}}
-                        @if ($errors->has('repair_item_uuid'))
-                        <div class="invalid-feedback">{{ $errors->first('repair_item_uuid') }}</div>
-                        @endif
+                    <div class="form-row">
+                        <div class="form-group col-md-3 mb-3">
+                            {{ Form::label('repair_item_uuid','Ticket Number',['class' => 'required form-label'])}}
+                            {{ Form::text('repair_item_uuid', $repair_item->ticket->ticket_number,['placeholder' => 'Tiket Number','class' => 'form-control '.($errors->has('repair_item_uuid') ? 'is-invalid':''),'required', 'autocomplete' => 'off', 'disabled'])}}
+                            @if ($errors->has('repair_item_uuid'))
+                            <div class="invalid-feedback">{{ $errors->first('repair_item_uuid') }}</div>
+                            @endif
+                        </div>
+                        <div class="form-group col-md-2 mb-2">
+                            {{ Form::label('repair_item_uuid','Item Type',['class' => 'required form-label'])}}
+                            {{ Form::text('repair_item_uuid', $repair_item->item_type,['placeholder' => 'Tiket Number','class' => 'form-control '.($errors->has('repair_item_uuid') ? 'is-invalid':''),'required', 'autocomplete' => 'off', 'disabled'])}}
+                        </div>
+                        <div class="form-group col-md-2 mb-2">
+                            {{ Form::label('repair_item_uuid','Item Merk',['class' => 'required form-label'])}}
+                            {{ Form::text('repair_item_uuid', $repair_item->item_merk,['placeholder' => 'Tiket Number','class' => 'form-control '.($errors->has('repair_item_uuid') ? 'is-invalid':''),'required', 'autocomplete' => 'off', 'disabled'])}}
+                        </div>
+                        <div class="form-group col-md-2 mb-2">
+                            {{ Form::label('repair_item_uuid','Item Model',['class' => 'required form-label'])}}
+                            {{ Form::text('repair_item_uuid', $repair_item->item_model,['placeholder' => 'Tiket Number','class' => 'form-control '.($errors->has('repair_item_uuid') ? 'is-invalid':''),'required', 'autocomplete' => 'off', 'disabled'])}}
+                        </div>
                     </div>
                     <div class="form-group col-md-4 mb-3">
                         {{ Form::label('item_status','Status Item',['class' => 'required form-label'])}}
@@ -45,7 +59,7 @@
                     </div>
                     <div class="form-group col-md-4 mb-3">
                         {{ Form::label('keterangan','Keterangan',['class' => 'required form-label'])}}
-                        {{ Form::text('keterangan', '',['placeholder' => 'Keterangan','class' => 'form-control '.($errors->has('keterangan') ? 'is-invalid':''),'required', 'autocomplete' => 'off'])}}
+                        {{ Form::textarea('keterangan', '',['placeholder' => 'Keterangan','class' => 'form-control '.($errors->has('keterangan') ? 'is-invalid':''),'required', 'autocomplete' => 'off'])}}
                         @if ($errors->has('keterangan'))
                         <div class="invalid-feedback">{{ $errors->first('keterangan') }}</div>
                         @endif

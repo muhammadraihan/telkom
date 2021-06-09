@@ -7,6 +7,7 @@ use App\Models\Ticketing;
 use App\Models\Customer;
 use App\Models\Repair_item;
 use App\Models\Kelengkapan;
+use App\Models\Gudang_job_order;
 
 use Auth;
 use DataTables;
@@ -31,8 +32,7 @@ class TicketingController extends Controller
         if (request()->ajax()) {
             DB::statement(DB::raw('set @rownum=0'));
             $data = Ticketing::select([DB::raw('@rownum  := @rownum  + 1 AS rownum'),
-            'id','uuid','uuid_pelanggan','ticket_number','keterangan', 'ticket_status', 'job_status', 'created_by', 'edited_by'])
-            ->where('ticket_status', '=', '0');
+            'id','uuid','uuid_pelanggan','ticket_number','keterangan', 'ticket_status', 'job_status', 'created_by', 'edited_by']);
 
             return Datatables::of($data)
                     ->addIndexColumn()
@@ -43,7 +43,7 @@ class TicketingController extends Controller
                         return $row->userEdit->name ?? null;
                     })
                     ->editColumn('uuid_pelanggan',function($row){
-                        return $row->customer->jenis_pelanggan ?? null;
+                        return $row->customer->nomor_pelanggan ?? null;
                     })
                     ->editColumn('ticket_status', function($row){
                         if($row->ticket_status == 0){
@@ -56,13 +56,17 @@ class TicketingController extends Controller
                         if($row->job_status == 1){
                            return 'Butuh perbaikan dari vendor';
                         }elseif($row->job_status == 2){
-                           return 'Menunggu perbaikan dari vendor';
+                           return 'Butuh perbaikan dari teknisi';
                         }elseif($row->job_status == 3){
-                            return 'Menunggu penggantian dari vendor';
+                            return 'Menunggu perbaikan dari vendor';
                         }elseif($row->job_status == 4){
+                            return 'Menunggu penggantian dari vendor';
+                        }elseif($row->job_status == 5){
                             return 'Telah diperbaiki oleh teknisi';
-                        }else{
+                        }elseif($row->job_status == 6){
                             return 'Telah dikirim ke customer';
+                        }elseif($row->job_status == 7){
+                            return 'Item telah diperbaiki oleh vendor';
                         }
                     })
                     ->addColumn('action', function($row){
@@ -85,7 +89,7 @@ class TicketingController extends Controller
     public function create()
     {
         $kelengkapan = Kelengkapan::all();
-        $pelanggan = Customer::all()->pluck('jenis_pelanggan', 'jenis_pelanggan');
+        $pelanggan = Customer::all()->pluck('nomor_pelanggan', 'uuid');
         return view('ticketing.create',compact('pelanggan', 'kelengkapan'));
     }
 
@@ -120,17 +124,14 @@ class TicketingController extends Controller
         // dd($request->all());
         $randomTicket = Helper::GenerateTicketNumber(13);
 
-        $tickteting = new Ticketing();
-        $tickteting->uuid_pelanggan = $request->uuid_pelanggan;
-        $tickteting->ticket_number = 'TKT' . '-' . $randomTicket;
-        $tickteting->keterangan = $request->keterangan;
-        $tickteting->ticket_status = 0;
-        $tickteting->created_by = Auth::user()->uuid;
-
-        $tickteting->save();
+        $ticketing = new Ticketing();
+        $ticketing->uuid_pelanggan = $request->uuid_pelanggan;
+        $ticketing->ticket_number = 'TKT' . '-' . $randomTicket;
+        $ticketing->keterangan = $request->keterangan;
+        $ticketing->ticket_status = 0;
+        $ticketing->created_by = Auth::user()->uuid;
 
         $repair_item = new Repair_item();
-        $repair_item->ticket_uuid = $tickteting->uuid;
         $repair_item->item_model = $request->item_model;
         $repair_item->item_merk = $request->item_merk;
         $repair_item->item_type = $request->item_type;
@@ -140,9 +141,28 @@ class TicketingController extends Controller
         $repair_item->kelengkapan = $request['kelengkapan'];
         $repair_item->kerusakan = $request->kerusakan;
         $repair_item->status_garansi = $request->status_garansi;
+        if($repair_item->status_garansi == 0){
+            $ticketing->job_status = 2;
+        }else{
+            $ticketing->job_status = 1;
+        }
+        $ticketing->save();
+        $repair_item->ticket_uuid = $ticketing->uuid;
         $repair_item->created_by = Auth::user()->uuid;
         
         $repair_item->save();
+
+        if($repair_item->status_garansi == 1){
+            $gudang = new Gudang_job_order();
+            $gudang->repair_item_uuid = $repair_item->uuid;
+            $gudang->item_status = $ticketing->job_status;
+            $gudang->keterangan = $ticketing->keterangan;
+            $gudang->item_replace_uuid = $request->item_replace_uuid;
+            $gudang->job_status = 0;
+            $gudang->created_by = Auth::user()->uuid;
+
+            $gudang->save();
+        }
         
         toastr()->success('New Ticketing Added','Success');
         return redirect()->route('ticketing.index');
