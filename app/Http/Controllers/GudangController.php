@@ -31,7 +31,7 @@ class GudangController extends Controller
         if (request()->ajax()) {
             DB::statement(DB::raw('set @rownum=0'));
             $data = Gudang_job_order::select([DB::raw('@rownum  := @rownum  + 1 AS rownum'),
-            'id','uuid','repair_item_uuid','item_status','keterangan', 'item_replace_uuid', 'job_status'])
+            'id','uuid','repair_item_uuid','item_status','keterangan', 'item_replace_uuid', 'job_status', 'created_by', 'edited_by'])
             ->where('job_status', '=', '0');
 
             return Datatables::of($data)
@@ -51,8 +51,10 @@ class GudangController extends Controller
                              return 'Menunggu penggantian dari vendor';
                          }elseif($row->item_status == 4){
                              return 'Item telah diperbaiki oleh teknisi';
-                         }else{
+                         }elseif($row->item_status == 5){
                              return 'Item telah diperbaiki oleh vendor';
+                         }elseif($row->item_status == 6){
+                             return 'Item telah diganti oleh vendor';
                          }
                     })
                     ->editColumn('job_status', function($row){
@@ -114,7 +116,7 @@ class GudangController extends Controller
      */
     public function edit($id)
     {
-        $item_replace = Item_replace::all()->pluck('item_repair_uuid', 'item_repair_uuid');
+        $item_replace = Item_replace::all()->pluck('item_repair_uuid', 'uuid');
         $gudang = Gudang_job_order::uuid($id);
         return view('gudang.edit', compact('item_replace', 'gudang'));
     }
@@ -129,7 +131,6 @@ class GudangController extends Controller
     public function update(Request $request, $id)
     {
         $rules = [
-            'repair_item_uuid' => 'required',
             'item_status' => 'required',
             'keterangan' => 'required',
             'job_status' => 'required'
@@ -143,21 +144,47 @@ class GudangController extends Controller
         $this->validate($request, $rules, $messages);
 
         $gudang = Gudang_job_order::uuid($id);
-        $gudang->repair_item_uuid = $request->repair_item_uuid;
+        $gudang->repair_item_uuid = $gudang->repair_item_uuid;
         $gudang->item_status = $request->item_status;
         if($gudang->item_status == 1){
-            $jobstatus = Ticketing::where('ticket_number', 'like', $gudang->repair_item_uuid)->update(['job_status' => '1']);
+            $jobstatus = DB::table('ticketings')
+                        ->join('repair_items', 'repair_items.ticket_uuid', 'like', 'ticketings.uuid')
+                        ->where('repair_items.uuid', '=', $gudang->repair_item_uuid)
+                        ->update(['ticketings.job_status' => '1']);
         }elseif($gudang->item_status == 2){
-            $jobstatus = Ticketing::where('ticket_number', 'like', $gudang->repair_item_uuid)->update(['job_status' => '2']);
+            $jobstatus = DB::table('ticketings')
+                        ->join('repair_items', 'repair_items.ticket_uuid', 'like', 'ticketings.uuid')
+                        ->where('repair_items.uuid', '=', $gudang->repair_item_uuid)
+                        ->update(['ticketings.job_status' => '3', 'repair_items.can_repair' => '0']);
         }elseif($gudang->item_status == 3){
-            $jobstatus = Ticketing::where('ticket_number', 'like', $gudang->repair_item_uuid)->update(['job_status' => '3']);
+            $jobstatus = DB::table('ticketings')
+                        ->join('repair_items', 'repair_items.ticket_uuid', 'like', 'ticketings.uuid')
+                        ->where('repair_items.uuid', '=', $gudang->repair_item_uuid)
+                        ->update(['ticketings.job_status' => '4']);
+        }elseif($gudang->item_status == 5){
+            $canrepair = DB::table('ticketings')
+                        ->join('repair_items', 'repair_items.ticket_uuid', 'like', 'ticketings.uuid')
+                        ->where('repair_items.uuid', '=', $gudang->repair_item_uuid)
+                        ->update(['repair_items.can_repair' => '1', 'ticketings.job_status' => '7']);
+        }elseif($gudang->item_status == 4){
+            $jobstatus = DB::table('ticketings')
+                        ->join('repair_items', 'repair_items.ticket_uuid', 'like', 'ticketings.uuid')
+                        ->where('repair_items.uuid', '=', $gudang->repair_item_uuid)
+                        ->update(['ticketings.job_status' => '5']);
+        }elseif($gudang->item_status == 6){
+            $jobstatus = DB::table('ticketings')
+                        ->join('repair_items', 'repair_items.ticket_uuid', 'like', 'ticketings.uuid')
+                        ->where('repair_items.uuid', '=', $gudang->repair_item_uuid)
+                        ->update(['ticketings.job_status' => '7', 'repair_items.can_repair' => '1']);
         }
         $gudang->keterangan = $request->keterangan;
         $gudang->item_replace_uuid = $request->item_replace_uuid;
         $gudang->job_status = $request->job_status;
         if($gudang->job_status == 1){
-            $jobstatus = Ticketing::where('ticket_number', 'like', $gudang->repair_item_uuid)->update(['job_status' => '5']);
-            $tiketstatus = Ticketing::where('ticket_number', 'like', $gudang->repair_item_uuid)->update(['ticket_status' => '1']);
+            $jobstatus = DB::table('ticketings')
+                        ->join('repair_items', 'repair_items.ticket_uuid', 'like', 'ticketings.uuid')
+                        ->where('repair_items.uuid', '=', $gudang->repair_item_uuid)
+                        ->update(['ticketings.job_status' => '6', 'ticketings.ticket_status' => '1']);
         }
 
         $gudang->save();

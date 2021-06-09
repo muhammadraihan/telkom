@@ -36,6 +36,8 @@
                 <th>No</th>
                 <th>Ticket Number</th>
                 <th>Item Status</th>
+                <th>Created By</th>
+                <th>Edited By</th>
                 <th width="120px">Action</th>
                 </tr>
                         </thead>
@@ -75,6 +77,8 @@
             {data: 'rownum', name: 'rownum'},
             {data: 'repair_item_uuid', name: 'repair_item_uuid'},
             {data: 'item_status', name: 'item_status'},
+            {data: 'created_by', name: 'created_by'},
+            {data: 'edited_by', name: 'edited_by'},
             {data: 'action', name: 'action', orderable: false, searchable: false},
         ]
     });
