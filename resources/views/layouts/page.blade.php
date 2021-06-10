@@ -7,6 +7,7 @@
 @endsection
 
 @section('body')
+<link rel="stylesheet" media="screen, print" href="{{asset('css/notifications/toastr/toastr.css')}}">
 <!-- BEGIN Page Wrapper -->
 <div class="page-wrapper">
     <div class="page-inner">
@@ -22,13 +23,13 @@
             <main id="js-page-content" role="main" class="page-content">
                 <ol class="breadcrumb page-breadcrumb">
                     <li class="breadcrumb-item"><a href="{{route('backoffice.dashboard')}}"> Backoffice</a></li>
-                    @for ($i = 2; $i <= count(Request::segments()); $i++) 
-                    <li class="breadcrumb-item">
+                    @for ($i = 2; $i <= count(Request::segments()); $i++) <li class="breadcrumb-item">
                         {{ucwords(strtolower(Request::segment($i)))}}
-                    </li>
-                    @endfor
-                    <li class="position-absolute pos-top pos-right d-none d-sm-block"><span class="js-get-date"></span>
-                    </li>
+                        </li>
+                        @endfor
+                        <li class="position-absolute pos-top pos-right d-none d-sm-block"><span
+                                class="js-get-date"></span>
+                        </li>
                 </ol>
                 @yield('content')
             </main>
@@ -39,9 +40,9 @@
             <footer class="page-footer" role="contentinfo">
                 <div class="d-flex align-items-center flex-1 text-muted">
                     @php
-                        $json = file_get_contents(base_path('package.json'));
-                        $decode = json_decode($json,true);
-                        $version = $decode['version'];
+                    $json = file_get_contents(base_path('package.json'));
+                    $decode = json_decode($json,true);
+                    $version = $decode['version'];
                     @endphp
                     <span class="hidden-md-down fw-700">{{date('Y')}} &copy; <a href='#' class='text-primary fw-500'
                             title='' target='_blank'>{{env('APP_DEVELOPER','')}}</a> - v {{$version}}</span>
@@ -73,6 +74,8 @@
 @endsection
 
 @section('themes_js')
+<script src="{{asset('js/notifications/toastr/toastr.js')}}"></script>
+@toastr_render
 @stack('js')
 <!-- Custom JS for this page only -->
 @yield('js')
