@@ -8,6 +8,7 @@ use App\Models\Customer;
 use App\Models\Repair_item;
 use App\Models\Kelengkapan;
 use App\Models\Gudang_job_order;
+use App\Models\Customer_type;
 
 use Auth;
 use DataTables;
@@ -31,51 +32,53 @@ class TicketingController extends Controller
         $tickteting = Ticketing::all();
         if (request()->ajax()) {
             DB::statement(DB::raw('set @rownum=0'));
-            $data = Ticketing::select([DB::raw('@rownum  := @rownum  + 1 AS rownum'),
-            'id','uuid','uuid_pelanggan','ticket_number','keterangan', 'ticket_status', 'job_status', 'created_by', 'edited_by']);
+            $data = Ticketing::select([
+                DB::raw('@rownum  := @rownum  + 1 AS rownum'),
+                'id', 'uuid', 'uuid_pelanggan', 'ticket_number', 'keterangan', 'ticket_status', 'job_status', 'created_by', 'edited_by'
+            ]);
 
             return Datatables::of($data)
-                    ->addIndexColumn()
-                    ->editColumn('created_by',function($row){
-                        return $row->userCreate->name;
-                    })
-                    ->editColumn('edited_by',function($row){
-                        return $row->userEdit->name ?? null;
-                    })
-                    ->editColumn('uuid_pelanggan',function($row){
-                        return $row->customer->nomor_pelanggan ?? null;
-                    })
-                    ->editColumn('ticket_status', function($row){
-                        if($row->ticket_status == 0){
-                           return 'Diproses';
-                        }else{
-                           return 'Selesai';
-                        }
-                    })
-                    ->editColumn('job_status', function($row){
-                        if($row->job_status == 1){
-                           return 'Butuh perbaikan dari vendor';
-                        }elseif($row->job_status == 2){
-                           return 'Butuh perbaikan dari teknisi';
-                        }elseif($row->job_status == 3){
-                            return 'Menunggu perbaikan dari vendor';
-                        }elseif($row->job_status == 4){
-                            return 'Menunggu penggantian dari vendor';
-                        }elseif($row->job_status == 5){
-                            return 'Telah diperbaiki oleh teknisi';
-                        }elseif($row->job_status == 6){
-                            return 'Telah dikirim ke customer';
-                        }elseif($row->job_status == 7){
-                            return 'Item telah diperbaiki oleh vendor';
-                        }
-                    })
-                    ->addColumn('action', function($row){
-                        return '<a class="btn btn-success btn-sm btn-icon waves-effect waves-themed" href="'.route('ticketing.edit',$row->uuid).'"><i class="fal fa-edit"></i></a>';
-                 })
-            ->removeColumn('id')
-            ->removeColumn('uuid')
-            ->rawColumns(['action'])
-            ->make(true);
+                ->addIndexColumn()
+                ->editColumn('created_by', function ($row) {
+                    return $row->userCreate->name;
+                })
+                ->editColumn('edited_by', function ($row) {
+                    return $row->userEdit->name ?? null;
+                })
+                ->editColumn('uuid_pelanggan', function ($row) {
+                    return $row->customer->nomor_pelanggan ?? null;
+                })
+                ->editColumn('ticket_status', function ($row) {
+                    if ($row->ticket_status == 0) {
+                        return 'Diproses';
+                    } else {
+                        return 'Selesai';
+                    }
+                })
+                ->editColumn('job_status', function ($row) {
+                    if ($row->job_status == 1) {
+                        return 'Butuh perbaikan dari vendor';
+                    } elseif ($row->job_status == 2) {
+                        return 'Butuh perbaikan dari teknisi';
+                    } elseif ($row->job_status == 3) {
+                        return 'Menunggu perbaikan dari vendor';
+                    } elseif ($row->job_status == 4) {
+                        return 'Menunggu penggantian dari vendor';
+                    } elseif ($row->job_status == 5) {
+                        return 'Telah diperbaiki oleh teknisi';
+                    } elseif ($row->job_status == 6) {
+                        return 'Telah dikirim ke customer';
+                    } elseif ($row->job_status == 7) {
+                        return 'Item telah diperbaiki oleh vendor';
+                    }
+                })
+                ->addColumn('action', function ($row) {
+                    return '<a class="btn btn-success btn-sm btn-icon waves-effect waves-themed" href="' . route('ticketing.edit', $row->uuid) . '"><i class="fal fa-edit"></i></a>';
+                })
+                ->removeColumn('id')
+                ->removeColumn('uuid')
+                ->rawColumns(['action'])
+                ->make(true);
         }
 
         return view('ticketing.index');
@@ -90,7 +93,8 @@ class TicketingController extends Controller
     {
         $kelengkapan = Kelengkapan::all();
         $pelanggan = Customer::all()->pluck('nomor_pelanggan', 'uuid');
-        return view('ticketing.create',compact('pelanggan', 'kelengkapan'));
+        $customerType = Customer_type::all()->pluck('name', 'uuid');
+        return view('ticketing.create', compact('pelanggan', 'kelengkapan', 'customerType'));
     }
 
     /**
@@ -110,7 +114,6 @@ class TicketingController extends Controller
             'part_number' => 'required',
             'serial_number' => 'required',
             'barcode' => 'required',
-            'kelengkapan' => 'required',
             'kerusakan' => 'required',
             'status_garansi' => 'required',
         ];
@@ -141,18 +144,18 @@ class TicketingController extends Controller
         $repair_item->kelengkapan = $request['kelengkapan'];
         $repair_item->kerusakan = $request->kerusakan;
         $repair_item->status_garansi = $request->status_garansi;
-        if($repair_item->status_garansi == 0){
+        if ($repair_item->status_garansi == 0) {
             $ticketing->job_status = 2;
-        }else{
+        } else {
             $ticketing->job_status = 1;
         }
         $ticketing->save();
         $repair_item->ticket_uuid = $ticketing->uuid;
         $repair_item->created_by = Auth::user()->uuid;
-        
+
         $repair_item->save();
 
-        if($repair_item->status_garansi == 1){
+        if ($repair_item->status_garansi == 1) {
             $gudang = new Gudang_job_order();
             $gudang->repair_item_uuid = $repair_item->uuid;
             $gudang->item_status = $ticketing->job_status;
@@ -163,8 +166,8 @@ class TicketingController extends Controller
 
             $gudang->save();
         }
-        
-        toastr()->success('New Ticketing Added','Success');
+
+        toastr()->success('New Ticketing Added', 'Success');
         return redirect()->route('ticketing.index');
     }
 
@@ -245,11 +248,11 @@ class TicketingController extends Controller
         $repair_item->kerusakan = $request->kerusakan;
         $repair_item->status_garansi = $request->status_garansi;
         $repair_item->edited_by = Auth::user()->uuid;
-        
-        $repair_item->save();      
 
-        
-        toastr()->success('Ticketing Edited','Success');
+        $repair_item->save();
+
+
+        toastr()->success('Ticketing Edited', 'Success');
         return redirect()->route('ticketing.index');
     }
 
@@ -262,5 +265,29 @@ class TicketingController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function CustomerStore(Request $request)
+    {
+        $rules = [
+            'jenis_pelanggan' => 'required',
+            'nomor_pelanggan' => 'required'
+        ];
+
+        $messages = [
+            '*.required' => 'Field tidak boleh kosong !',
+            '*.min' => 'Nama tidak boleh kurang dari 2 karakter !',
+        ];
+
+        $this->validate($request, $rules, $messages);
+
+        $customer = new Customer();
+        $customer->jenis_pelanggan = $request->jenis_pelanggan;
+        $customer->nomor_pelanggan = $request->nomor_pelanggan;
+        $customer->created_by = Auth::user()->uuid;
+
+        $customer->save();
+        toastr()->warning('New Customer Added', 'Success');
+        return redirect()->back();
     }
 }
