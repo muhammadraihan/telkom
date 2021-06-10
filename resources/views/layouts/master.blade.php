@@ -18,7 +18,6 @@
     <!-- base css -->
     <link rel="stylesheet" media="screen, print" href="{{asset('css/vendors.bundle.css')}}">
     <link rel="stylesheet" media="screen, print" href="{{asset('css/app.bundle.css')}}">
-    <link rel="stylesheet" media="screen, print" href="{{asset('css/notifications/toastr/toastr.css')}}">
     @yield('themes_css')
     <!-- Place favicon.ico in the root directory -->
     <link rel="apple-touch-icon" sizes="180x180" href="{{asset('img/favicon/apple-touch-icon.png')}}">
@@ -90,8 +89,7 @@
     @yield('body')
     <script src="{{asset('js/vendors.bundle.js')}}"></script>
     <script src="{{asset('js/app.bundle.js')}}"></script>
-    <script src="{{asset('js/notifications/toastr/toastr.js')}}"></script>
-    @toastr_render
     @yield('themes_js')
 </body>
+
 </html>
