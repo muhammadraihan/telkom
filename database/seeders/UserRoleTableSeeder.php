@@ -61,16 +61,7 @@ class UserRoleTableSeeder extends Seeder
             }
 
             $this->command->info('Roles ' . $input_roles . ' added successfully');
-
-        } else {
-            Role::firstOrCreate(['name' => 'user']);
-            $this->command->info('Added only default user role.');
         }
-
-        // // now lets seed some posts for demo
-        // factory(\App\Post::class, 30)->create();
-        // $this->command->info('Some Posts data seeded.');
-        // $this->command->warn('All done :)');
     }
 
     /**
