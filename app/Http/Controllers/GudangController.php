@@ -42,6 +42,9 @@ class GudangController extends Controller
                     ->editColumn('edited_by',function($row){
                         return $row->userEdit->name ?? null;
                     })
+                    ->editColumn('repair_item_uuid', function($row){
+                        return $row->repairItem->ticket->ticket_number;
+                    })
                     ->editColumn('item_status', function($row){
                         if($row->item_status == 1){
                             return 'Butuh perbaikan dari vendor';
@@ -116,9 +119,8 @@ class GudangController extends Controller
      */
     public function edit($id)
     {
-        $item_replace = Item_replace::all()->pluck('item_repair_uuid', 'uuid');
         $gudang = Gudang_job_order::uuid($id);
-        return view('gudang.edit', compact('item_replace', 'gudang'));
+        return view('gudang.edit', compact('gudang'));
     }
 
     /**
@@ -178,7 +180,6 @@ class GudangController extends Controller
                         ->update(['ticketings.job_status' => '7', 'repair_items.can_repair' => '1']);
         }
         $gudang->keterangan = $request->keterangan;
-        $gudang->item_replace_uuid = $request->item_replace_uuid;
         $gudang->job_status = $request->job_status;
         if($gudang->job_status == 1){
             $jobstatus = DB::table('ticketings')

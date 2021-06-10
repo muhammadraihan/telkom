@@ -57,7 +57,7 @@ class Item_replace extends Model
         return $this->belongsTo(User::class, 'edited_by', 'uuid');
     }
 
-    public function itemRepair(){
+    public function repairItem(){
         return $this->belongsTo(Repair_item::class, 'item_repair_uuid', 'uuid');
     }
 

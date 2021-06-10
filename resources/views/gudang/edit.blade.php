@@ -11,7 +11,7 @@
     <div class="col-xl-6">
         <div id="panel-1" class="panel">
             <div class="panel-hdr">
-            <h2>Edit <span class="fw-300"><i>{{$gudang->repair_item_uuid}}</i></span></h2>
+            <h2>Edit <span class="fw-300"><i>{{$gudang->repairItem->ticket->ticket_number}}</i></span></h2>
                 <div class="panel-toolbar">
                     <a class="nav-link active" href="{{route('gudang.index')}}"><i class="fal fa-arrow-alt-left">
                         </i>
@@ -30,7 +30,7 @@
                     'needs-validation','novalidate']) !!}
                     <div class="form-group col-md-4 mb-3">
                         {{ Form::label('repair_item_uuid','Ticket Number',['class' => 'required form-label'])}}
-                        {{ Form::text('repair_item_uuid', $gudang->repair_item_uuid,['placeholder' => 'Ticket Number','class' => 'form-control '.($errors->has('repair_item_uuid') ? 'is-invalid':''),'required', 'autocomplete' => 'off', 'disabled'])}}
+                        {{ Form::text('repair_item_uuid', $gudang->repairItem->ticket->ticket_number,['placeholder' => 'Ticket Number','class' => 'form-control '.($errors->has('repair_item_uuid') ? 'is-invalid':''),'required', 'autocomplete' => 'off', 'disabled'])}}
                         @if ($errors->has('repair_item_uuid'))
                         <div class="invalid-feedback">{{ $errors->first('repair_item_uuid') }}</div>
                         @endif
@@ -49,15 +49,6 @@
                         {{ Form::textarea('keterangan', $gudang->keterangan,['placeholder' => 'Keterangan','class' => 'form-control '.($errors->has('keterangan') ? 'is-invalid':''),'required', 'autocomplete' => 'off'])}}
                         @if ($errors->has('keterangan'))
                         <div class="invalid-feedback">{{ $errors->first('keterangan') }}</div>
-                        @endif
-                    </div>
-                    <div class="form-group col-md-4 mb-3">
-                        {{ Form::label('item_replace_uuid','Replace Item',['class' => 'form-label'])}}
-                        {!! Form::select('item_replace_uuid', $item_replace, $gudang->item_replace_uuid, ['class' => 'item-replace
-                        form-control', 'readonly'.($errors->has('item_replace_uuid') ? 'is-invalid':''), ''
-                        => '', 'placeholder' => 'Select Replace Item ...']) !!}
-                        @if ($errors->has('item_replace_uuid'))
-                        <div class="invalid-feedback">{{ $errors->first('item_replace_uuid') }}</div>
                         @endif
                     </div>
                     <div class="form-group col-md-4 mb-3">

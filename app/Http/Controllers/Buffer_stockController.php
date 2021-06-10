@@ -45,8 +45,8 @@ class Buffer_stockController extends Controller
                     })
                     ->addColumn('action', function($row){
                         return '
-                        <a class="btn btn-success btn-sm btn-icon waves-effect waves-themed" href="'.route('buffer_stock.edit',$row->uuid).'"><i class="fal fa-edit"></i></a>
-                        <a class="btn btn-danger btn-sm btn-icon waves-effect waves-themed delete-btn" data-url="'.URL::route('buffer_stock.destroy',$row->uuid).'" data-id="'.$row->uuid.'" data-token="'.csrf_token().'" data-toggle="modal" data-target="#modal-delete"><i class="fal fa-trash-alt"></i></a>';
+                        <a class="btn btn-success btn-sm btn-icon waves-effect waves-themed" href="'.route('buffer-stock.edit',$row->uuid).'"><i class="fal fa-edit"></i></a>
+                        <a class="btn btn-danger btn-sm btn-icon waves-effect waves-themed delete-btn" data-url="'.URL::route('buffer-stock.destroy',$row->uuid).'" data-id="'.$row->uuid.'" data-token="'.csrf_token().'" data-toggle="modal" data-target="#modal-delete"><i class="fal fa-trash-alt"></i></a>';
                  })
             ->removeColumn('id')
             ->removeColumn('uuid')
@@ -100,7 +100,7 @@ class Buffer_stockController extends Controller
 
         
         toastr()->success('New Buffer Stock Added','Success');
-        return redirect()->route('buffer_stock.index');
+        return redirect()->route('buffer-stock.index');
     }
 
     /**
@@ -160,7 +160,7 @@ class Buffer_stockController extends Controller
 
         
         toastr()->success('Buffer Stock Edited','Success');
-        return redirect()->route('buffer_stock.index');
+        return redirect()->route('buffer-stock.index');
     }
 
     /**
@@ -174,6 +174,6 @@ class Buffer_stockController extends Controller
         $buffer_stock = Buffer_stock::uuid($id);
         $buffer_stock->delete();
         toastr()->success('Buffer Stock Deleted','Success');
-        return redirect()->route('buffer_stock.index');
+        return redirect()->route('buffer-stock.index');
     }
 }

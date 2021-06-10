@@ -37,7 +37,6 @@
                 <th>Repair Item</th>
                 <th>Status Item</th>
                 <th>Keterangan</th>
-                <th>Item Replace</th>
                 <th>Job Status</th>
                 <th>Created By</th>
                 <th>Edited By</th>
@@ -81,7 +80,6 @@
             {data: 'repair_item_uuid', name: 'repair_item_uuid'},
             {data: 'item_status', name: 'item_status'},
             {data: 'keterangan', name: 'keterangan'},
-            {data: 'item_replace_uuid', name: 'item_replace_uuid'},
             {data: 'job_status', name: 'job_status'},
             {data: 'created_by', name: 'created_by'},
             {data: 'edited_by', name: 'edited_by'},

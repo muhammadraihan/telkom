@@ -61,7 +61,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{route('customer_type.index')}}" title="Customer Type"
+                        <a href="{{route('customer-type.index')}}" title="Customer Type"
                             data-filter-tags="customer type">
                             <i class="fal fa-users"></i>
                             <span class="nav-link-text" data-i18n="nav.users_managements">Customer Type</span>
@@ -92,7 +92,7 @@
                 </a>
                 <ul>
                     <li>
-                        <a href="{{route('buffer_stock.index')}}" title="Buffer Stock Managements"
+                        <a href="{{route('buffer-stock.index')}}" title="Buffer Stock Managements"
                             data-filter-tags="buffer stock managements">
                             <i class="fal fa-suitcase"></i>
                             <span class="nav-link-text" data-i18n="nav.users_managements">Buffer Stock</span>
@@ -106,7 +106,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{route('stock_item.index')}}" title="Stock Item Managements"
+                        <a href="{{route('stock-item.index')}}" title="Stock Item Managements"
                             data-filter-tags="stock item managements">
                             <i class="fal fa-list-alt"></i>
                             <span class="nav-link-text" data-i18n="nav.users_managements">Stock Item</span>

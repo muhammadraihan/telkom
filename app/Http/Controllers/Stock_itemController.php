@@ -38,8 +38,8 @@ class Stock_itemController extends Controller
                     })
                     ->addColumn('action', function($row){
                         return '
-                        <a class="btn btn-success btn-sm btn-icon waves-effect waves-themed" href="'.route('stock_item.edit',$row->uuid).'"><i class="fal fa-edit"></i></a>
-                        <a class="btn btn-danger btn-sm btn-icon waves-effect waves-themed delete-btn" data-url="'.URL::route('stock_item.destroy',$row->uuid).'" data-id="'.$row->uuid.'" data-token="'.csrf_token().'" data-toggle="modal" data-target="#modal-delete"><i class="fal fa-trash-alt"></i></a>';
+                        <a class="btn btn-success btn-sm btn-icon waves-effect waves-themed" href="'.route('stock-item.edit',$row->uuid).'"><i class="fal fa-edit"></i></a>
+                        <a class="btn btn-danger btn-sm btn-icon waves-effect waves-themed delete-btn" data-url="'.URL::route('stock-item.destroy',$row->uuid).'" data-id="'.$row->uuid.'" data-token="'.csrf_token().'" data-toggle="modal" data-target="#modal-delete"><i class="fal fa-trash-alt"></i></a>';
                  })
             ->removeColumn('id')
             ->removeColumn('uuid')
@@ -86,7 +86,6 @@ class Stock_itemController extends Controller
         ];
 
         $this->validate($request, $rules, $messages);
-        // dd($request['kelengkapan']);
         $stock = new Stock_item();
         $stock->item_model = $request->item_model;
         $stock->item_merk = $request->item_merk;
@@ -102,7 +101,7 @@ class Stock_itemController extends Controller
 
         
         toastr()->success('New Stock Item Added','Success');
-        return redirect()->route('stock_item.index');
+        return redirect()->route('stock-item.index');
     }
 
     /**
@@ -126,7 +125,6 @@ class Stock_itemController extends Controller
     {
         $stock = Stock_item::uuid($id);
         $kelengkapan = Kelengkapan::all();
-        // dd($stock->kelengkapan);
         return view('stock_item.edit', compact('stock','kelengkapan'));
     }
 
@@ -156,7 +154,6 @@ class Stock_itemController extends Controller
         ];
 
         $this->validate($request, $rules, $messages);
-        // dd($request['kelengkapan']);
         $stock = Stock_item::uuid($id);
         $stock->item_model = $request->item_model;
         $stock->item_merk = $request->item_merk;
@@ -172,7 +169,7 @@ class Stock_itemController extends Controller
 
         
         toastr()->success('Stock Item Edited','Success');
-        return redirect()->route('stock_item.index');
+        return redirect()->route('stock-item.index');
     }
 
     /**
@@ -186,6 +183,6 @@ class Stock_itemController extends Controller
         $stock = Stock_item::uuid($id);
         $stock->delete();
         toastr()->success('Stock Item Deleted','Success');
-        return redirect()->route('stock_item.index');
+        return redirect()->route('stock-item.index');
     }
 }

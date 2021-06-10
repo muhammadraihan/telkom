@@ -29,15 +29,16 @@ Route::group(['prefix' => 'backoffice', 'middleware' => ['auth']], function() {
     Route::resource('users','UserController');
     Route::resource('permissions', 'PermissionController');
     Route::resource('roles', 'RoleController');
-    Route::resource('stock_item', 'Stock_itemController');
+    Route::resource('stock-item', 'Stock_itemController');
     Route::resource('kelengkapan', 'KelengkapanController');
-    Route::resource('buffer_stock', 'Buffer_stockController');
+    Route::resource('buffer-stock', 'Buffer_stockController');
     Route::resource('customer', 'CustomerController');
-    Route::resource('customer_type', 'Customer_typeController');
+    Route::resource('customer-type', 'Customer_typeController');
     Route::resource('ticketing', 'TicketingController');
     Route::resource('teknisi', 'TeknisiController');
     Route::resource('gudang', 'GudangController');
     Route::resource('itemreplace', 'Item_replaceController');
+    Route::get('bufferstockdetail', 'Item_replaceController@detailBufferStock')->name('get.detailBufferStock');
     Route::get('stockdetail', 'Item_replaceController@detailStock')->name('get.detailStock');
 
     // user Profile

@@ -23,7 +23,7 @@
                     Buffer Stock <span class="fw-300"><i>List</i></span>
                 </h2>
                 <div class="panel-toolbar">
-                    <a class="nav-link active" href="{{route('buffer_stock.create')}}"><i class="fal fa-plus-circle">
+                    <a class="nav-link active" href="{{route('buffer-stock.create')}}"><i class="fal fa-plus-circle">
                         </i>
                         <span class="nav-link-text">Add New</span>
                     </a>
@@ -99,7 +99,7 @@
             "responsive": true,
             "order": [[ 0, "asc" ]],
             "ajax":{
-                url:'{{route('buffer_stock.index')}}',
+                url:'{{route('buffer-stock.index')}}',
                 type : "GET",
                 dataType: 'json',
                 error: function(data){

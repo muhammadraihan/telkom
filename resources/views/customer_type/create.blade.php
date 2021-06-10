@@ -13,7 +13,7 @@
             <div class="panel-hdr">
                 <h2>Add New <span class="fw-300"><i>Customer Type</i></span></h2>
                 <div class="panel-toolbar">
-                    <a class="nav-link active" href="{{route('customer_type.index')}}"><i class="fal fa-arrow-alt-left">
+                    <a class="nav-link active" href="{{route('customer-type.index')}}"><i class="fal fa-arrow-alt-left">
                         </i>
                         <span class="nav-link-text">Back</span>
                     </a>
@@ -26,7 +26,7 @@
                     <div class="panel-tag">
                         Form with <code>*</code> can not be empty.
                     </div>
-                    {!! Form::open(['route' => 'customer_type.store','method' => 'POST','class' =>
+                    {!! Form::open(['route' => 'customer-type.store','method' => 'POST','class' =>
                     'needs-validation','novalidate']) !!}
                     <div class="form-group col-md-4 mb-3">
                         {{ Form::label('name','Nama Customer',['class' => 'required form-label'])}}

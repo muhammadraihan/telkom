@@ -144,7 +144,7 @@ class TicketingController extends Controller
         if($repair_item->status_garansi == 0){
             $ticketing->job_status = 2;
         }else{
-            $ticketing->job_status = 1;
+            $ticketing->job_status = 4;
         }
         $ticketing->save();
         $repair_item->ticket_uuid = $ticketing->uuid;
@@ -155,7 +155,7 @@ class TicketingController extends Controller
         if($repair_item->status_garansi == 1){
             $gudang = new Gudang_job_order();
             $gudang->repair_item_uuid = $repair_item->uuid;
-            $gudang->item_status = $ticketing->job_status;
+            $gudang->item_status = 3;
             $gudang->keterangan = $ticketing->keterangan;
             $gudang->item_replace_uuid = $request->item_replace_uuid;
             $gudang->job_status = 0;
@@ -188,10 +188,9 @@ class TicketingController extends Controller
     public function edit($id)
     {
         $ticketing = Ticketing::uuid($id);
-        $repair_item = Repair_item::uuid($id);
         $pelanggan = Customer::all()->pluck('jenis_pelanggan', 'jenis_pelanggan');
         $kelengkapan = Kelengkapan::all();
-        return view('ticketing.edit', compact('ticketing', 'kelengkapan', 'pelanggan', 'repair_item'));
+        return view('ticketing.edit', compact('ticketing', 'kelengkapan', 'pelanggan'));
     }
 
     /**
@@ -232,21 +231,7 @@ class TicketingController extends Controller
         $tickteting->job_status = 1;
         $tickteting->edited_by = Auth::user()->uuid;
 
-        $tickteting->save();
-
-        $repair_item = Repair_item::uuid($id);
-        $repair_item->item_model = $request->item_model;
-        $repair_item->item_merk = $request->item_merk;
-        $repair_item->item_type = $request->item_type;
-        $repair_item->part_number = $request->part_number;
-        $repair_item->serial_number = $request->serial_number;
-        $repair_item->barcode = $request->barcode;
-        $repair_item->kelengkapan = json_encode($request['kelengkapan']);
-        $repair_item->kerusakan = $request->kerusakan;
-        $repair_item->status_garansi = $request->status_garansi;
-        $repair_item->edited_by = Auth::user()->uuid;
-        
-        $repair_item->save();      
+        $tickteting->save();  
 
         
         toastr()->success('Ticketing Edited','Success');
