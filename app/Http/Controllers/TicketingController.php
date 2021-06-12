@@ -9,14 +9,11 @@ use App\Models\Repair_item;
 use App\Models\Kelengkapan;
 use App\Models\Gudang_job_order;
 use App\Models\Customer_type;
+use Carbon\Carbon;
 
 use Auth;
 use DataTables;
 use DB;
-use File;
-use Hash;
-use Image;
-use Response;
 use URL;
 use Helper;
 
@@ -29,56 +26,81 @@ class TicketingController extends Controller
      */
     public function index()
     {
-        $tickteting = Ticketing::all();
         if (request()->ajax()) {
             DB::statement(DB::raw('set @rownum=0'));
-            $data = Ticketing::select([
+            $tickets = Ticketing::select([
                 DB::raw('@rownum  := @rownum  + 1 AS rownum'),
-                'id', 'uuid', 'uuid_pelanggan', 'ticket_number', 'keterangan', 'ticket_status', 'job_status', 'created_by', 'edited_by'
+                'id', 'uuid', 'uuid_pelanggan', 'ticket_number', 'keterangan', 'ticket_status', 'job_status', 'created_by', 'created_at',
             ]);
 
-            return Datatables::of($data)
-                ->addIndexColumn()
+            return Datatables::of($tickets)
                 ->editColumn('created_by', function ($row) {
                     return $row->userCreate->name;
                 })
-                ->editColumn('edited_by', function ($row) {
-                    return $row->userEdit->name ?? null;
+                ->editColumn('created_at', function ($row) {
+                    return Carbon::parse($row->created_at)->translatedFormat('l\\, j F Y H:i:s');
                 })
                 ->editColumn('uuid_pelanggan', function ($row) {
                     return $row->customer->nomor_pelanggan ?? null;
                 })
                 ->editColumn('ticket_status', function ($row) {
-                    if ($row->ticket_status == 0) {
-                        return 'Diproses';
-                    } else {
-                        return 'Selesai';
+                    switch ($row->ticket_status) {
+                        case '1':
+                            return 'Diproses bagian repair';
+                            break;
+                        case '2':
+                            return 'Diproses bagian gudang';
+                            break;
+                        case '3':
+                            return 'Selesai';
+                            break;
+                        case '3':
+                            return 'Cancel';
+                            break;
+                        default:
+                            return 'Status unknown';
+                            break;
                     }
                 })
                 ->editColumn('job_status', function ($row) {
-                    if ($row->job_status == 1) {
-                        return 'Butuh perbaikan dari vendor';
-                    } elseif ($row->job_status == 2) {
-                        return 'Butuh perbaikan dari teknisi';
-                    } elseif ($row->job_status == 3) {
-                        return 'Menunggu perbaikan dari vendor';
-                    } elseif ($row->job_status == 4) {
-                        return 'Menunggu penggantian dari vendor';
-                    } elseif ($row->job_status == 5) {
-                        return 'Telah diperbaiki oleh teknisi';
-                    } elseif ($row->job_status == 6) {
-                        return 'Telah dikirim ke customer';
-                    } elseif ($row->job_status == 7) {
-                        return 'Item telah diperbaiki oleh vendor';
+                    switch ($row->job_status) {
+                        case '1':
+                            return 'Dalam perbaikan oleh teknisi';
+                            break;
+                        case '2':
+                            return 'Butuh perbaikan dari vendor';
+                            break;
+                        case '3':
+                            return 'Dalam perbaikan oleh vendor';
+                            break;
+                        case '4':
+                            return 'Menunggu penggantian dari vendor';
+                            break;
+                        case '5':
+                            return 'Telah diperbaiki oleh teknisi';
+                            break;
+                        case '6':
+                            return 'Telah di kirim ke customer';
+                            break;
+                        case '7':
+                            return 'Ticket cancel';
+                            break;
+                        default:
+                            return 'Status unknown';
+                            break;
                     }
                 })
                 ->addColumn('action', function ($row) {
-                    return '<a class="btn btn-success btn-sm btn-icon waves-effect waves-themed" href="' . route('ticketing.edit', $row->uuid) . '"><i class="fal fa-edit"></i></a>';
+                    return '<a class="btn btn-info btn-sm btn-icon waves-effect waves-themed" data-toggle="modal" id="detail-button" data-target="#detail-modal"
+                data-attr="' . URL::route('ticketing.show', $row->uuid) . '" title="Detail Barang" href="">
+                <i class="fal fa-search-plus"></i>
+                </a>
+                    <a class="btn btn-success btn-sm btn-icon waves-effect waves-themed" href="' . route('ticketing.edit', $row->uuid) . '" title="Edit Tiket"><i class="fal fa-edit"></i></a>';
                 })
                 ->removeColumn('id')
                 ->removeColumn('uuid')
                 ->rawColumns(['action'])
-                ->make(true);
+                ->make();
         }
 
         return view('ticketing.index');
@@ -107,7 +129,6 @@ class TicketingController extends Controller
     {
         $rules = [
             'uuid_pelanggan' => 'required',
-            'keterangan' => 'required',
             'item_model' => 'required',
             'item_merk' => 'required',
             'item_type' => 'required',
@@ -124,14 +145,11 @@ class TicketingController extends Controller
         ];
 
         $this->validate($request, $rules, $messages);
-        // dd($request->all());
         $randomTicket = Helper::GenerateTicketNumber(13);
 
         $ticketing = new Ticketing();
         $ticketing->uuid_pelanggan = $request->uuid_pelanggan;
         $ticketing->ticket_number = 'TKT' . '-' . $randomTicket;
-        $ticketing->keterangan = $request->keterangan;
-        $ticketing->ticket_status = 0;
         $ticketing->created_by = Auth::user()->uuid;
 
         $repair_item = new Repair_item();
@@ -144,27 +162,30 @@ class TicketingController extends Controller
         $repair_item->kelengkapan = $request['kelengkapan'];
         $repair_item->kerusakan = $request->kerusakan;
         $repair_item->status_garansi = $request->status_garansi;
+        /**
+         * if item is non warranty send job order to tech for repair
+         * if item is warranty send job order to gudang for replace
+         */
         if ($repair_item->status_garansi == 0) {
-            $ticketing->job_status = 2;
-        } else {
+            $ticketing->ticket_status = 1;
             $ticketing->job_status = 1;
-        }
-        $ticketing->save();
-        $repair_item->ticket_uuid = $ticketing->uuid;
-        $repair_item->created_by = Auth::user()->uuid;
+            $ticketing->save();
 
-        $repair_item->save();
+            $repair_item->ticket_uuid = $ticketing->uuid;
+            $repair_item->created_by = Auth::user()->uuid;
+            $repair_item->save();
+        }
 
         if ($repair_item->status_garansi == 1) {
-            $gudang = new Gudang_job_order();
-            $gudang->repair_item_uuid = $repair_item->uuid;
-            $gudang->item_status = $ticketing->job_status;
-            $gudang->keterangan = $ticketing->keterangan;
-            $gudang->item_replace_uuid = $request->item_replace_uuid;
-            $gudang->job_status = 0;
-            $gudang->created_by = Auth::user()->uuid;
+            // $gudang = new Gudang_job_order();
+            // $gudang->repair_item_uuid = $repair_item->uuid;
+            // $gudang->item_status = $ticketing->job_status;
+            // $gudang->keterangan = $ticketing->keterangan;
+            // $gudang->item_replace_uuid = $request->item_replace_uuid;
+            // $gudang->job_status = 0;
+            // $gudang->created_by = Auth::user()->uuid;
 
-            $gudang->save();
+            // $gudang->save();
         }
 
         toastr()->success('New Ticketing Added', 'Success');
@@ -177,9 +198,10 @@ class TicketingController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($uuid)
     {
-        //
+        $repair_item = Repair_item::where('ticket_uuid', $uuid)->first();
+        return view('ticketing.show', compact('repair_item'));
     }
 
     /**
@@ -188,11 +210,11 @@ class TicketingController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($uuid)
     {
-        $ticketing = Ticketing::uuid($id);
-        $repair_item = Repair_item::uuid($id);
-        $pelanggan = Customer::all()->pluck('jenis_pelanggan', 'jenis_pelanggan');
+        $ticketing = Ticketing::uuid($uuid);
+        $repair_item = Repair_item::where('ticket_uuid', $ticketing->uuid)->first();
+        $pelanggan = Customer::all()->pluck('nomor_pelanggan', 'uuid');
         $kelengkapan = Kelengkapan::all();
         return view('ticketing.edit', compact('ticketing', 'kelengkapan', 'pelanggan', 'repair_item'));
     }
@@ -204,20 +226,17 @@ class TicketingController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $uuid)
     {
         $rules = [
             'uuid_pelanggan' => 'required',
-            'keterangan' => 'required',
             'item_model' => 'required',
             'item_merk' => 'required',
             'item_type' => 'required',
             'part_number' => 'required',
             'serial_number' => 'required',
             'barcode' => 'required',
-            'kelengkapan' => 'required',
             'kerusakan' => 'required',
-            'status_garansi' => 'required',
         ];
 
         $messages = [
@@ -226,27 +245,21 @@ class TicketingController extends Controller
         ];
 
         $this->validate($request, $rules, $messages);
-        // dd($request->all());
 
-        $tickteting = Ticketing::uuid($id);
-        $tickteting->uuid_pelanggan = $request->uuid_pelanggan;
-        $tickteting->keterangan = $request->keterangan;
-        $tickteting->ticket_status = 0;
-        $tickteting->job_status = 1;
-        $tickteting->edited_by = Auth::user()->uuid;
+        $ticketing = Ticketing::uuid($uuid);
+        $ticketing->uuid_pelanggan = $request->uuid_pelanggan;
+        $ticketing->edited_by = Auth::user()->uuid;
+        $ticketing->save();
 
-        $tickteting->save();
-
-        $repair_item = Repair_item::uuid($id);
+        $repair_item = Repair_item::where('ticket_uuid', '=', $uuid)->first();
         $repair_item->item_model = $request->item_model;
         $repair_item->item_merk = $request->item_merk;
         $repair_item->item_type = $request->item_type;
         $repair_item->part_number = $request->part_number;
         $repair_item->serial_number = $request->serial_number;
         $repair_item->barcode = $request->barcode;
-        $repair_item->kelengkapan = json_encode($request['kelengkapan']);
+        $repair_item->kelengkapan = $request['kelengkapan'];
         $repair_item->kerusakan = $request->kerusakan;
-        $repair_item->status_garansi = $request->status_garansi;
         $repair_item->edited_by = Auth::user()->uuid;
 
         $repair_item->save();
@@ -287,7 +300,7 @@ class TicketingController extends Controller
         $customer->created_by = Auth::user()->uuid;
 
         $customer->save();
-        toastr()->warning('New Customer Added', 'Success');
+        toastr()->success('New Customer Added', 'Success');
         return redirect()->back();
     }
 }
