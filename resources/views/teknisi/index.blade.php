@@ -19,7 +19,7 @@
     <div class="col-xl-12">
         <div id="panel-1" class="panel">
             <div class="panel-hdr">
-            <h2>
+                <h2>
                     Technician Job Order <span class="fw-300"><i>List</i></span>
                 </h2>
                 <div class="panel-toolbar">
@@ -31,20 +31,19 @@
                 <div class="panel-content">
                     <!-- datatable start -->
                     <table id="datatable" class="table table-bordered table-hover table-striped w-100">
-        <thead>
-            <tr>
-                <th>No</th>
-                <th>Ticket Number</th>
-                <th>Keterangan</th>
-                <th>Item Model</th>
-                <th>Item Merk</th>
-                <th>Item Type</th>
-                <th>Part Number</th>
-                <th>Serial Number</th>
-                <th>Kelengkapan</th>
-                <th>Kerusakan</th>
-                <th width="120px">Action</th>
-                </tr>
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Ticket</th>
+                                <th>Item Merk</th>
+                                <th>Item Type</th>
+                                <th>Item Model</th>
+                                <th>Part Number</th>
+                                <th>Serial Number</th>
+                                <th>Kelengkapan</th>
+                                <th>Kerusakan</th>
+                                <th>Action</th>
+                            </tr>
                         </thead>
                     </table>
                 </div>
@@ -64,7 +63,6 @@
           }
     });
      
-     
        var table = $('#datatable').DataTable({
             "processing": true,
             "serverSide": true,
@@ -81,10 +79,9 @@
             "columns": [
             {data: 'rownum', name: 'rownum'},
             {data: 'ticket_number', name: 'ticket_number'},
-            {data: 'keterangan', name: 'keterangan'},
-            {data: 'item_model', name: 'item_model'},
             {data: 'item_merk', name: 'item_merk'},
             {data: 'item_type', name: 'item_type'},
+            {data: 'item_model', name: 'item_model'},
             {data: 'part_number', name: 'part_number'},
             {data: 'serial_number', name: 'serial_number'},
             {data: 'kelengkapan', name: 'kelengkapan'},
