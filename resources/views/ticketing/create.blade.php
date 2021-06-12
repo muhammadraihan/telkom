@@ -32,7 +32,7 @@
                     {!! Form::open(['route' => 'ticketing.store','method' => 'POST','class' =>
                     'needs-validation','novalidate']) !!}
                     <div class="form-group">
-                        {{ Form::label('uuid_pelanggan','Pelanggan',['class' => 'required form-label'])}}
+                        {{ Form::label('uuid_pelanggan','Nomor Pelanggan',['class' => 'required form-label'])}}
                         <div class="input-group">
                             <div class="input-group-prepend col-md-4">
                                 {!! Form::select('uuid_pelanggan', $pelanggan, '', ['id' => 'pelanggan','class' =>
@@ -44,13 +44,6 @@
                         </div>
                         @if ($errors->has('uuid_pelanggan'))
                         <div class="help-block text-danger">{{ $errors->first('uuid_pelanggan') }}</div>
-                        @endif
-                    </div>
-                    <div class="form-group col-md-4 mb-3">
-                        {{ Form::label('keterangan','Keterangan',['class' => 'required form-label'])}}
-                        {{ Form::textarea('keterangan', '',['placeholder' => 'Keterangan','class' => 'form-control '.($errors->has('keterangan') ? 'is-invalid':''),'required', 'autocomplete' => 'off'])}}
-                        @if ($errors->has('keterangan'))
-                        <div class="invalid-feedback">{{ $errors->first('keterangan') }}</div>
                         @endif
                     </div>
                 </div>
@@ -155,59 +148,60 @@
                 </div>
             </div>
         </div>
-        <!-- customer add modal start -->
-        <div class="modal fade" id="customer-modal" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">
-                            Add New Customer
-                            <small class="m-0 text-muted">
-                                Form with <code>*</code> can not be empty.
-                            </small>
-                        </h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true"><i class="fal fa-times"></i></span>
-                        </button>
-                    </div>
-                    {!! Form::open(['id' => 'customer','route' => 'post.customer','method' => 'POST','class' =>
-                    'needs-validation','novalidate']) !!}
-                    {{ csrf_field() }}
-                    <div class="modal-body">
-                        <div class="form-row">
-                            <div class="form-group col-md-4 mb-3">
-                                {{ Form::label('jenis_pelanggan','Jenis Pelanggan',['class' => 'required form-label'])}}
-                                {!! Form::select('jenis_pelanggan', $customerType, '', ['id' =>
-                                'jenis-pelanggan','class' => 'form-control'.($errors->has('jenis_pelanggan') ?
-                                'is-invalid':''), 'required'
-                                => '', 'placeholder' => 'Jenis pelanggan ...']) !!}
-                                @if ($errors->has('jenis_pelanggan'))
-                                <div class="help-block text-danger">{{ $errors->first('jenis_pelanggan') }}</div>
-                                @endif
-                            </div>
-                            <div class="form-group col-md-4 mb-3">
-                                {{ Form::label('nomor_pelanggan','Nomor Pelanggan',['class' => 'required form-label'])}}
-                                {{ Form::text('nomor_planggan',null,['placeholder' => 'Nomor Pelanggan','class' => 'form-control '.($errors->has('nomor_pelanggan') ? 'is-invalid':''),'required'])}}
-                                @if ($errors->has('nomor_pelanggan'))
-                                <div class="invalid-feedback">{{ $errors->first('nomor_pelanggan') }}</div>
-                                @endif
-                            </div>
+    </div>
+    <!-- customer add modal start -->
+    <div class="modal fade" id="customer-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        Add New Customer
+                        <small class="m-0 text-muted">
+                            Form with <code>*</code> can not be empty.
+                        </small>
+                    </h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><i class="fal fa-times"></i></span>
+                    </button>
+                </div>
+                {!! Form::open(['route' => 'post.customer','method' => 'POST','class' =>
+                'needs-validation','novalidate']) !!}
+                {{ csrf_field() }}
+                <div class="modal-body">
+                    <div class="form-row">
+                        <div class="form-group col-md-4 mb-3">
+                            {{ Form::label('jenis_pelanggan','Jenis Pelanggan',['class' => 'required form-label'])}}
+                            {!! Form::select('jenis_pelanggan', $customerType, '', ['id' =>
+                            'jenis-pelanggan','class' => 'form-control'.($errors->has('jenis_pelanggan') ?
+                            'is-invalid':''), 'required'
+                            => '', 'placeholder' => 'Jenis pelanggan ...']) !!}
+                            @if ($errors->has('jenis_pelanggan'))
+                            <div class="help-block text-danger">{{ $errors->first('jenis_pelanggan') }}</div>
+                            @endif
+                        </div>
+                        <div class="form-group col-md-4 mb-3">
+                            {{ Form::label('nomor_pelanggan','Nomor Pelanggan',['class' => 'required form-label'])}}
+                            {{ Form::text('nomor_pelanggan',null,['placeholder' => 'Nomor Pelanggan','class' => 'form-control '.($errors->has('nomor_pelanggan') ? 'is-invalid':''),'required'])}}
+                            @if ($errors->has('nomor_pelanggan'))
+                            <div class="invalid-feedback">{{ $errors->first('nomor_pelanggan') }}</div>
+                            @endif
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                        <button id="save-customer" type="submit" class="btn btn-primary">Add New</button>
-                    </div>
-                    {!! Form::close() !!}
                 </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button id="save-customer" type="submit" class="btn btn-primary">Add New</button>
+                </div>
+                {!! Form::close() !!}
             </div>
         </div>
-        <!-- customer add modal end -->
-        @endsection
-        @section('js')
-        <script src="{{asset('js/formplugins/select2/select2.bundle.js')}}"></script>
-        <script>
-            $(document).ready(function(){
+    </div>
+    <!-- customer add modal end -->
+    @endsection
+    @section('js')
+    <script src="{{asset('js/formplugins/select2/select2.bundle.js')}}"></script>
+    <script>
+        $(document).ready(function(){
                 $('#pelanggan').select2();
                 $('#garansi').select2();
 
@@ -227,5 +221,5 @@
                 $('#customer-modal').modal('show');
             @endif
 
-        </script>
-        @endsection
+    </script>
+    @endsection
