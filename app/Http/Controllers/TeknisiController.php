@@ -28,31 +28,29 @@ class TeknisiController extends Controller
     {
         $ticketing = Ticketing::all();
         $repair_item = Repair_item::all();
-        
-            
+
         if (request()->ajax()) {
-            
+
             DB::statement(DB::raw('set @rownum=0'));
-            $data = Repair_item::select([DB::raw('@rownum  := @rownum  + 1 AS rownum'),
-            'id','uuid','ticket_uuid','item_model','item_merk', 'item_type', 'part_number', 'serial_number', 'kelengkapan', 'kerusakan'])
-            ->where('status_garansi', '=', '0')
-            ->whereNull('can_repair');
-            
+            $data = Repair_item::select([
+                DB::raw('@rownum  := @rownum  + 1 AS rownum'),
+                'id', 'uuid', 'ticket_uuid', 'item_model', 'item_merk', 'item_type', 'part_number', 'serial_number', 'kelengkapan', 'kerusakan'
+            ])
+                ->where('status_garansi', '=', '0')
+                ->whereNull('can_repair');
+
             return Datatables::of($data)
-                    ->addColumn('ticket_number', function($row){
-                        return $row->ticket->ticket_number;
-                    })
-                    ->addColumn('keterangan', function($row){
-                        return $row->ticket->keterangan;
-                    })
-                    ->addColumn('action', function($row){
-                        return '<a class="btn btn-success btn-sm btn-icon waves-effect waves-themed" href="'.route('teknisi.edit',$row->uuid).'"><i class="fal fa-edit"></i></a>';
-                 })
-            ->removeColumn('id')
-            ->removeColumn('uuid')
-            ->removeColumn('ticket_uuid')
-            ->rawColumns(['action','kelengkapan'])
-            ->make(true);
+                ->addColumn('ticket_number', function ($row) {
+                    return $row->ticket->ticket_number;
+                })
+                ->addColumn('action', function ($row) {
+                    return '<a class="btn btn-secondary btn-sm btn-icon waves-effect waves-themed" href="' . route('teknisi.edit', $row->uuid) . '" title="Progress"><i class="fal fa-wrench"></i></a>';
+                })
+                ->removeColumn('id')
+                ->removeColumn('uuid')
+                ->removeColumn('ticket_uuid')
+                ->rawColumns(['action', 'kelengkapan'])
+                ->make(true);
         }
 
         return view('teknisi.index');
@@ -66,7 +64,6 @@ class TeknisiController extends Controller
      */
     public function create()
     {
-
     }
 
     /**
@@ -77,7 +74,6 @@ class TeknisiController extends Controller
      */
     public function store(Request $request, Repair_item $id)
     {
-        
     }
 
     /**
@@ -130,28 +126,28 @@ class TeknisiController extends Controller
         $teknisi = new Technician_job_order();
         $teknisi->repair_item_uuid = $repair_item->uuid;
         $teknisi->item_status = $request->item_status;
-        if ($teknisi->item_status == 1){            
+        if ($teknisi->item_status == 1) {
             $ticketing = DB::table('ticketings')
-                            ->join('repair_items', 'repair_items.ticket_uuid', 'like', 'ticketings.uuid')
-                            ->where('repair_items.uuid', '=', $teknisi->repair_item_uuid)
-                            ->update(['ticketings.job_status' => '5', 'repair_items.can_repair' => '1']);
-        }else{
+                ->join('repair_items', 'repair_items.ticket_uuid', 'like', 'ticketings.uuid')
+                ->where('repair_items.uuid', '=', $teknisi->repair_item_uuid)
+                ->update(['ticketings.job_status' => '5', 'repair_items.can_repair' => '1']);
+        } else {
             $repair_item = DB::table('ticketings')
-                            ->join('repair_items', 'repair_items.ticket_uuid', 'like', 'ticketings.uuid')
-                            ->where('repair_items.uuid', '=', $teknisi->repair_item_uuid)
-                            ->update(['repair_items.can_repair' => '0', 'ticketings.job_status' => '1']);
+                ->join('repair_items', 'repair_items.ticket_uuid', 'like', 'ticketings.uuid')
+                ->where('repair_items.uuid', '=', $teknisi->repair_item_uuid)
+                ->update(['repair_items.can_repair' => '0', 'ticketings.job_status' => '1']);
         }
         $teknisi->keterangan = $request->keterangan;
         $teknisi->job_status = 1;
         $teknisi->created_by = Auth::user()->uuid;
 
-        $teknisi->save();   
-        
+        $teknisi->save();
+
         $gudang = new Gudang_job_order();
         $gudang->repair_item_uuid = $teknisi->repair_item_uuid;
-        if ($teknisi->item_status == 1){
+        if ($teknisi->item_status == 1) {
             $gudang->item_status = 4;
-        }else{
+        } else {
             $gudang->item_status = 1;
         }
         $gudang->keterangan = $teknisi->keterangan;
@@ -161,8 +157,8 @@ class TeknisiController extends Controller
 
         $gudang->save();
 
-        
-        toastr()->success('Technician Job Order Edited','Success');
+
+        toastr()->success('Technician Job Order Edited', 'Success');
         return redirect()->route('teknisi.index');
     }
 
