@@ -19,7 +19,7 @@
     <div class="col-xl-12">
         <div id="panel-1" class="panel">
             <div class="panel-hdr">
-            <h2>
+                <h2>
                     Ticketing <span class="fw-300"><i>List</i></span>
                 </h2>
                 <div class="panel-toolbar">
@@ -35,18 +35,18 @@
                 <div class="panel-content">
                     <!-- datatable start -->
                     <table id="datatable" class="table table-bordered table-hover table-striped w-100">
-        <thead>
-            <tr>
-                <th>No</th>
-                <th>Pelanggan</th>
-                <th>Nomor Tiket</th>
-                <th>Keterangan</th>
-                <th>Tiket Status</th>
-                <th>Job Status</th>
-                <th>Created By</th>
-                <th>Edited By</th>
-                <th width="120px">Action</th>
-                </tr>
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Pelanggan</th>
+                                <th>Nomor Tiket</th>
+                                <th>Tiket Status</th>
+                                <th>Job Status</th>
+                                <th>Issued At</th>
+                                <th>Issuer</th>
+                                <th>Keterangan</th>
+                                <th>Action</th>
+                            </tr>
                         </thead>
                     </table>
                 </div>
@@ -54,6 +54,27 @@
         </div>
     </div>
 </div>
+<!-- item detail modal start -->
+<div class="modal fade" id="detail-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    Detail Item
+                </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="fal fa-times"></i></span>
+                </button>
+            </div>
+            <div class="modal-body" id="detail-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- item detail modal end -->
 @endsection
 
 @section('js')
@@ -64,13 +85,12 @@
           headers: {
               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
           }
-    });
+        });
      
-     
-       var table = $('#datatable').DataTable({
+       $('#datatable').DataTable({
             "processing": true,
             "serverSide": true,
-            "responsive": true,
+            responsive: true,
             "order": [[ 0, "asc" ]],
             "ajax":{
                 url:'{{route('ticketing.index')}}',
@@ -81,14 +101,14 @@
                     }
             },
             "columns": [
-            {data: 'rownum', name: 'rownum'},
-            {data: 'uuid_pelanggan', name: 'uuid_pelanggan'},
-            {data: 'ticket_number', name: 'ticket_number'},
-            {data: 'keterangan', name: 'keterangan'},
-            {data: 'ticket_status', name: 'ticket_status'},
-            {data: 'job_status', name: 'job_status'},
-            {data: 'created_by', name: 'created_by'},
-            {data: 'edited_by', name: 'edited_by'},
+            {data: 'DT_RowIndex'},
+            {data: 'uuid_pelanggan'},
+            {data: 'ticket_number'},
+            {data: 'ticket_status'},
+            {data: 'job_status'},
+            {data: 'created_at'},
+            {data: 'created_by'},
+            {data: 'keterangan'},
             {data: 'action', name: 'action', orderable: false, searchable: false},
         ]
     });
@@ -109,6 +129,31 @@
         // Clear Data When Modal Close
         $('.remove-data-from-delete-form').on('click',function() {
             $('body').find('.delete-form').find("input").remove();
+        });
+
+        $('#datatable').on('click', '#detail-button[data-attr]', function (e) {
+            e.preventDefault();
+            var href = $(this).attr('data-attr');
+            $.ajax({
+                url: href,
+                beforeSend: function() {
+                    $('#loader').show();
+                },
+                // return the result
+                success: function(result) {
+                    $('#detail-modal').modal("show");
+                    $('#detail-body').html(result).show();
+                },
+                complete: function() {
+                    $('#loader').hide();
+                },
+                error: function(jqXHR, testStatus, error) {
+                    console.log(error);
+                    alert("Page " + href + " cannot open. Error:" + error);
+                    $('#loader').hide();
+                },
+                timeout: 8000
+            });
         });
     });
 </script>

@@ -2,7 +2,7 @@
     <div class="page-logo">
         <a href="#" class="page-logo-link press-scale-down d-flex align-items-center position-relative"
             data-toggle="modal" data-target="#modal-shortcut">
-            <img src="{{asset('img/wba_logo.png')}}" alt="{{env('APP_NAME','')}}" aria-roledescription="logo">
+            <img src="{{asset('img/telkom_logo.png')}}" alt="{{env('APP_NAME','')}}" aria-roledescription="logo">
             <span class="page-logo-text mr-1">{{env('APP_NAME','')}}</span>
             <span class="position-absolute text-white opacity-50 small pos-top pos-right mr-2 mt-n2"></span>
             <i class="fal fa-angle-down d-inline-block ml-1 fs-lg color-primary-300"></i>
@@ -19,23 +19,23 @@
                 </a>
             </div>
         </div>
-        <div class="info-card">
-            {{-- <img src="{{asset('img/avatar').'/'.Auth::user()->avatar}}" class="profile-image rounded-circle"
-            alt="Dr. Codex Lantern">
-            <div class="info-card-text">
-                <a href="#" class="d-flex align-items-center text-white">
-                    <span class="text-truncate text-truncate-sm d-inline-block">
-                        {{Auth::user()->name}}
-                    </span>
-                </a>
-                <span class="d-inline-block text-truncate text-truncate-sm">Toronto, Canada</span>
-            </div> --}}
-            <img src="{{asset('img/card-backgrounds/cover-2-lg.png')}}" class="cover" alt="cover">
-            <a href="#" onclick="return false;" class="pull-trigger-btn" data-action="toggle"
-                data-class="list-filter-active" data-target=".page-sidebar" data-focus="nav_filter_input">
-                <i class="fal fa-angle-down"></i>
+        {{-- <div class="info-card">
+            <img src="{{asset('img/avatar').'/'.Auth::user()->avatar}}" class="profile-image rounded-circle"
+        alt="Dr. Codex Lantern">
+        <div class="info-card-text">
+            <a href="#" class="d-flex align-items-center text-white">
+                <span class="text-truncate text-truncate-sm d-inline-block">
+                    {{Auth::user()->name}}
+                </span>
             </a>
+            <span class="d-inline-block text-truncate text-truncate-sm">Toronto, Canada</span>
         </div>
+        <img src="{{asset('img/card-backgrounds/cover-2-lg.png')}}" class="cover" alt="cover">
+        <a href="#" onclick="return false;" class="pull-trigger-btn" data-action="toggle"
+            data-class="list-filter-active" data-target=".page-sidebar" data-focus="nav_filter_input">
+            <i class="fal fa-angle-down"></i>
+        </a>
+        </div> --}}
         <ul id="js-nav-menu" class="nav-menu">
             <li>
                 <a href="{{route('backoffice.dashboard')}}" title="Dashboard" data-filter-tags="dashboard">
@@ -44,7 +44,7 @@
                 </a>
             </li>
             @hasanyrole('superadmin|gudang')
-            
+
             @endhasanyrole
             @hasanyrole('superadmin|cs')
             <li class="">
@@ -54,8 +54,7 @@
                 </a>
                 <ul>
                     <li>
-                        <a href="{{route('customer.index')}}" title="Customer"
-                            data-filter-tags="customer">
+                        <a href="{{route('customer.index')}}" title="Customer" data-filter-tags="customer">
                             <i class="fal fa-user-plus"></i>
                             <span class="nav-link-text" data-i18n="nav.users_managements">Customer</span>
                         </a>
@@ -111,11 +110,11 @@
                             <i class="fal fa-list-alt"></i>
                             <span class="nav-link-text" data-i18n="nav.users_managements">Stock Item</span>
                         </a>
-                    </li> 
+                    </li>
                 </ul>
-            </li> 
+            </li>
             @endhasanyrole
-            @hasanyrole('superadmin|teknisi')          
+            @hasanyrole('superadmin|teknisi')
             <li>
                 <a href="{{route('teknisi.index')}}" title="Technician Job Order Managements"
                     data-filter-tags="technician job order managements">
@@ -131,7 +130,7 @@
                     <i class="fal fa-ticket-alt"></i>
                     <span class="nav-link-text" data-i18n="nav.users_managements">Ticketing Management</span>
                 </a>
-            </li>     
+            </li>
             @endhasanyrole
             @hasanyrole('superadmin')
             <li class="nav-title">ACL & Settings</li>
