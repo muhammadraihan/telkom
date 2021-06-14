@@ -27,13 +27,20 @@ class TicketingController extends Controller
     public function index()
     {
         if (request()->ajax()) {
-            DB::statement(DB::raw('set @rownum=0'));
-            $tickets = Ticketing::select([
-                DB::raw('@rownum  := @rownum  + 1 AS rownum'),
-                'id', 'uuid', 'uuid_pelanggan', 'ticket_number', 'keterangan', 'ticket_status', 'job_status', 'created_by', 'created_at',
-            ]);
+            $tickets = Ticketing::select(
+                'id',
+                'uuid',
+                'uuid_pelanggan',
+                'ticket_number',
+                'keterangan',
+                'ticket_status',
+                'job_status',
+                'created_by',
+                'created_at',
+            )->latest()->get();
 
             return Datatables::of($tickets)
+                ->addIndexColumn()
                 ->editColumn('created_by', function ($row) {
                     return $row->userCreate->name;
                 })
@@ -46,60 +53,60 @@ class TicketingController extends Controller
                 ->editColumn('ticket_status', function ($row) {
                     switch ($row->ticket_status) {
                         case '1':
-                            return 'Diproses bagian repair';
+                            return '<span class="badge badge-primary">Diproses ke bagian repair</span>';
                             break;
                         case '2':
-                            return 'Diproses bagian gudang';
+                            return '<span class="badge badge-warning">Diproses ke bagian gudang</span>';
                             break;
                         case '3':
-                            return 'Selesai';
+                            return '<span class="badge badge-success">Selesai</span>';
                             break;
-                        case '3':
-                            return 'Cancel';
+                        case '4':
+                            return '<span class="badge badge-danger">Cancel</span>';
                             break;
                         default:
-                            return 'Status unknown';
+                            return '<span class="badge badge-dark">Status Unknown</span>';
                             break;
                     }
                 })
                 ->editColumn('job_status', function ($row) {
                     switch ($row->job_status) {
                         case '1':
-                            return 'Dalam perbaikan oleh teknisi';
+                            return '<span class="badge badge-primary">Dalam penanganan oleh teknisi</span>';
                             break;
                         case '2':
-                            return 'Butuh perbaikan dari vendor';
+                            return '<span class="badge badge-success">Telah diperbaiki oleh teknisi</span>';
                             break;
                         case '3':
-                            return 'Dalam perbaikan oleh vendor';
+                            return '<span class="badge badge-warning">Butuh klaim garansi</span>';
                             break;
                         case '4':
-                            return 'Menunggu penggantian dari vendor';
+                            return '<span class="badge badge-warning">Butuh penggantian barang</span>';
                             break;
                         case '5':
-                            return 'Telah diperbaiki oleh teknisi';
+                            return '<span class="badge badge-info">Dalam perbaikan oleh vendor</span>';
                             break;
                         case '6':
-                            return 'Telah di kirim ke customer';
+                            return '<span class="badge badge-info">Menunggu penggantian dari vendor</span>';
                             break;
                         case '7':
-                            return 'Ticket cancel';
+                            return '<span class="badge badge-success">Dalam perbaikan oleh Telah di kirim ke customer</span>';
+                            break;
+                        case '8':
+                            return '<span class="badge badge-danger">Ticket di cancel</span>';
                             break;
                         default:
-                            return 'Status unknown';
+                            return '<span class="badge badge-dark">Status Unknown</span>';
                             break;
                     }
                 })
                 ->addColumn('action', function ($row) {
-                    return '<a class="btn btn-info btn-sm btn-icon waves-effect waves-themed" data-toggle="modal" id="detail-button" data-target="#detail-modal"
-                data-attr="' . URL::route('ticketing.show', $row->uuid) . '" title="Detail Barang" href="">
-                <i class="fal fa-search-plus"></i>
-                </a>
+                    return '<a class="btn btn-info btn-sm btn-icon waves-effect waves-themed" data-toggle="modal" id="detail-button" data-target="#detail-modal" data-attr="' . URL::route('ticketing.show', $row->uuid) . '" title="Detail Barang" href=""><i class="fal fa-search-plus"></i></a>
                     <a class="btn btn-success btn-sm btn-icon waves-effect waves-themed" href="' . route('ticketing.edit', $row->uuid) . '" title="Edit Tiket"><i class="fal fa-edit"></i></a>';
                 })
                 ->removeColumn('id')
                 ->removeColumn('uuid')
-                ->rawColumns(['action'])
+                ->rawColumns(['action', 'ticket_status', 'job_status'])
                 ->make();
         }
 
