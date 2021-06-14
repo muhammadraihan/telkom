@@ -42,9 +42,9 @@
                                 <th>Nomor Tiket</th>
                                 <th>Tiket Status</th>
                                 <th>Job Status</th>
+                                <th>Issued At</th>
+                                <th>Issuer</th>
                                 <th>Keterangan</th>
-                                <th>Dibuat Oleh</th>
-                                <th>Tanggal</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -54,7 +54,7 @@
         </div>
     </div>
 </div>
-<!-- customer add modal start -->
+<!-- item detail modal start -->
 <div class="modal fade" id="detail-modal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -74,7 +74,7 @@
         </div>
     </div>
 </div>
-<!-- customer add modal end -->
+<!-- item detail modal end -->
 @endsection
 
 @section('js')
@@ -87,10 +87,10 @@
           }
         });
      
-       var table = $('#datatable').DataTable({
+       $('#datatable').DataTable({
             "processing": true,
             "serverSide": true,
-            "responsive": true,
+            responsive: true,
             "order": [[ 0, "asc" ]],
             "ajax":{
                 url:'{{route('ticketing.index')}}',
@@ -101,15 +101,15 @@
                     }
             },
             "columns": [
-            {data: 'rownum', name: 'rownum'},
-            {data: 'uuid_pelanggan', name: 'uuid_pelanggan'},
-            {data: 'ticket_number', name: 'ticket_number', width:'20%'},
-            {data: 'ticket_status', name: 'ticket_status'},
-            {data: 'job_status', name: 'job_status'},
-            {data: 'keterangan', name: 'keterangan'},
-            {data: 'created_by', name: 'created_by'},
-            {data: 'created_at', name: 'created_at'},
-            {data: 'action', name: 'action', orderable: false, searchable: false, width:'10%'},
+            {data: 'DT_RowIndex'},
+            {data: 'uuid_pelanggan'},
+            {data: 'ticket_number'},
+            {data: 'ticket_status'},
+            {data: 'job_status'},
+            {data: 'created_at'},
+            {data: 'created_by'},
+            {data: 'keterangan'},
+            {data: 'action', name: 'action', orderable: false, searchable: false},
         ]
     });
     // Delete Data
@@ -134,7 +134,6 @@
         $('#datatable').on('click', '#detail-button[data-attr]', function (e) {
             e.preventDefault();
             var href = $(this).attr('data-attr');
-            console.log(href);
             $.ajax({
                 url: href,
                 beforeSend: function() {
@@ -156,11 +155,6 @@
                 timeout: 8000
             });
         });
-
-        // $('#detail-button').on('click',function (e){
-        //     e.preventDefault();
-            
-        // });
     });
 </script>
 @endsection
