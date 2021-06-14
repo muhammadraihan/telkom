@@ -3,18 +3,16 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Builder;
 use App\Models\Technician_job_order;
 use App\Models\Ticketing;
 use App\Models\Repair_item;
 use App\Models\Gudang_job_order;
 
+use Carbon\Carbon;
 use Auth;
 use DataTables;
 use DB;
-use File;
-use Hash;
-use Image;
-use Response;
 use URL;
 
 class TeknisiController extends Controller
@@ -26,33 +24,97 @@ class TeknisiController extends Controller
      */
     public function index()
     {
-        $ticketing = Ticketing::all();
-        $repair_item = Repair_item::all();
-        
-            
         if (request()->ajax()) {
-            
             DB::statement(DB::raw('set @rownum=0'));
-            $data = Repair_item::select([DB::raw('@rownum  := @rownum  + 1 AS rownum'),
-            'id','uuid','ticket_uuid','item_model','item_merk', 'item_type', 'part_number', 'serial_number', 'kelengkapan', 'kerusakan'])
-            ->where('status_garansi', '=', '0')
-            ->whereNull('can_repair');
-            
+            $data = Repair_item::select([
+                DB::raw('@rownum  := @rownum  + 1 AS rownum'),
+                'id', 'uuid', 'ticket_uuid', 'can_repair'
+            ])
+                ->where('status_garansi', '=', '0')
+                ->whereHas('ticket', function (Builder $query) {
+                    $query->where('ticket_status', '!=', 2);
+                });
+
             return Datatables::of($data)
-                    ->addColumn('ticket_number', function($row){
-                        return $row->ticket->ticket_number;
-                    })
-                    ->addColumn('keterangan', function($row){
-                        return $row->ticket->keterangan;
-                    })
-                    ->addColumn('action', function($row){
-                        return '<a class="btn btn-success btn-sm btn-icon waves-effect waves-themed" href="'.route('teknisi.edit',$row->uuid).'"><i class="fal fa-edit"></i></a>';
-                 })
-            ->removeColumn('id')
-            ->removeColumn('uuid')
-            ->removeColumn('ticket_uuid')
-            ->rawColumns(['action','kelengkapan'])
-            ->make(true);
+                ->addColumn('ticket_number', function ($row) {
+                    return $row->ticket->ticket_number;
+                })
+                ->addColumn('ticket_status', function ($row) {
+                    switch ($row->ticket->ticket_status) {
+                        case '1':
+                            return '<span class="badge badge-primary">Diproses ke bagian repair</span>';
+                            break;
+                        case '2':
+                            return '<span class="badge badge-warning">Diproses ke bagian gudang</span>';
+                            break;
+                        case '3':
+                            return '<span class="badge badge-success">Selesai</span>';
+                            break;
+                        case '4':
+                            return '<span class="badge badge-danger">Cancel</span>';
+                            break;
+                        default:
+                            return '<span class="badge badge-dark">Status Unknown</span>';
+                            break;
+                    }
+                })
+                ->addColumn('repair_status', function ($row) {
+                    switch ($row->can_repair) {
+                        case '0':
+                            return '<span class="badge badge-danger">Tidak Bisa Diperbaiki</span>';
+                            break;
+                        case '1':
+                            return '<span class="badge badge-success">Bisa Diperbaiki</span>';
+                            break;
+                        default:
+                            return '-';
+                            break;
+                    }
+                })
+                ->addColumn('job_status', function ($row) {
+                    switch ($row->ticket->job_status) {
+                        case '1':
+                            return '<span class="badge badge-primary">Dalam penanganan oleh teknisi</span>';
+                            break;
+                        case '2':
+                            return '<span class="badge badge-success">Telah diperbaiki oleh teknisi</span>';
+                            break;
+                        case '3':
+                            return '<span class="badge badge-warning">Butuh klaim garansi</span>';
+                            break;
+                        case '4':
+                            return '<span class="badge badge-warning">Butuh penggantian barang</span>';
+                            break;
+                        case '5':
+                            return '<span class="badge badge-info">Dalam perbaikan oleh vendor</span>';
+                            break;
+                        case '6':
+                            return '<span class="badge badge-info">Menunggu penggantian dari vendor</span>';
+                            break;
+                        case '7':
+                            return '<span class="badge badge-success">Dalam perbaikan oleh Telah di kirim ke customer</span>';
+                            break;
+                        case '8':
+                            return '<span class="badge badge-danger">Ticket di cancel</span>';
+                            break;
+                        default:
+                            return '<span class="badge badge-dark">Status Unknown</span>';
+                            break;
+                    }
+                })
+                ->addColumn('action', function ($row) {
+                    if ($row->ticket->ticket_status == 1) {
+                        return '<a class="btn btn-info btn-sm btn-icon waves-effect waves-themed" data-toggle="modal" id="detail-button" data-target="#detail-modal" data-attr="' . URL::route('teknisi.show', $row->uuid) . '" title="Detail Barang" href=""><i class="fal fa-search-plus"></i></a>
+                        <a class="btn btn-secondary btn-sm btn-icon waves-effect waves-themed" href="' . route('teknisi.edit', $row->uuid) . '" title="Progress"><i class="fal fa-wrench"></i></a>';
+                    } else {
+                        return '<a class="btn btn-info btn-sm btn-icon waves-effect waves-themed" data-toggle="modal" id="detail-button" data-target="#detail-modal" data-attr="' . URL::route('teknisi.show', $row->uuid) . '" title="Detail Barang" href=""><i class="fal fa-search-plus"></i></a>';
+                    }
+                })
+                ->removeColumn('id')
+                ->removeColumn('uuid')
+                ->removeColumn('ticket_uuid')
+                ->rawColumns(['action', 'ticket_status', 'repair_status', 'job_status'])
+                ->make();
         }
 
         return view('teknisi.index');
@@ -66,7 +128,6 @@ class TeknisiController extends Controller
      */
     public function create()
     {
-
     }
 
     /**
@@ -77,7 +138,6 @@ class TeknisiController extends Controller
      */
     public function store(Request $request, Repair_item $id)
     {
-        
     }
 
     /**
@@ -86,9 +146,10 @@ class TeknisiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($uuid)
     {
-        //
+        $repair_item = Repair_item::uuid($uuid);
+        return view('teknisi.show', compact('repair_item'));
     }
 
     /**
@@ -97,10 +158,9 @@ class TeknisiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($uuid)
     {
-        // $teknisi = Technician_job_order::uuid($id);
-        $repair_item = Repair_item::uuid($id);
+        $repair_item = Repair_item::uuid($uuid);
         return view('teknisi.edit', compact('repair_item'));
     }
 
@@ -111,7 +171,7 @@ class TeknisiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $uuid)
     {
         $rules = [
             'item_status' => 'required',
@@ -120,50 +180,112 @@ class TeknisiController extends Controller
 
         $messages = [
             '*.required' => 'Field tidak boleh kosong !',
-            '*.min' => 'Nama tidak boleh kurang dari 2 karakter !',
         ];
 
         $this->validate($request, $rules, $messages);
+        // get repair item detail
+        $repair_item = Repair_item::uuid($uuid);
 
-        $repair_item = Repair_item::uuid($id);
-
+        // create job order for technician first
         $teknisi = new Technician_job_order();
         $teknisi->repair_item_uuid = $repair_item->uuid;
         $teknisi->item_status = $request->item_status;
-        if ($teknisi->item_status == 1){            
-            $ticketing = DB::table('ticketings')
-                            ->join('repair_items', 'repair_items.ticket_uuid', 'like', 'ticketings.uuid')
-                            ->where('repair_items.uuid', '=', $teknisi->repair_item_uuid)
-                            ->update(['ticketings.job_status' => '5', 'repair_items.can_repair' => '1']);
-        }else{
-            $repair_item = DB::table('ticketings')
-                            ->join('repair_items', 'repair_items.ticket_uuid', 'like', 'ticketings.uuid')
-                            ->where('repair_items.uuid', '=', $teknisi->repair_item_uuid)
-                            ->update(['repair_items.can_repair' => '0', 'ticketings.job_status' => '1']);
-        }
         $teknisi->keterangan = $request->keterangan;
-        $teknisi->job_status = 1;
+        $teknisi->job_status = 1; // close job order whatever item status optin
         $teknisi->created_by = Auth::user()->uuid;
+        $teknisi->save();
 
-        $teknisi->save();   
-        
-        $gudang = new Gudang_job_order();
-        $gudang->repair_item_uuid = $teknisi->repair_item_uuid;
-        if ($teknisi->item_status == 1){
-            $gudang->item_status = 4;
-        }else{
-            $gudang->item_status = 1;
+        /**
+         * Update ticket status and item can repair status based on item status
+         * So that gudang can view ticket to create job order
+         */
+        if ($request->item_status == 0) {
+            $ticketing = Ticketing::uuid($repair_item->ticket_uuid);
+            $ticketing->ticket_status = 2; // diproses ke gudang
+            $ticketing->job_status = 4; // butuh penggantian/perbaikan item
+            $ticketing->save();
+
+            $repair_item->can_repair = 0;
+            $repair_item->save();
+        } elseif ($request->status == 1) {
+            $ticketing = Ticketing::uuid($repair_item->ticket_uuid);
+            $ticketing->ticket_status = 2; // diproses ke gudang
+            $ticketing->job_status = 2; // telah diperbaiki oleh teknisi
+            $ticketing->save();
+
+            $repair_item->can_repair = 1;
+            $repair_item->save();
         }
-        $gudang->keterangan = $teknisi->keterangan;
-        $gudang->item_replace_uuid = $request->item_replace_uuid;
-        $gudang->job_status = 0;
-        $gudang->created_by = Auth::user()->uuid;
 
-        $gudang->save();
-
-        
-        toastr()->success('Technician Job Order Edited','Success');
+        toastr()->success('Ticket No.' . $repair_item->ticket->ticket_number . ' Telah di progress', 'Success');
         return redirect()->route('teknisi.index');
+    }
+
+    /**
+     * Display a listing of tech job order.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function history()
+    {
+        if (request()->ajax()) {
+            // DB::statement(DB::raw('set @rownum=0'));
+            $techJobOrders = Technician_job_order::select(
+                'id',
+                'uuid',
+                'repair_item_uuid',
+                'item_status',
+                'job_status',
+                'keterangan',
+                'created_at'
+            )->latest()->get();
+            return Datatables::of($techJobOrders)
+                ->addIndexColumn()
+                ->addColumn('ticket_number', function ($techJobOrder) {
+                    return $techJobOrder->repair->ticket->ticket_number;
+                })
+                ->editColumn('item_status', function ($techJobOrder) {
+                    switch ($techJobOrder->item_status) {
+                        case '0':
+                            return '<span class="badge badge-warning">Butuh penanganan vendor</span>';
+                            break;
+                        case '1';
+                            return '<span class="badge badge-success">Telah diperbaiki oleh teknisi</span>';
+                            break;
+                        case '2';
+                            return '<span class="badge badge-danger">Ticket cancel</span>';
+                            break;
+                        default:
+                            return '<span class="badge badge-info">Status Unknown</span>';
+                            break;
+                    }
+                })
+                ->editColumn('job_status', function ($techJobOrder) {
+                    switch ($techJobOrder->job_status) {
+                        case '0':
+                            return '<span class="badge badge-primary">Dalam proses</span>';
+                            break;
+                        case '1';
+                            return '<span class="badge badge-success">Selesai</span>';
+                            break;
+                        case '2';
+                            return '<span class="badge badge-danger">Ticket cancel</span>';
+                            break;
+                        default:
+                            return '<span class="badge badge-dark">Status Unknown</span>';
+                            break;
+                    }
+                })
+                ->editColumn('created_at', function ($techJobOrder) {
+                    return Carbon::parse($techJobOrder->created_at)->translatedFormat('l\\, j F Y H:i:s');
+                })
+                ->removeColumn('id')
+                ->removeColumn('uuid')
+                ->removeColumn('repair_item_uuid')
+                ->rawColumns(['item_status', 'job_status'])
+                ->make();
+        }
+        return view('teknisi.history');
     }
 
     /**

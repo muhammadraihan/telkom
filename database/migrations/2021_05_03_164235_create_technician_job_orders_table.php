@@ -17,9 +17,9 @@ class CreateTechnicianJobOrdersTable extends Migration
             $table->id();
             $table->string('uuid')->unique();
             $table->string('repair_item_uuid')->nullable();
-            $table->integer('item_status')->nullable()->comment("0=Butuh perbaikan dari vendor, 1=Item telah diperbaiki olej teknisi");
+            $table->integer('item_status')->nullable()->comment("0=Butuh Penggantian, 1=Telah diperbaiki oleh teknisi,2=Ticket cancel");
             $table->text('keterangan')->nullable();
-            $table->integer('job_status')->nullable()->comment("0=Open, 1=Closed");
+            $table->integer('job_status')->nullable()->comment("0=Dalam proses, 1=Selesai, 2=Ticket cancel");
             $table->string('created_by')->nullable();
             $table->string('edited_by')->nullable();
             $table->timestamps();
