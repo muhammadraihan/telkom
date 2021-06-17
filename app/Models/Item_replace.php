@@ -49,19 +49,28 @@ class Item_replace extends Model
         return "Data has been {$eventName}";
     }
 
-    public function userCreate(){
+    public function userCreate()
+    {
         return $this->belongsTo(User::class, 'created_by', 'uuid');
     }
 
-    public function userEdit(){
+    public function userEdit()
+    {
         return $this->belongsTo(User::class, 'edited_by', 'uuid');
     }
 
-    public function itemRepair(){
+    public function itemRepair()
+    {
         return $this->belongsTo(Repair_item::class, 'item_repair_uuid', 'uuid');
     }
 
-    public function stock(){
+    public function teknisi()
+    {
+        return $this->hasMany(Technician_job_order::class, 'uuid', 'repair_item_uuid');
+    }
+
+    public function stock()
+    {
         return $this->belongsTo(Stock_item::class, 'item_replace_detail_from_stock', 'uuid');
     }
 }

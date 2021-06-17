@@ -49,19 +49,29 @@ class Gudang_job_order extends Model
         return "Data has been {$eventName}";
     }
 
-    public function userCreate(){
+    public function userCreate()
+    {
         return $this->belongsTo(User::class, 'created_by', 'uuid');
     }
 
-    public function userEdit(){
+    public function userEdit()
+    {
         return $this->belongsTo(User::class, 'edited_by', 'uuid');
     }
 
-    public function repairItem(){
+    public function ticket()
+    {
+        return $this->belongsTo(Ticketing::class, 'ticket_uuid', 'uuid');
+    }
+
+    public function repairItem()
+    {
         return $this->belongsTo(Repair_item::class, 'repair_item_uuid', 'uuid');
     }
 
-    public function itemReplace(){
+
+    public function itemReplace()
+    {
         return $this->belongsTo(Item_replace::class, 'item_replace_uuid', 'uuid');
     }
 }
