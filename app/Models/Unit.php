@@ -5,14 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\Uuid;
+use Spatie\Activitylog\Traits\LogsActivity;
 
-class Kota extends Model
+class Unit extends Model
 {
     use HasFactory;
     use Uuid;
+    use LogsActivity;
 
     protected $fillable = [
-        'city_name', 'city_code', 'province_code'
+        'name', 'witel_uuid', 'created_by', 'edited_by'
     ];
 
     protected static $logAttributes = ['*'];
@@ -22,7 +24,7 @@ class Kota extends Model
      *
      * @var string
      */
-    protected static $logName = 'kota';
+    protected static $logName = 'unit';
 
     /**
      * Logging only the changed attributes
@@ -47,5 +49,20 @@ class Kota extends Model
     public function getDescriptionForEvent(string $eventName): string
     {
         return "Data has been {$eventName}";
+    }
+
+    public function userCreate()
+    {
+        return $this->belongsTo(User::class, 'created_by', 'uuid');
+    }
+
+    public function userEdit()
+    {
+        return $this->belongsTo(User::class, 'edited_by', 'uuid');
+    }
+
+    public function witel()
+    {
+        return $this->belongsTo(Witel::class, 'witel_uuid', 'uuid');
     }
 }

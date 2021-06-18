@@ -5,14 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\Uuid;
+use Spatie\Activitylog\Traits\LogsActivity;
 
-class Technician_job_order extends Model
+class ModuleCategory extends Model
 {
     use HasFactory;
     use Uuid;
+    use LogsActivity;
 
     protected $fillable = [
-        'repair_item_uuid', 'item_status', 'keterangan', 'job_status', 'created_by', 'edited_by'
+        'name', 'created_by', 'edited_by'
     ];
 
     protected static $logAttributes = ['*'];
@@ -22,7 +24,7 @@ class Technician_job_order extends Model
      *
      * @var string
      */
-    protected static $logName = 'technician_job_order';
+    protected static $logName = 'module_categories';
 
     /**
      * Logging only the changed attributes
@@ -57,10 +59,5 @@ class Technician_job_order extends Model
     public function userEdit()
     {
         return $this->belongsTo(User::class, 'edited_by', 'uuid');
-    }
-
-    public function repair()
-    {
-        return $this->belongsTo(Repair_item::class, 'repair_item_uuid', 'uuid');
     }
 }

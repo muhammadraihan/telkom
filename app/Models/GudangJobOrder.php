@@ -5,14 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\Uuid;
+use Spatie\Activitylog\Traits\LogsActivity;
 
-class Item_replace extends Model
+class WarehouseJobOrder extends Model
 {
     use HasFactory;
     use Uuid;
+    use LogsActivity;
 
     protected $fillable = [
-        'item_repair_uuid', 'replace_from', 'item_replace_detail_from_stock', 'item_replace_detail_from_vendor', 'created_by', 'edited_by'
+        'repair_item_uuid', 'item_status', 'job_status', 'item_replace_uuid',  'notes', 'resi_image', 'created_by', 'edited_by'
     ];
 
     protected static $logAttributes = ['*'];
@@ -22,7 +24,7 @@ class Item_replace extends Model
      *
      * @var string
      */
-    protected static $logName = 'item_replace';
+    protected static $logName = 'warehouse_job_order';
 
     /**
      * Logging only the changed attributes
@@ -59,18 +61,8 @@ class Item_replace extends Model
         return $this->belongsTo(User::class, 'edited_by', 'uuid');
     }
 
-    public function itemRepair()
+    public function ticket()
     {
-        return $this->belongsTo(Repair_item::class, 'item_repair_uuid', 'uuid');
-    }
-
-    public function teknisi()
-    {
-        return $this->hasMany(Technician_job_order::class, 'uuid', 'repair_item_uuid');
-    }
-
-    public function stock()
-    {
-        return $this->belongsTo(Stock_item::class, 'item_replace_detail_from_stock', 'uuid');
+        return $this->belongsTo(Ticketing::class, 'ticket_uuid', 'uuid');
     }
 }
