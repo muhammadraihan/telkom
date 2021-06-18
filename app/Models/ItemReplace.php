@@ -5,20 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\Uuid;
+use Spatie\Activitylog\Traits\LogsActivity;
 
-class Repair_item extends Model
+class ItemReplace extends Model
 {
     use HasFactory;
     use Uuid;
+    use LogsActivity;
 
     protected $fillable = [
-        'ticket_uuid', 'item_model', 'item_merk', 'item_type', 'part_number', 'serial_number', 'barcode', 'kelengkapan', 'kerusakan', 'status_garansi', 'can_repair', 'created_by', 'edited_by'
+        'item_repair_uuid', 'replace_from', 'item_replace_detail_from_stock', 'item_replace_detail_from_vendor', 'created_by', 'edited_by'
     ];
 
-    protected $casts = [
-        'kelengkapan' => 'array'
-    ];
-    
     protected static $logAttributes = ['*'];
 
     /**
@@ -26,7 +24,7 @@ class Repair_item extends Model
      *
      * @var string
      */
-    protected static $logName = 'repair_item';
+    protected static $logName = 'item_replace';
 
     /**
      * Logging only the changed attributes
@@ -53,15 +51,13 @@ class Repair_item extends Model
         return "Data has been {$eventName}";
     }
 
-    public function userCreate(){
+    public function userCreate()
+    {
         return $this->belongsTo(User::class, 'created_by', 'uuid');
     }
 
-    public function userEdit(){
+    public function userEdit()
+    {
         return $this->belongsTo(User::class, 'edited_by', 'uuid');
-    }
-
-    public function ticket(){
-        return $this->belongsTo(Ticketing::class, 'ticket_uuid', 'uuid');
     }
 }

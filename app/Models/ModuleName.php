@@ -5,14 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\Uuid;
+use Spatie\Activitylog\Traits\LogsActivity;
 
-class Gudang_job_order extends Model
+class ModuleName extends Model
 {
     use HasFactory;
     use Uuid;
+    use LogsActivity;
 
     protected $fillable = [
-        'repair_item_uuid', 'item_status', 'keterangan', 'item_replace_uuid', 'job_status', 'created_by', 'edited_by'
+        'name', 'category_uuid', 'created_by', 'edited_by'
     ];
 
     protected static $logAttributes = ['*'];
@@ -22,7 +24,7 @@ class Gudang_job_order extends Model
      *
      * @var string
      */
-    protected static $logName = 'gudang_job_order';
+    protected static $logName = 'module_name';
 
     /**
      * Logging only the changed attributes
@@ -57,21 +59,5 @@ class Gudang_job_order extends Model
     public function userEdit()
     {
         return $this->belongsTo(User::class, 'edited_by', 'uuid');
-    }
-
-    public function ticket()
-    {
-        return $this->belongsTo(Ticketing::class, 'ticket_uuid', 'uuid');
-    }
-
-    public function repairItem()
-    {
-        return $this->belongsTo(Repair_item::class, 'repair_item_uuid', 'uuid');
-    }
-
-
-    public function itemReplace()
-    {
-        return $this->belongsTo(Item_replace::class, 'item_replace_uuid', 'uuid');
     }
 }

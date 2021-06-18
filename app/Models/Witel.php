@@ -4,17 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\Activitylog\Traits\LogsActivity;
 use App\Traits\Uuid;
+use Spatie\Activitylog\Traits\LogsActivity;
 
-class Ticketing extends Model
+class Witel extends Model
 {
     use HasFactory;
     use Uuid;
     use LogsActivity;
 
     protected $fillable = [
-        'uuid_unit', 'ticket_number', 'urgent_status', 'ticket_status', 'job_status', 'note', 'created_by', 'edited_by'
+        'name', 'created_by', 'edited_by'
     ];
 
     protected static $logAttributes = ['*'];
@@ -24,7 +24,7 @@ class Ticketing extends Model
      *
      * @var string
      */
-    protected static $logName = 'ticketing';
+    protected static $logName = 'witel';
 
     /**
      * Logging only the changed attributes
