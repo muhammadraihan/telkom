@@ -17,9 +17,9 @@ class CreateItemReplacesTable extends Migration
             $table->id();
             $table->string('uuid')->unique();
             $table->string('item_repair_uuid')->nullable();
-            $table->integer('replace_from')->nullable()->comment("1=Vendor, 2=Main stock, 3=Buffer stock");
-            $table->string('item_replace_detail_from_stock')->nullable();
-            $table->string('item_replace_detail_from_vendor')->nullable();
+            $table->integer('replace_from')->nullable()->comment("1=Vendor, 2=Stock");
+            $table->string('item_replace_uuid_from_stock')->nullable();
+            $table->string('item_replace_uuid_from_vendor')->nullable();
             $table->string('created_by')->nullable();
             $table->string('edited_by')->nullable();
             $table->timestamps();
