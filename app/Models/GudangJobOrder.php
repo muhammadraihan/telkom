@@ -5,11 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\Uuid;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class WarehouseJobOrder extends Model
 {
     use HasFactory;
     use Uuid;
+    use LogsActivity;
 
     protected $fillable = [
         'repair_item_uuid', 'item_status', 'job_status', 'item_replace_uuid',  'notes', 'resi_image', 'created_by', 'edited_by'
