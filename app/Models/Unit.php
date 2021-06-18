@@ -5,14 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\Uuid;
+use Spatie\Activitylog\Traits\LogsActivity;
 
-class Buffer_stock extends Model
+class Unit extends Model
 {
     use HasFactory;
     use Uuid;
+    use LogsActivity;
 
     protected $fillable = [
-        'stock_item_uuid', 'buffer_ammount', 'office_city', 'created_by', 'edited_by'
+        'name', 'witel_uuid', 'created_by', 'edited_by'
     ];
 
     protected static $logAttributes = ['*'];
@@ -22,7 +24,7 @@ class Buffer_stock extends Model
      *
      * @var string
      */
-    protected static $logName = 'buffer_stock';
+    protected static $logName = 'unit';
 
     /**
      * Logging only the changed attributes
@@ -49,19 +51,18 @@ class Buffer_stock extends Model
         return "Data has been {$eventName}";
     }
 
-    public function userCreate(){
+    public function userCreate()
+    {
         return $this->belongsTo(User::class, 'created_by', 'uuid');
     }
 
-    public function userEdit(){
+    public function userEdit()
+    {
         return $this->belongsTo(User::class, 'edited_by', 'uuid');
     }
 
-    public function kota(){
-        return $this->belongsTo(Kota::class, 'office_city', 'uuid');
-    }
-
-    public function stockItem(){
-        return $this->belongsTo(Stock_item::class, 'stock_item_uuid', 'uuid');
+    public function witel()
+    {
+        return $this->belongsTo(Witel::class, 'witel_uuid', 'uuid');
     }
 }

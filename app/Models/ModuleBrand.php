@@ -5,14 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\Uuid;
+use Spatie\Activitylog\Traits\LogsActivity;
 
-class Kelengkapan extends Model
+class ModuleBrand extends Model
 {
     use HasFactory;
     use Uuid;
+    use LogsActivity;
 
     protected $fillable = [
-        'name', 'created_by', 'edited_by'
+        'name', 'module_name_uuid', 'created_by', 'edited_by'
     ];
 
     protected static $logAttributes = ['*'];
@@ -22,7 +24,7 @@ class Kelengkapan extends Model
      *
      * @var string
      */
-    protected static $logName = 'kelengkapan';
+    protected static $logName = 'module_brand';
 
     /**
      * Logging only the changed attributes
@@ -49,11 +51,13 @@ class Kelengkapan extends Model
         return "Data has been {$eventName}";
     }
 
-    public function userCreate(){
+    public function userCreate()
+    {
         return $this->belongsTo(User::class, 'created_by', 'uuid');
     }
 
-    public function userEdit(){
+    public function userEdit()
+    {
         return $this->belongsTo(User::class, 'edited_by', 'uuid');
     }
 }

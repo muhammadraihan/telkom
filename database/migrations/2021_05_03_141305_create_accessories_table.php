@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateBufferStocksTable extends Migration
+class CreateAccessoriesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,10 @@ class CreateBufferStocksTable extends Migration
      */
     public function up()
     {
-        Schema::create('buffer_stocks', function (Blueprint $table) {
+        Schema::create('accessories', function (Blueprint $table) {
             $table->id();
             $table->string('uuid')->unique();
-            $table->string('stock_item_uuid')->nullable();
-            $table->bigInteger('buffer_ammount')->nullable();
-            $table->string('office_city')->nullable();
+            $table->string('name')->nullable();
             $table->string('created_by')->nullable();
             $table->string('edited_by')->nullable();
             $table->timestamps();
@@ -32,6 +30,6 @@ class CreateBufferStocksTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('buffer_stocks');
+        Schema::dropIfExists('accessories');
     }
 }

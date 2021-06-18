@@ -79,7 +79,7 @@
 <script>
     $(document).ready(function(){
      
-       var table = $('#datatable').DataTable({
+       $('#datatable').DataTable({
             "processing": true,
             "serverSide": true,
             "responsive": true,

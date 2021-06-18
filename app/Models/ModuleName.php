@@ -5,14 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\Uuid;
+use Spatie\Activitylog\Traits\LogsActivity;
 
-class Province extends Model
+class ModuleName extends Model
 {
     use HasFactory;
     use Uuid;
+    use LogsActivity;
 
     protected $fillable = [
-        'province_name', 'province_code'
+        'name', 'category_uuid', 'created_by', 'edited_by'
     ];
 
     protected static $logAttributes = ['*'];
@@ -22,7 +24,7 @@ class Province extends Model
      *
      * @var string
      */
-    protected static $logName = 'province';
+    protected static $logName = 'module_name';
 
     /**
      * Logging only the changed attributes
@@ -47,5 +49,15 @@ class Province extends Model
     public function getDescriptionForEvent(string $eventName): string
     {
         return "Data has been {$eventName}";
+    }
+
+    public function userCreate()
+    {
+        return $this->belongsTo(User::class, 'created_by', 'uuid');
+    }
+
+    public function userEdit()
+    {
+        return $this->belongsTo(User::class, 'edited_by', 'uuid');
     }
 }

@@ -173,6 +173,7 @@ class TeknisiController extends Controller
      */
     public function update(Request $request, $uuid)
     {
+        // dd($request->all());
         $rules = [
             'item_status' => 'required',
             'keterangan' => 'required'
@@ -207,7 +208,7 @@ class TeknisiController extends Controller
 
             $repair_item->can_repair = 0;
             $repair_item->save();
-        } elseif ($request->status == 1) {
+        } elseif ($request->item_status == 1) {
             $ticketing = Ticketing::uuid($repair_item->ticket_uuid);
             $ticketing->ticket_status = 2; // diproses ke gudang
             $ticketing->job_status = 2; // telah diperbaiki oleh teknisi
