@@ -14,7 +14,7 @@ class RepairItem extends Model
     use LogsActivity;
 
     protected $fillable = [
-        'ticket_uuid', 'module_category_uuid', 'module_name_uuid', 'module_brand_uuid', 'module_type_uuid', 'part_number', 'serial_number', 'serial_number_msc', 'accesories', 'complain', 'warranty_status', 'can_repair', 'created_by', 'edited_by'
+        'ticket_uuid', 'module_category_uuid', 'module_name_uuid', 'module_brand_uuid', 'module_type_uuid', 'part_number', 'serial_number', 'serial_number_msc', 'accesories', 'complain', 'warranty_status', 'repair_status', 'replace_status', 'created_by', 'edited_by'
     ];
 
     protected $casts = [
