@@ -20,11 +20,7 @@ class CreateModuleStocksTable extends Migration
             $table->string('module_name_uuid')->nullable();
             $table->string('module_brand_uuid')->nullable();
             $table->string('module_type_uuid')->nullable();
-            $table->string('part_number')->nullable();
-            $table->string('serial_number')->nullable();
-            $table->string('serial_number_msc')->nullable();
-            $table->json('accessories')->nullable();
-            $table->bigInteger('amount')->nullable();
+            $table->bigInteger('available')->nullable();
             $table->string('created_by')->nullable();
             $table->string('edited_by')->nullable();
             $table->timestamps();
