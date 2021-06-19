@@ -4,15 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
 use App\Traits\Uuid;
 
 class Ticketing extends Model
 {
     use HasFactory;
     use Uuid;
+    use LogsActivity;
 
     protected $fillable = [
-        'uuid_pelanggan', 'ticket_number', 'keterangan', 'ticket_status', 'job_status', 'created_by', 'edited_by'
+        'uuid_unit', 'ticket_number', 'urgent_status', 'ticket_status', 'job_status', 'note', 'created_by', 'edited_by'
     ];
 
     protected static $logAttributes = ['*'];
@@ -49,15 +51,13 @@ class Ticketing extends Model
         return "Data has been {$eventName}";
     }
 
-    public function userCreate(){
+    public function userCreate()
+    {
         return $this->belongsTo(User::class, 'created_by', 'uuid');
     }
 
-    public function userEdit(){
+    public function userEdit()
+    {
         return $this->belongsTo(User::class, 'edited_by', 'uuid');
-    }
-
-    public function customer(){
-        return $this->belongsTo(Customer::class, 'uuid_pelanggan', 'uuid');
     }
 }

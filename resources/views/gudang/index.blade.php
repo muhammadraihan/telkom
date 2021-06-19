@@ -9,7 +9,7 @@
 @section('content')
 <div class="subheader">
     <h1 class="subheader-title">
-        <i class='subheader-icon fal fa-users'></i> Module: <span class='fw-300'>Gudang Job Order</span>
+        <i class='subheader-icon fal fa-warehouse-alt'></i> Module: <span class='fw-300'>Gudang Job Order</span>
         <small>
             Module for manage Gudang Job Order.
         </small>
@@ -19,7 +19,7 @@
     <div class="col-xl-12">
         <div id="panel-1" class="panel">
             <div class="panel-hdr">
-            <h2>
+                <h2>
                     Gudang Job Order <span class="fw-300"><i>List</i></span>
                 </h2>
                 <div class="panel-toolbar">
@@ -31,6 +31,7 @@
                 <div class="panel-content">
                     <!-- datatable start -->
                     <table id="datatable" class="table table-bordered table-hover table-striped w-100">
+<<<<<<< HEAD
         <thead>
             <tr>
                 <th>No</th>
@@ -42,6 +43,17 @@
                 <th>Edited By</th>
                 <th width="120px">Action</th>
                 </tr>
+=======
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Ticket</th>
+                                <th>Ticket Status</th>
+                                <th>Job Status</th>
+                                <th>Item Status</th>
+                                <th>Action</th>
+                            </tr>
+>>>>>>> origin
                         </thead>
                     </table>
                 </div>
@@ -49,20 +61,34 @@
         </div>
     </div>
 </div>
+<!-- item detail modal start -->
+<div class="modal fade" id="detail-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    Detail Item
+                </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="fal fa-times"></i></span>
+                </button>
+            </div>
+            <div class="modal-body" id="detail-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- item detail modal end -->
 @endsection
 
 @section('js')
 <script src="{{asset('js/datagrid/datatables/datatables.bundle.js')}}"></script>
 <script>
     $(document).ready(function(){
-        $.ajaxSetup({
-          headers: {
-              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-          }
-    });
-     
-     
-       var table = $('#datatable').DataTable({
+    $('#datatable').DataTable({
             "processing": true,
             "serverSide": true,
             "responsive": true,
@@ -76,6 +102,7 @@
                     }
             },
             "columns": [
+<<<<<<< HEAD
             {data: 'rownum', name: 'rownum'},
             {data: 'repair_item_uuid', name: 'repair_item_uuid'},
             {data: 'item_status', name: 'item_status'},
@@ -83,6 +110,13 @@
             {data: 'job_status', name: 'job_status'},
             {data: 'created_by', name: 'created_by'},
             {data: 'edited_by', name: 'edited_by'},
+=======
+            {data: 'rownum'},
+            {data: 'ticket_number'},
+            {data: 'ticket_status'},
+            {data: 'job_status'},
+            {data: 'repair_status'},
+>>>>>>> origin
             {data: 'action', name: 'action', orderable: false, searchable: false},
         ]
     });
@@ -103,6 +137,30 @@
         // Clear Data When Modal Close
         $('.remove-data-from-delete-form').on('click',function() {
             $('body').find('.delete-form').find("input").remove();
+        });
+        $('#datatable').on('click', '#detail-button[data-attr]', function (e) {
+            e.preventDefault();
+            var href = $(this).attr('data-attr');
+            $.ajax({
+                url: href,
+                beforeSend: function() {
+                    $('#loader').show();
+                },
+                // return the result
+                success: function(result) {
+                    $('#detail-modal').modal("show");
+                    $('#detail-body').html(result).show();
+                },
+                complete: function() {
+                    $('#loader').hide();
+                },
+                error: function(jqXHR, testStatus, error) {
+                    console.log(error);
+                    alert("Page " + href + " cannot open. Error:" + error);
+                    $('#loader').hide();
+                },
+                timeout: 8000
+            });
         });
     });
 </script>
