@@ -38,7 +38,7 @@ Route::group(['prefix' => 'backoffice', 'middleware' => ['auth']], function () {
     Route::resource('ticketing', 'TicketingController');
     Route::resource('teknisi', 'TeknisiController');
     Route::resource('gudang', 'GudangController');
-    Route::resource('itemreplace', 'Item_replaceController');
+    Route::resource('itemreplace', 'ItemReplaceController');
     Route::resource('category', 'ModuleCategoryController');
     Route::resource('name', 'ModuleNameController');
     Route::resource('brand', 'ModuleBrandController');
