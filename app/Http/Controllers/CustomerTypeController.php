@@ -14,7 +14,7 @@ use Image;
 use Response;
 use URL;
 
-class Customer_typeController extends Controller
+class CustomerTypeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -28,22 +28,22 @@ class Customer_typeController extends Controller
             $data = Customer_type::latest()->get();
 
             return Datatables::of($data)
-                    ->addIndexColumn()
-                    ->editColumn('created_by',function($row){
-                        return $row->userCreate->name;
-                    })
-                    ->editColumn('edited_by',function($row){
-                        return $row->userEdit->name ?? null;
-                    })
-                    ->addColumn('action', function($row){
-                        return '
-                        <a class="btn btn-success btn-sm btn-icon waves-effect waves-themed" href="'.route('customer_type.edit',$row->uuid).'"><i class="fal fa-edit"></i></a>
-                        <a class="btn btn-danger btn-sm btn-icon waves-effect waves-themed delete-btn" data-url="'.URL::route('customer_type.destroy',$row->uuid).'" data-id="'.$row->uuid.'" data-token="'.csrf_token().'" data-toggle="modal" data-target="#modal-delete"><i class="fal fa-trash-alt"></i></a>';
-                 })
-            ->removeColumn('id')
-            ->removeColumn('uuid')
-            ->rawColumns(['action'])
-            ->make(true);
+                ->addIndexColumn()
+                ->editColumn('created_by', function ($row) {
+                    return $row->userCreate->name;
+                })
+                ->editColumn('edited_by', function ($row) {
+                    return $row->userEdit->name ?? null;
+                })
+                ->addColumn('action', function ($row) {
+                    return '
+                        <a class="btn btn-success btn-sm btn-icon waves-effect waves-themed" href="' . route('customer_type.edit', $row->uuid) . '"><i class="fal fa-edit"></i></a>
+                        <a class="btn btn-danger btn-sm btn-icon waves-effect waves-themed delete-btn" data-url="' . URL::route('customer_type.destroy', $row->uuid) . '" data-id="' . $row->uuid . '" data-token="' . csrf_token() . '" data-toggle="modal" data-target="#modal-delete"><i class="fal fa-trash-alt"></i></a>';
+                })
+                ->removeColumn('id')
+                ->removeColumn('uuid')
+                ->rawColumns(['action'])
+                ->make(true);
         }
 
         return view('customer_type.index');
@@ -82,10 +82,10 @@ class Customer_typeController extends Controller
         $customer_type->name = $request->name;
         $customer_type->created_by = Auth::user()->uuid;
 
-        $customer_type->save();        
+        $customer_type->save();
 
-        
-        toastr()->success('New Customer Type Added','Success');
+
+        toastr()->success('New Customer Type Added', 'Success');
         return redirect()->route('customer_type.index');
     }
 
@@ -136,10 +136,10 @@ class Customer_typeController extends Controller
         $customer_type->name = $request->name;
         $customer_type->edited_by = Auth::user()->uuid;
 
-        $customer_type->save();        
+        $customer_type->save();
 
-        
-        toastr()->success('Customer Type Edited','Success');
+
+        toastr()->success('Customer Type Edited', 'Success');
         return redirect()->route('customer_type.index');
     }
 
@@ -153,7 +153,7 @@ class Customer_typeController extends Controller
     {
         $customer_type = Customer_type::uuid($id);
         $customer_type->delete();
-        toastr()->success('Customer Type Deleted','Success');
+        toastr()->success('Customer Type Deleted', 'Success');
         return redirect()->route('customer_type.index');
     }
 }

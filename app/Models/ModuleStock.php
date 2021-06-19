@@ -14,11 +14,7 @@ class ModuleStock extends Model
     use LogsActivity;
 
     protected $fillable = [
-        'module_category_uuid', 'module_name_uuid', 'module_brand_uuid', 'module_type_uuid', 'part_number', 'serial_number', 'serial_number_msc', 'accesories', 'amount', 'created_by', 'edited_by'
-    ];
-
-    protected $casts = [
-        'accesories' => 'array'
+        'module_category_uuid', 'module_name_uuid', 'module_brand_uuid', 'module_type_uuid', 'available', 'created_by', 'edited_by'
     ];
 
     protected static $logAttributes = ['*'];

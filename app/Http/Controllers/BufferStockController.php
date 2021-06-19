@@ -16,7 +16,7 @@ use Image;
 use Response;
 use URL;
 
-class Buffer_stockController extends Controller
+class BufferStockController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -30,28 +30,28 @@ class Buffer_stockController extends Controller
             $data = Buffer_stock::latest()->get();
 
             return Datatables::of($data)
-                    ->addIndexColumn()
-                    ->editColumn('created_by',function($row){
-                        return $row->userCreate->name;
-                    })
-                    ->editColumn('edited_by',function($row){
-                        return $row->userEdit->name ?? null;
-                    })
-                    ->editColumn('office_city', function($row){
-                        return $row->kota->city_name;
-                    })
-                    ->editColumn('stock_item_uuid', function($row){
-                        return $row->stockItem->serial_number;
-                    })
-                    ->addColumn('action', function($row){
-                        return '
-                        <a class="btn btn-success btn-sm btn-icon waves-effect waves-themed" href="'.route('buffer_stock.edit',$row->uuid).'"><i class="fal fa-edit"></i></a>
-                        <a class="btn btn-danger btn-sm btn-icon waves-effect waves-themed delete-btn" data-url="'.URL::route('buffer_stock.destroy',$row->uuid).'" data-id="'.$row->uuid.'" data-token="'.csrf_token().'" data-toggle="modal" data-target="#modal-delete"><i class="fal fa-trash-alt"></i></a>';
-                 })
-            ->removeColumn('id')
-            ->removeColumn('uuid')
-            ->rawColumns(['action'])
-            ->make(true);
+                ->addIndexColumn()
+                ->editColumn('created_by', function ($row) {
+                    return $row->userCreate->name;
+                })
+                ->editColumn('edited_by', function ($row) {
+                    return $row->userEdit->name ?? null;
+                })
+                ->editColumn('office_city', function ($row) {
+                    return $row->kota->city_name;
+                })
+                ->editColumn('stock_item_uuid', function ($row) {
+                    return $row->stockItem->serial_number;
+                })
+                ->addColumn('action', function ($row) {
+                    return '
+                        <a class="btn btn-success btn-sm btn-icon waves-effect waves-themed" href="' . route('buffer_stock.edit', $row->uuid) . '"><i class="fal fa-edit"></i></a>
+                        <a class="btn btn-danger btn-sm btn-icon waves-effect waves-themed delete-btn" data-url="' . URL::route('buffer_stock.destroy', $row->uuid) . '" data-id="' . $row->uuid . '" data-token="' . csrf_token() . '" data-toggle="modal" data-target="#modal-delete"><i class="fal fa-trash-alt"></i></a>';
+                })
+                ->removeColumn('id')
+                ->removeColumn('uuid')
+                ->rawColumns(['action'])
+                ->make(true);
         }
 
         return view('buffer_stock.index');
@@ -96,10 +96,10 @@ class Buffer_stockController extends Controller
         $buffer_stock->office_city = $request->office_city;
         $buffer_stock->created_by = Auth::user()->uuid;
 
-        $buffer_stock->save();        
+        $buffer_stock->save();
 
-        
-        toastr()->success('New Buffer Stock Added','Success');
+
+        toastr()->success('New Buffer Stock Added', 'Success');
         return redirect()->route('buffer_stock.index');
     }
 
@@ -156,10 +156,10 @@ class Buffer_stockController extends Controller
         $buffer_stock->office_city = $request->office_city;
         $buffer_stock->edited_by = Auth::user()->uuid;
 
-        $buffer_stock->save();        
+        $buffer_stock->save();
 
-        
-        toastr()->success('Buffer Stock Edited','Success');
+
+        toastr()->success('Buffer Stock Edited', 'Success');
         return redirect()->route('buffer_stock.index');
     }
 
@@ -173,7 +173,7 @@ class Buffer_stockController extends Controller
     {
         $buffer_stock = Buffer_stock::uuid($id);
         $buffer_stock->delete();
-        toastr()->success('Buffer Stock Deleted','Success');
+        toastr()->success('Buffer Stock Deleted', 'Success');
         return redirect()->route('buffer_stock.index');
     }
 }

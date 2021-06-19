@@ -16,6 +16,7 @@ class CreateItemReplaceVendorDetailsTable extends Migration
         Schema::create('item_replace_vendor_details', function (Blueprint $table) {
             $table->id();
             $table->string('uuid')->unique();
+            $table->string('item_repair_uuid')->nullable();
             $table->string('vendor_name')->nullable();
             $table->string('module_category_uuid')->nullable();
             $table->string('module_name_uuid')->nullable();

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRepairItemsTable extends Migration
+class CreateItemReplaceStockDetailsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateRepairItemsTable extends Migration
      */
     public function up()
     {
-        Schema::create('repair_items', function (Blueprint $table) {
+        Schema::create('item_replace_stock_details', function (Blueprint $table) {
             $table->id();
             $table->string('uuid')->unique();
-            $table->string('ticket_uuid')->nullable();
+            $table->string('item_repair_uuid')->nullable();
             $table->string('module_category_uuid')->nullable();
             $table->string('module_name_uuid')->nullable();
             $table->string('module_brand_uuid')->nullable();
@@ -25,10 +25,6 @@ class CreateRepairItemsTable extends Migration
             $table->string('serial_number')->nullable();
             $table->string('serial_number_msc')->nullable();
             $table->json('accessories')->nullable();
-            $table->text('complain')->nullable();
-            $table->integer('warranty_status')->nullable()->comment("0=Non warranty, 1=Warranty");
-            $table->integer('repair_status')->nullable()->comment("0=Tidak bisa diperbaiki, 1=Bisa diperbaiki");
-            $table->integer('replace_status')->nullable()->comment("1=Stock, 2=Vendor");
             $table->string('created_by')->nullable();
             $table->string('edited_by')->nullable();
             $table->timestamps();
@@ -42,6 +38,6 @@ class CreateRepairItemsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('repair_items');
+        Schema::dropIfExists('item_replace_stock_details');
     }
 }

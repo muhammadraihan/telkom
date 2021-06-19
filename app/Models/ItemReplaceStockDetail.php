@@ -7,14 +7,18 @@ use Illuminate\Database\Eloquent\Model;
 use App\Traits\Uuid;
 use Spatie\Activitylog\Traits\LogsActivity;
 
-class ItemReplace extends Model
+class ItemReplaceStockDetail extends Model
 {
     use HasFactory;
     use Uuid;
     use LogsActivity;
 
     protected $fillable = [
-        'item_repair_uuid', 'replace_from', 'item_replace_detail_from_stock', 'item_replace_detail_from_vendor', 'created_by', 'edited_by'
+        'item_repair_uuid', 'module_category_uuid', 'module_name_uuid', 'module_brand_uuid', 'module_type_uuid', 'part_number', 'serial_number', 'serial_number_msc', 'accesories', 'created_by', 'edited_by'
+    ];
+
+    protected $casts = [
+        'accesories' => 'array'
     ];
 
     protected static $logAttributes = ['*'];
