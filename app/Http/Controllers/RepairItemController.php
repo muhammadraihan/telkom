@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Repair_item;
+use App\Models\RepairItem;
 
 use Auth;
 use DataTables;
@@ -14,7 +14,7 @@ use Image;
 use Response;
 use URL;
 
-class Repair_itemController extends Controller
+class RepairItemController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -28,21 +28,21 @@ class Repair_itemController extends Controller
             $data = Repair_item::latest()->get();
 
             return Datatables::of($data)
-                    ->addIndexColumn()
-                    ->editColumn('created_by',function($row){
-                        return $row->userCreate->name;
-                    })
-                    ->editColumn('edited_by',function($row){
-                        return $row->userEdit->name ?? null;
-                    })
-                    ->addColumn('action', function($row){
-                        return '
-                        <a class="btn btn-success btn-sm btn-icon waves-effect waves-themed" href="'.route('repair_item.edit',$row->uuid).'"><i class="fal fa-edit"></i></a>';
-                 })
-            ->removeColumn('id')
-            ->removeColumn('uuid')
-            ->rawColumns(['action'])
-            ->make(true);
+                ->addIndexColumn()
+                ->editColumn('created_by', function ($row) {
+                    return $row->userCreate->name;
+                })
+                ->editColumn('edited_by', function ($row) {
+                    return $row->userEdit->name ?? null;
+                })
+                ->addColumn('action', function ($row) {
+                    return '
+                        <a class="btn btn-success btn-sm btn-icon waves-effect waves-themed" href="' . route('repair_item.edit', $row->uuid) . '"><i class="fal fa-edit"></i></a>';
+                })
+                ->removeColumn('id')
+                ->removeColumn('uuid')
+                ->rawColumns(['action'])
+                ->make(true);
         }
 
         return view('repair_item.index');

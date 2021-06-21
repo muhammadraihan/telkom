@@ -31,19 +31,6 @@
                 <div class="panel-content">
                     <!-- datatable start -->
                     <table id="datatable" class="table table-bordered table-hover table-striped w-100">
-<<<<<<< HEAD
-        <thead>
-            <tr>
-                <th>No</th>
-                <th>Repair Item</th>
-                <th>Status Item</th>
-                <th>Keterangan</th>
-                <th>Job Status</th>
-                <th>Created By</th>
-                <th>Edited By</th>
-                <th width="120px">Action</th>
-                </tr>
-=======
                         <thead>
                             <tr>
                                 <th>No</th>
@@ -53,7 +40,6 @@
                                 <th>Item Status</th>
                                 <th>Action</th>
                             </tr>
->>>>>>> origin
                         </thead>
                     </table>
                 </div>
@@ -102,21 +88,11 @@
                     }
             },
             "columns": [
-<<<<<<< HEAD
-            {data: 'rownum', name: 'rownum'},
-            {data: 'repair_item_uuid', name: 'repair_item_uuid'},
-            {data: 'item_status', name: 'item_status'},
-            {data: 'keterangan', name: 'keterangan'},
-            {data: 'job_status', name: 'job_status'},
-            {data: 'created_by', name: 'created_by'},
-            {data: 'edited_by', name: 'edited_by'},
-=======
             {data: 'rownum'},
             {data: 'ticket_number'},
             {data: 'ticket_status'},
             {data: 'job_status'},
             {data: 'repair_status'},
->>>>>>> origin
             {data: 'action', name: 'action', orderable: false, searchable: false},
         ]
     });
