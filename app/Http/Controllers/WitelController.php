@@ -28,22 +28,22 @@ class WitelController extends Controller
             $data = Witel::latest()->get();
 
             return Datatables::of($data)
-                    ->addIndexColumn()
-                    ->editColumn('created_by',function($row){
-                        return $row->userCreate->name;
-                    })
-                    ->editColumn('edited_by',function($row){
-                        return $row->userEdit->name ?? null;
-                    })
-                    ->addColumn('action', function($row){
-                        return '
-                        <a class="btn btn-success btn-sm btn-icon waves-effect waves-themed" href="'.route('witel.edit',$row->uuid).'"><i class="fal fa-edit"></i></a>
-                        <a class="btn btn-danger btn-sm btn-icon waves-effect waves-themed delete-btn" data-url="'.URL::route('witel.destroy',$row->uuid).'" data-id="'.$row->uuid.'" data-token="'.csrf_token().'" data-toggle="modal" data-target="#modal-delete"><i class="fal fa-trash-alt"></i></a>';
-                 })
-            ->removeColumn('id')
-            ->removeColumn('uuid')
-            ->rawColumns(['action'])
-            ->make(true);
+                ->addIndexColumn()
+                ->editColumn('created_by', function ($row) {
+                    return $row->userCreate->name;
+                })
+                ->editColumn('edited_by', function ($row) {
+                    return $row->userEdit->name ?? null;
+                })
+                ->addColumn('action', function ($row) {
+                    return '
+                        <a class="btn btn-success btn-sm btn-icon waves-effect waves-themed" href="' . route('witel.edit', $row->uuid) . '"><i class="fal fa-edit"></i></a>
+                        <a class="btn btn-danger btn-sm btn-icon waves-effect waves-themed delete-btn" data-url="' . URL::route('witel.destroy', $row->uuid) . '" data-id="' . $row->uuid . '" data-token="' . csrf_token() . '" data-toggle="modal" data-target="#modal-delete"><i class="fal fa-trash-alt"></i></a>';
+                })
+                ->removeColumn('id')
+                ->removeColumn('uuid')
+                ->rawColumns(['action'])
+                ->make(true);
         }
 
         return view('witel.index');
@@ -79,13 +79,13 @@ class WitelController extends Controller
         $this->validate($request, $rules, $messages);
 
         $witel = new Witel();
-        $witel->name = $request->name;
+        $witel->name = strtoupper($request->name);
         $witel->created_by = Auth::user()->uuid;
 
         $witel->save();
 
-        
-        toastr()->success('New Witel Added','Success');
+
+        toastr()->success('New Witel Added', 'Success');
         return redirect()->route('witel.index');
     }
 
@@ -133,14 +133,14 @@ class WitelController extends Controller
         $this->validate($request, $rules, $messages);
 
         $witel = Witel::uuid($id);
-        $witel->name = $request->name;
+        $witel->name = strtoupper($request->name);
         $witel->edited_by = Auth::user()->uuid;
 
         $witel->save();
 
 
-        
-        toastr()->success('Witel Edited','Success');
+
+        toastr()->success('Witel Edited', 'Success');
         return redirect()->route('witel.index');
     }
 
@@ -154,7 +154,7 @@ class WitelController extends Controller
     {
         $witel = Witel::uuid($id);
         $witel->delete();
-        toastr()->success('Witel Deleted','Success');
+        toastr()->success('Witel Deleted', 'Success');
         return redirect()->route('witel.index');
     }
 }

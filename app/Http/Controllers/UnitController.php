@@ -29,25 +29,25 @@ class UnitController extends Controller
             $data = Unit::latest()->get();
 
             return Datatables::of($data)
-                    ->addIndexColumn()
-                    ->editColumn('created_by',function($row){
-                        return $row->userCreate->name;
-                    })
-                    ->editColumn('edited_by',function($row){
-                        return $row->userEdit->name ?? null;
-                    })
-                    ->editColumn('witel_uuid',function($row){
-                        return $row->witel->name;
-                    })
-                    ->addColumn('action', function($row){
-                        return '
-                        <a class="btn btn-success btn-sm btn-icon waves-effect waves-themed" href="'.route('unit.edit',$row->uuid).'"><i class="fal fa-edit"></i></a>
-                        <a class="btn btn-danger btn-sm btn-icon waves-effect waves-themed delete-btn" data-url="'.URL::route('unit.destroy',$row->uuid).'" data-id="'.$row->uuid.'" data-token="'.csrf_token().'" data-toggle="modal" data-target="#modal-delete"><i class="fal fa-trash-alt"></i></a>';
-                 })
-            ->removeColumn('id')
-            ->removeColumn('uuid')
-            ->rawColumns(['action'])
-            ->make(true);
+                ->addIndexColumn()
+                ->editColumn('created_by', function ($row) {
+                    return $row->userCreate->name;
+                })
+                ->editColumn('edited_by', function ($row) {
+                    return $row->userEdit->name ?? null;
+                })
+                ->editColumn('witel_uuid', function ($row) {
+                    return $row->witel->name;
+                })
+                ->addColumn('action', function ($row) {
+                    return '
+                        <a class="btn btn-success btn-sm btn-icon waves-effect waves-themed" href="' . route('unit.edit', $row->uuid) . '"><i class="fal fa-edit"></i></a>
+                        <a class="btn btn-danger btn-sm btn-icon waves-effect waves-themed delete-btn" data-url="' . URL::route('unit.destroy', $row->uuid) . '" data-id="' . $row->uuid . '" data-token="' . csrf_token() . '" data-toggle="modal" data-target="#modal-delete"><i class="fal fa-trash-alt"></i></a>';
+                })
+                ->removeColumn('id')
+                ->removeColumn('uuid')
+                ->rawColumns(['action'])
+                ->make(true);
         }
 
         return view('unit.index');
@@ -85,14 +85,14 @@ class UnitController extends Controller
         $this->validate($request, $rules, $messages);
 
         $unit = new Unit();
-        $unit->name = $request->name;
+        $unit->name = strtoupper($request->name);
         $unit->witel_uuid = $request->witel_uuid;
         $unit->created_by = Auth::user()->uuid;
 
-        $unit->save();        
+        $unit->save();
 
-        
-        toastr()->success('New Unit Added','Success');
+
+        toastr()->success('New Unit Added', 'Success');
         return redirect()->route('unit.index');
     }
 
@@ -142,14 +142,14 @@ class UnitController extends Controller
         $this->validate($request, $rules, $messages);
 
         $unit = Unit::uuid($id);
-        $unit->name = $request->name;
+        $unit->name = strtoupper($request->name);
         $unit->witel_uuid = $request->witel_uuid;
         $unit->edited_by = Auth::user()->uuid;
 
-        $unit->save(); 
+        $unit->save();
 
-        
-        toastr()->success('Unit Edited','Success');
+
+        toastr()->success('Unit Edited', 'Success');
         return redirect()->route('unit.index');
     }
 
@@ -163,7 +163,7 @@ class UnitController extends Controller
     {
         $unit = Unit::uuid($id);
         $unit->delete();
-        toastr()->success('Unit Deleted','Success');
+        toastr()->success('Unit Deleted', 'Success');
         return redirect()->route('unit.index');
     }
 }
