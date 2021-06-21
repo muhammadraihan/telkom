@@ -26,7 +26,7 @@ class ModuleTypeController extends Controller
     {
         $type = ModuleType::all();
         if (request()->ajax()) {
-            $data = ModuleType::latest()->get();
+            $data = ModuleType::get();
 
             return Datatables::of($data)
                     ->addIndexColumn()

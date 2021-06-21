@@ -25,7 +25,7 @@ class ModuleCategoryController extends Controller
     {
         $category = ModuleCategory::all();
         if (request()->ajax()) {
-            $data = ModuleCategory::latest()->get();
+            $data = ModuleCategory::get();
 
             return Datatables::of($data)
                     ->addIndexColumn()

@@ -26,7 +26,7 @@ class ModuleNameController extends Controller
     {
         $name = ModuleName::all();
         if (request()->ajax()) {
-            $data = ModuleName::latest()->get();
+            $data = ModuleName::get();
 
             return Datatables::of($data)
                     ->addIndexColumn()

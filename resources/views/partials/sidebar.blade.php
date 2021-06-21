@@ -126,6 +126,13 @@
                     </li>
                 </ul>
             </li>
+            <li>
+                <a href="{{route('material.index')}}" title="Material Managements"
+                    data-filter-tags="material managements">
+                    <i class="fal fa-retweet"></i>
+                    <span class="nav-link-text" data-i18n="nav.users_managements">Material Management</span>
+                </a>
+            </li>
             <li class="">
                 <a href="#" title="Theme Settings" data-filter-tags="theme settings">
                     <i class="fal fa-list"></i>

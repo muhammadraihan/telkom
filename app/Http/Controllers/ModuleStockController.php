@@ -29,7 +29,7 @@ class ModuleStockController extends Controller
     {
         $stock = ModuleStock::all();
         if (request()->ajax()) {
-            $data = ModuleStock::latest()->get();
+            $data = ModuleStock::get();
 
             return Datatables::of($data)
                     ->addIndexColumn()
