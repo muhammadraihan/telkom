@@ -1,12 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\Item_replace;
-use App\Models\Gudang_job_order;
+use App\Models\ItemReplace;
+use App\Models\GudangJobOrder;
 use App\Models\Kelengkapan;
-use App\Models\Stock_item;
-use App\Models\Item_replace_vendor_detail;
-use App\Models\Repair_item;
+use App\Models\StockItem;
+use App\Models\ItemReplaceVendorDetail;
+use App\Models\RepairItem;
+use App\Models\BufferStock;
 
 use Illuminate\Http\Request;
 use Auth;
@@ -19,7 +20,7 @@ use Response;
 use URL;
 use Helper;
 
-class Item_replaceController extends Controller
+class ItemReplaceController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -28,12 +29,12 @@ class Item_replaceController extends Controller
      */
     public function index()
     {
-        $gudang = Gudang_job_order::all();
+        $gudang = GudangJobOrder::all();
             
         if (request()->ajax()) {
             
             DB::statement(DB::raw('set @rownum=0'));
-            $data = Gudang_job_order::select([DB::raw('@rownum  := @rownum  + 1 AS rownum'),
+            $data = GudangJobOrder::select([DB::raw('@rownum  := @rownum  + 1 AS rownum'),
             'id','uuid','repair_item_uuid','item_status', 'created_by', 'edited_by'])
             ->where('item_status', '=', '3');
             
@@ -42,6 +43,9 @@ class Item_replaceController extends Controller
                         if($row->item_status == 3){
                             return 'Menunggu Penggantian Dari Vendor';
                         }
+                    })
+                    ->editColumn('repair_item_uuid', function($row){
+                        return $row->repairItem->ticket->ticket_number;
                     })
                     ->editColumn('created_by',function($row){
                         return $row->userCreate->name;
@@ -101,10 +105,10 @@ class Item_replaceController extends Controller
      */
     public function edit($id)
     {
-        $gudang = Gudang_job_order::uuid($id);
+        $gudang = GudangJobOrder::uuid($id);
         $kelengkapan = Kelengkapan::all();
-        $stock = Stock_item::all();
-        return view('item_replace.edit', compact('gudang','stock', 'kelengkapan'));
+        $bufferstock = BufferStock::all();
+        return view('item_replace.edit', compact('gudang','bufferstock', 'kelengkapan'));
     }
 
     /**
@@ -117,7 +121,6 @@ class Item_replaceController extends Controller
     public function update(Request $request, $id)
     {
         $rules = [
-            'item_repair_uuid' => 'required',
             'replace_from' => 'required'
         ];
 
@@ -128,10 +131,11 @@ class Item_replaceController extends Controller
 
         $this->validate($request, $rules, $messages);
 
-        $repair_item = Gudang_job_order::uuid($id);
+        $gudang = GudangJobOrder::uuid($id);
         
-        $item_replace = new Item_replace();
-        $item_replace->item_repair_uuid = $repair_item->repair_item_uuid;
+        $item_replace = new ItemReplace();
+        
+        $item_replace->item_repair_uuid = $gudang->repair_item_uuid;
         $item_replace->replace_from = $request->replace_from;
         if($item_replace->replace_from == 1){
             $rules = [
@@ -151,7 +155,7 @@ class Item_replaceController extends Controller
     
             $this->validate($request, $rules, $messages);
             
-            $vendor = new Item_replace_vendor_detail();
+            $vendor = new ItemReplaceVendorDetail();
             $vendor->vendor_name = $request->vendor_name;
             $vendor->item_model = $request->item_model;
             $vendor->item_merk = $request->item_merk;
@@ -166,17 +170,82 @@ class Item_replaceController extends Controller
             $item_replace->item_replace_detail_from_vendor = $vendor->uuid;
             
         }elseif($item_replace->replace_from == 3){
-            $item_replace->item_replace_detail_from_stock = $request->item_replace_detail_from_stock;
+            $buffer = BufferStock::uuid($request->bufferstock);
+            $buffer->buffer_ammount = $buffer->buffer_ammount -1;
+            $buffer->save();
+
+            $item_replace->item_replace_detail_from_stock = $buffer->uuid;
+        }elseif($item_replace->replace_from == 2){
+            $stock = StockItem::uuid($request->mainstock);
+            $stock->amount = $stock->amount -1;
+            $stock->save();
+
+            $item_replace->item_replace_detail_from_stock = $stock->uuid;
+            $gudang->item_replace_uuid = $item_replace->item_replace_detail_from_stock;
+            $gudang->save();
         }
         $item_replace->created_by = Auth::user()->uuid;   
         $item_replace->save();     
+        $gudang->item_replace_uuid = $item_replace->uuid;
+        $gudang->save();
+
         
         toastr()->success('Item Replace Added','Success');
         return redirect()->route('itemreplace.index');
     }
 
+    public function detailBufferStock(Request $request){
+        $bufferstock = BufferStock::all();
+        if (request()->ajax()) {
+            DB::statement(DB::raw('set @rownum=0'));
+            $data = BufferStock::select([DB::raw('@rownum  := @rownum  + 1 AS rownum'),
+            'id','uuid','stock_item_uuid','buffer_ammount','office_city']);
+
+            return Datatables::of($data)
+                    ->editColumn('office_city', function($row){
+                        return $row->kota->city_name;
+                    })
+                    ->addColumn('item_type', function($row){
+                        return $row->stockItem->item_type;
+                    })
+                    ->addColumn('item_merk', function($row){
+                        return $row->stockItem->item_merk;
+                    })
+                    ->addColumn('item_model', function($row){
+                        return $row->stockItem->item_model;
+                    })
+                    ->addColumn('part_number', function($row){
+                        return $row->stockItem->part_number;
+                    })
+                    ->addColumn('serial_number', function($row){
+                        return $row->stockItem->serial_number;
+                    })
+                    ->addColumn('barcode', function($row){
+                        return $row->stockItem->barcode;
+                    })
+                    ->addColumn('kelengkapan', function($row){
+                        return $row->stockItem->kelengkapan;
+                    })
+            ->removeColumn('id')
+            ->removeColumn('stock_item_uuid')
+            ->make(true);
+        }
+
+        return response()->json($bufferstock);
+    }
+
     public function detailStock(Request $request){
-        $stock = Stock_item::all();
+        $stock = StockItem::all();
+        if (request()->ajax()) {
+            DB::statement(DB::raw('set @rownum=0'));
+            $data = StockItem::select([DB::raw('@rownum  := @rownum  + 1 AS rownum'),
+            'id','uuid','item_model','item_merk','item_type','part_number','serial_number','barcode','kelengkapan','amount']);
+
+            return Datatables::of($data)
+                    
+            ->removeColumn('id')
+            ->make(true);
+        }
 
         return response()->json($stock);
     }

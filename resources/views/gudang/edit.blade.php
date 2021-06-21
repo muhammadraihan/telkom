@@ -11,8 +11,12 @@
     <div class="col-xl-6">
         <div id="panel-1" class="panel">
             <div class="panel-hdr">
+<<<<<<< HEAD
+            <h2>Edit <span class="fw-300"><i>{{$gudang->repairItem->ticket->ticket_number}}</i></span></h2>
+=======
                 <h2>Progress Tiket <span class="fw-300"><i>{{$tech_repair->repair->ticket->ticket_number}}</i></span>
                 </h2>
+>>>>>>> origin
                 <div class="panel-toolbar">
                     <a class="nav-link active" href="{{route('gudang.index')}}"><i class="fal fa-arrow-alt-left">
                         </i>
@@ -30,6 +34,14 @@
                     {!! Form::open(['route' => ['gudang.update',$tech_repair->repair_item_uuid],'method' =>
                     'PUT','class' =>
                     'needs-validation','novalidate']) !!}
+<<<<<<< HEAD
+                    <div class="form-group col-md-4 mb-3">
+                        {{ Form::label('repair_item_uuid','Ticket Number',['class' => 'required form-label'])}}
+                        {{ Form::text('repair_item_uuid', $gudang->repairItem->ticket->ticket_number,['placeholder' => 'Ticket Number','class' => 'form-control '.($errors->has('repair_item_uuid') ? 'is-invalid':''),'required', 'autocomplete' => 'off', 'disabled'])}}
+                        @if ($errors->has('repair_item_uuid'))
+                        <div class="invalid-feedback">{{ $errors->first('repair_item_uuid') }}</div>
+                        @endif
+=======
                     <div class="form-row">
                         <div class="form-group col-md-4 mb-3">
                             {{ Form::label('repair_item_uuid','Ticket Number',['class' => 'required form-label'])}}
@@ -38,6 +50,7 @@
                             <div class="invalid-feedback">{{ $errors->first('repair_item_uuid') }}</div>
                             @endif
                         </div>
+>>>>>>> origin
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-2 mb-2">
@@ -71,6 +84,15 @@
                             @endswitch
                         </div>
                     </div>
+<<<<<<< HEAD
+                    <div class="form-group col-md-4 mb-3">
+                        {{ Form::label('job_status','Job Status',['class' => 'required form-label'])}}
+                        {!! Form::select('job_status', array('0' => 'Open', '1' => 'Closed'), $gudang->job_status, ['class' => 'garansi form-control'.($errors->has('job_status') ? 'is-invalid':''), 'required'
+                        => '', 'placeholder' => 'Select Status item ...']) !!}
+                        @if ($errors->has('job_status'))
+                        <div class="invalid-feedback">{{ $errors->first('job_status') }}</div>
+                        @endif
+=======
                     <div class="form-row">
                         <div class="form-group col-md-6 mb-2">
                             {{ Form::label('item_model','Status Item',['class' => 'required form-label'])}}
@@ -90,6 +112,7 @@
                             <div class="help-block text-danger">{{ $errors->first('item_status') }}</div>
                             @endif
                         </div>
+>>>>>>> origin
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6 mb-2">

@@ -13,7 +13,7 @@
             <div class="panel-hdr">
             <h2>Edit <span class="fw-300"><i>{{$buffer_stock->stockItem->serial_number}}</i></span></h2>
                 <div class="panel-toolbar">
-                    <a class="nav-link active" href="{{route('buffer_stock.index')}}"><i class="fal fa-arrow-alt-left">
+                    <a class="nav-link active" href="{{route('buffer-stock.index')}}"><i class="fal fa-arrow-alt-left">
                         </i>
                         <span class="nav-link-text">Back</span>
                     </a>
@@ -26,7 +26,7 @@
                     <div class="panel-tag">
                         Form with <code>*</code> can not be empty.
                     </div>
-                    {!! Form::open(['route' => ['buffer_stock.update',$buffer_stock->uuid],'method' => 'PUT','class' =>
+                    {!! Form::open(['route' => ['buffer-stock.update',$buffer_stock->uuid],'method' => 'PUT','class' =>
                     'needs-validation','novalidate']) !!}
                     <div class="form-group col-md-4 mb-3">
                         {{ Form::label('stock_item_uuid','Serial Number',['class' => 'required form-label'])}}

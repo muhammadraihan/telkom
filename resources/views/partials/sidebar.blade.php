@@ -54,16 +54,16 @@
                 </a>
                 <ul>
                     <li>
-                        <a href="{{route('customer.index')}}" title="Customer" data-filter-tags="customer">
+                        <a href="{{route('unit.index')}}" title="Unit" data-filter-tags="unit">
                             <i class="fal fa-user-plus"></i>
-                            <span class="nav-link-text" data-i18n="nav.users_managements">Customer</span>
+                            <span class="nav-link-text" data-i18n="nav.users_managements">Unit</span>
                         </a>
                     </li>
                     <li>
-                        <a href="{{route('customer_type.index')}}" title="Customer Type"
-                            data-filter-tags="customer type">
+                        <a href="{{route('witel.index')}}" title="Witel"
+                            data-filter-tags="witel">
                             <i class="fal fa-users"></i>
-                            <span class="nav-link-text" data-i18n="nav.users_managements">Customer Type</span>
+                            <span class="nav-link-text" data-i18n="nav.users_managements">Witel</span>
                         </a>
                     </li>
                 </ul>
@@ -87,25 +87,68 @@
             <li class="">
                 <a href="#" title="Theme Settings" data-filter-tags="theme settings">
                     <i class="fal fa-list"></i>
+                    <span class="nav-link-text" data-i18n="nav.theme_settings">Module Management</span>
+                </a>
+                <ul>
+                    <li>
+                        <a href="{{route('category.index')}}" title="Category Managements"
+                            data-filter-tags="category managements">
+                            <i class="fal fa-suitcase"></i>
+                            <span class="nav-link-text" data-i18n="nav.users_managements">Category</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{route('name.index')}}" title="Module Name Managements"
+                            data-filter-tags="name managements">
+                            <i class="fal fa-suitcase"></i>
+                            <span class="nav-link-text" data-i18n="nav.users_managements">Module Name</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{route('brand.index')}}" title="Module Brand Managements"
+                            data-filter-tags="brand managements">
+                            <i class="fal fa-suitcase"></i>
+                            <span class="nav-link-text" data-i18n="nav.users_managements">Module Brand</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{route('type.index')}}" title="Module Type Managements"
+                            data-filter-tags="type managements">
+                            <i class="fal fa-suitcase"></i>
+                            <span class="nav-link-text" data-i18n="nav.users_managements">Module Type</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{route('stock.index')}}" title="Module Stock Managements"
+                            data-filter-tags="stock managements">
+                            <i class="fal fa-suitcase"></i>
+                            <span class="nav-link-text" data-i18n="nav.users_managements">Module Stock</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="">
+                <a href="#" title="Theme Settings" data-filter-tags="theme settings">
+                    <i class="fal fa-list"></i>
                     <span class="nav-link-text" data-i18n="nav.theme_settings">Stock Item Management</span>
                 </a>
                 <ul>
                     <li>
-                        <a href="{{route('buffer_stock.index')}}" title="Buffer Stock Managements"
+                        <a href="{{route('buffer-stock.index')}}" title="Buffer Stock Managements"
                             data-filter-tags="buffer stock managements">
                             <i class="fal fa-suitcase"></i>
                             <span class="nav-link-text" data-i18n="nav.users_managements">Buffer Stock</span>
                         </a>
                     </li>
                     <li>
-                        <a href="{{route('kelengkapan.index')}}" title="kelengkapan Managements"
-                            data-filter-tags="kelengkapan managements">
+                        <a href="{{route('accessory.index')}}" title="accessory Managements"
+                            data-filter-tags="accessory managements">
                             <i class="fal fa-clipboard-check"></i>
-                            <span class="nav-link-text" data-i18n="nav.users_managements">Kelengkapan</span>
+                            <span class="nav-link-text" data-i18n="nav.users_managements">Accessory</span>
                         </a>
                     </li>
                     <li>
-                        <a href="{{route('stock_item.index')}}" title="Stock Item Managements"
+                        <a href="{{route('stock-item.index')}}" title="Stock Item Managements"
                             data-filter-tags="stock item managements">
                             <i class="fal fa-list-alt"></i>
                             <span class="nav-link-text" data-i18n="nav.users_managements">Stock Item</span>

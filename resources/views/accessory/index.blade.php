@@ -1,6 +1,6 @@
 @extends('layouts.page')
 
-@section('title', 'Kelengkapan Management')
+@section('title', 'Accessory Management')
 
 @section('css')
 <link rel="stylesheet" media="screen, print" href="{{asset('css/datagrid/datatables/datatables.bundle.css')}}">
@@ -9,9 +9,9 @@
 @section('content')
 <div class="subheader">
     <h1 class="subheader-title">
-        <i class='subheader-icon fal fa-users'></i> Module: <span class='fw-300'>Kelengkapan</span>
+        <i class='subheader-icon fal fa-users'></i> Module: <span class='fw-300'>Accessory</span>
         <small>
-            Module for manage Kelengkapan.
+            Module for manage Accessory.
         </small>
     </h1>
 </div>
@@ -20,10 +20,10 @@
         <div id="panel-1" class="panel">
             <div class="panel-hdr">
             <h2>
-                    Kelengkapan <span class="fw-300"><i>List</i></span>
+                    Accessory <span class="fw-300"><i>List</i></span>
                 </h2>
                 <div class="panel-toolbar">
-                    <a class="nav-link active" href="{{route('kelengkapan.create')}}"><i class="fal fa-plus-circle">
+                    <a class="nav-link active" href="{{route('accessory.create')}}"><i class="fal fa-plus-circle">
                         </i>
                         <span class="nav-link-text">Add New</span>
                     </a>
@@ -38,7 +38,7 @@
         <thead>
             <tr>
                 <th>No</th>
-                <th>Nama Kelengkapan</th>
+                <th>Nama Aksesoris</th>
                 <th>Created By</th>
                 <th>Edited By</th>
                 <th width="120px">Action</th>
@@ -97,7 +97,7 @@
             "responsive": true,
             "order": [[ 0, "asc" ]],
             "ajax":{
-                url:'{{route('kelengkapan.index')}}',
+                url:'{{route('accessory.index')}}',
                 type : "GET",
                 dataType: 'json',
                 error: function(data){

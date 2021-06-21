@@ -35,6 +35,47 @@ class GudangController extends Controller
                 });
 
             return Datatables::of($data)
+<<<<<<< HEAD
+                    ->addIndexColumn()
+                    ->editColumn('created_by',function($row){
+                        return $row->userCreate->name ?? null;
+                    })
+                    ->editColumn('edited_by',function($row){
+                        return $row->userEdit->name ?? null;
+                    })
+                    ->editColumn('repair_item_uuid', function($row){
+                        return $row->repairItem->ticket->ticket_number;
+                    })
+                    ->editColumn('item_status', function($row){
+                        if($row->item_status == 1){
+                            return 'Butuh perbaikan dari vendor';
+                         }elseif($row->item_status == 2){
+                            return 'Menunggu perbaikan dari vendor';
+                         }elseif($row->item_status == 3){
+                             return 'Menunggu penggantian dari vendor';
+                         }elseif($row->item_status == 4){
+                             return 'Item telah diperbaiki oleh teknisi';
+                         }elseif($row->item_status == 5){
+                             return 'Item telah diperbaiki oleh vendor';
+                         }elseif($row->item_status == 6){
+                             return 'Item telah diganti oleh vendor';
+                         }
+                    })
+                    ->editColumn('job_status', function($row){
+                        if($row->job_status == 0){
+                           return 'Open';
+                        }else{
+                            return 'Close';
+                        }
+                    })
+                    ->addColumn('action', function($row){
+                        return '<a class="btn btn-success btn-sm btn-icon waves-effect waves-themed" href="'.route('gudang.edit',$row->uuid).'"><i class="fal fa-edit"></i></a>';
+                 })
+            ->removeColumn('id')
+            ->removeColumn('uuid')
+            ->rawColumns(['action'])
+            ->make(true);
+=======
                 ->addIndexColumn()
                 ->addColumn('ticket_number', function ($row) {
                     return $row->ticket->ticket_number;
@@ -110,6 +151,7 @@ class GudangController extends Controller
                 ->removeColumn('uuid')
                 ->rawColumns(['action', 'ticket_status', 'repair_status', 'job_status'])
                 ->make();
+>>>>>>> origin
         }
         return view('gudang.index');
     }
@@ -154,10 +196,15 @@ class GudangController extends Controller
      */
     public function edit($uuid)
     {
+<<<<<<< HEAD
+        $gudang = Gudang_job_order::uuid($id);
+        return view('gudang.edit', compact('gudang'));
+=======
         // $item_replace = Item_replace::all()->pluck('item_repair_uuid', 'uuid');
         $tech_repair = Technician_job_order::where('repair_item_uuid', '=', $uuid)->first();
         // dd($tech_repair->repair_item_uuid);
         return view('gudang.edit', compact('tech_repair'));
+>>>>>>> origin
     }
 
     /**
@@ -192,6 +239,20 @@ class GudangController extends Controller
         if ($request->tindakan == 7) {
             $gudang->job_status = 1;
         }
+<<<<<<< HEAD
+        $gudang->keterangan = $request->keterangan;
+        $gudang->job_status = $request->job_status;
+        if($gudang->job_status == 1){
+            $jobstatus = DB::table('ticketings')
+                        ->join('repair_items', 'repair_items.ticket_uuid', 'like', 'ticketings.uuid')
+                        ->where('repair_items.uuid', '=', $gudang->repair_item_uuid)
+                        ->update(['ticketings.job_status' => '6', 'ticketings.ticket_status' => '1']);
+        }
+
+        $gudang->save();
+
+        toastr()->success('Gudang Job Order Edited','Success');
+=======
         // $gudang = Gudang_job_order::uuid($uuid);
         // $gudang->repair_item_uuid = $gudang->repair_item_uuid;
         // $gudang->item_status = $request->item_status;
@@ -239,6 +300,7 @@ class GudangController extends Controller
         // $gudang->save();
 
         toastr()->success('Gudang Job Order Edited', 'Success');
+>>>>>>> origin
         return redirect()->route('gudang.index');
     }
 

@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Kelengkapan;
+use App\Models\ModuleBrand;
+use App\Models\ModuleType;
 
 use Auth;
 use DataTables;
@@ -14,7 +15,7 @@ use Image;
 use Response;
 use URL;
 
-class KelengkapanController extends Controller
+class ModuleTypeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -23,9 +24,9 @@ class KelengkapanController extends Controller
      */
     public function index()
     {
-        $kelengkapan = Kelengkapan::all();
+        $type = ModuleType::all();
         if (request()->ajax()) {
-            $data = Kelengkapan::latest()->get();
+            $data = ModuleType::latest()->get();
 
             return Datatables::of($data)
                     ->addIndexColumn()
@@ -35,10 +36,13 @@ class KelengkapanController extends Controller
                     ->editColumn('edited_by',function($row){
                         return $row->userEdit->name ?? null;
                     })
+                    ->editColumn('module_brand_uuid', function($row){
+                        return $row->brand->name;
+                    })
                     ->addColumn('action', function($row){
                         return '
-                        <a class="btn btn-success btn-sm btn-icon waves-effect waves-themed" href="'.route('kelengkapan.edit',$row->uuid).'"><i class="fal fa-edit"></i></a>
-                        <a class="btn btn-danger btn-sm btn-icon waves-effect waves-themed delete-btn" data-url="'.URL::route('kelengkapan.destroy',$row->uuid).'" data-id="'.$row->uuid.'" data-token="'.csrf_token().'" data-toggle="modal" data-target="#modal-delete"><i class="fal fa-trash-alt"></i></a>';
+                        <a class="btn btn-success btn-sm btn-icon waves-effect waves-themed" href="'.route('type.edit',$row->uuid).'"><i class="fal fa-edit"></i></a>
+                        <a class="btn btn-danger btn-sm btn-icon waves-effect waves-themed delete-btn" data-url="'.URL::route('type.destroy',$row->uuid).'" data-id="'.$row->uuid.'" data-token="'.csrf_token().'" data-toggle="modal" data-target="#modal-delete"><i class="fal fa-trash-alt"></i></a>';
                  })
             ->removeColumn('id')
             ->removeColumn('uuid')
@@ -46,7 +50,7 @@ class KelengkapanController extends Controller
             ->make(true);
         }
 
-        return view('kelengkapan.index');
+        return view('type.index');
     }
 
     /**
@@ -56,7 +60,8 @@ class KelengkapanController extends Controller
      */
     public function create()
     {
-        return view('kelengkapan.create');
+        $brand = ModuleBrand::all()->pluck('name', 'uuid');
+        return view('type.create', compact('brand'));
     }
 
     /**
@@ -68,7 +73,8 @@ class KelengkapanController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'name' => 'required'
+            'name' => 'required',
+            'module_brand_uuid' => 'required'
         ];
 
         $messages = [
@@ -78,15 +84,16 @@ class KelengkapanController extends Controller
 
         $this->validate($request, $rules, $messages);
 
-        $kelengkapan = new Kelengkapan();
-        $kelengkapan->name = $request->name;
-        $kelengkapan->created_by = Auth::user()->uuid;
+        $type = new ModuleType();
+        $type->name = $request->name;
+        $type->module_brand_uuid = $request->module_brand_uuid;
+        $type->created_by = Auth::user()->uuid;
 
-        $kelengkapan->save();        
+        $type->save();        
 
         
-        toastr()->success('New Kelengkapan Added','Success');
-        return redirect()->route('kelengkapan.index');
+        toastr()->success('New Type Added','Success');
+        return redirect()->route('type.index');
     }
 
     /**
@@ -108,8 +115,9 @@ class KelengkapanController extends Controller
      */
     public function edit($id)
     {
-        $kelengkapan = Kelengkapan::uuid($id);
-        return view('kelengkapan.edit', compact('kelengkapan'));
+        $type = ModuleType::uuid($id);
+        $brand = ModuleBrand::all()->pluck('name', 'uuid');
+        return view('type.edit', compact('type', 'brand'));
     }
 
     /**
@@ -122,7 +130,8 @@ class KelengkapanController extends Controller
     public function update(Request $request, $id)
     {
         $rules = [
-            'name' => 'required'
+            'name' => 'required',
+            'module_brand_uuid' => 'required'
         ];
 
         $messages = [
@@ -132,15 +141,16 @@ class KelengkapanController extends Controller
 
         $this->validate($request, $rules, $messages);
 
-        $kelengkapan = Kelengkapan::uuid($id);
-        $kelengkapan->name = $request->name;
-        $kelengkapan->edited_by = Auth::user()->uuid;
+        $type = ModuleType::uuid($id);
+        $type->name = $request->name;
+        $type->module_brand_uuid = $request->module_brand_uuid;
+        $type->edited_by = Auth::user()->uuid;
 
-        $kelengkapan->save();        
+        $type->save();        
 
         
-        toastr()->success('Kelengkapan Edited','Success');
-        return redirect()->route('kelengkapan.index');
+        toastr()->success('Type Edited','Success');
+        return redirect()->route('type.index');
     }
 
     /**
@@ -151,9 +161,9 @@ class KelengkapanController extends Controller
      */
     public function destroy($id)
     {
-        $kelengkapan = Kelengkapan::uuid($id);
-        $kelengkapan->delete();
-        toastr()->success('Kelengkapan Deleted','Success');
-        return redirect()->route('kelengkapan.index');
+        $type = ModuleType::uuid($id);
+        $type->delete();
+        toastr()->success('Type Deleted','Success');
+        return redirect()->route('type.index');
     }
 }

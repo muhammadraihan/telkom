@@ -1,6 +1,6 @@
 @extends('layouts.page')
 
-@section('title', 'Customer Type Create')
+@section('title', 'Category Create')
 
 @section('css')
 <link rel="stylesheet" media="screen, print" href="{{asset('css/formplugins/select2/select2.bundle.css')}}">
@@ -11,9 +11,9 @@
     <div class="col-xl-6">
         <div id="panel-1" class="panel">
             <div class="panel-hdr">
-                <h2>Add New <span class="fw-300"><i>Customer Type</i></span></h2>
+                <h2>Add New <span class="fw-300"><i>Category</i></span></h2>
                 <div class="panel-toolbar">
-                    <a class="nav-link active" href="{{route('customer_type.index')}}"><i class="fal fa-arrow-alt-left">
+                    <a class="nav-link active" href="{{route('category.index')}}"><i class="fal fa-arrow-alt-left">
                         </i>
                         <span class="nav-link-text">Back</span>
                     </a>
@@ -26,11 +26,11 @@
                     <div class="panel-tag">
                         Form with <code>*</code> can not be empty.
                     </div>
-                    {!! Form::open(['route' => 'customer_type.store','method' => 'POST','class' =>
+                    {!! Form::open(['route' => 'category.store','method' => 'POST','class' =>
                     'needs-validation','novalidate']) !!}
                     <div class="form-group col-md-4 mb-3">
-                        {{ Form::label('name','Nama Customer',['class' => 'required form-label'])}}
-                        {{ Form::text('name',null,['placeholder' => 'Nama Customer','class' => 'form-control '.($errors->has('name') ? 'is-invalid':''),'required', 'autocomplete' => 'off'])}}
+                        {{ Form::label('name','Nama Kategori',['class' => 'required form-label'])}}
+                        {{ Form::text('name',null,['placeholder' => 'Nama Kategori','class' => 'form-control '.($errors->has('name') ? 'is-invalid':''),'required', 'autocomplete' => 'off'])}}
                         @if ($errors->has('name'))
                         <div class="invalid-feedback">{{ $errors->first('name') }}</div>
                         @endif

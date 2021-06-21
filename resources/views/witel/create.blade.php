@@ -1,6 +1,6 @@
 @extends('layouts.page')
 
-@section('title', 'Customer Create')
+@section('title', 'Witel Create')
 
 @section('css')
 <link rel="stylesheet" media="screen, print" href="{{asset('css/formplugins/select2/select2.bundle.css')}}">
@@ -11,9 +11,9 @@
     <div class="col-xl-6">
         <div id="panel-1" class="panel">
             <div class="panel-hdr">
-                <h2>Add New <span class="fw-300"><i>Customer</i></span></h2>
+                <h2>Add New <span class="fw-300"><i>Witel</i></span></h2>
                 <div class="panel-toolbar">
-                    <a class="nav-link active" href="{{route('customer.index')}}"><i class="fal fa-arrow-alt-left">
+                    <a class="nav-link active" href="{{route('witel.index')}}"><i class="fal fa-arrow-alt-left">
                         </i>
                         <span class="nav-link-text">Back</span>
                     </a>
@@ -26,22 +26,13 @@
                     <div class="panel-tag">
                         Form with <code>*</code> can not be empty.
                     </div>
-                    {!! Form::open(['route' => 'customer.store','method' => 'POST','class' =>
+                    {!! Form::open(['route' => 'witel.store','method' => 'POST','class' =>
                     'needs-validation','novalidate']) !!}
                     <div class="form-group col-md-4 mb-3">
-                        {{ Form::label('jenis_pelanggan','Jenis Pelanggan',['class' => 'required form-label'])}}
-                        {!! Form::select('jenis_pelanggan', $customer_type, '', ['class' => 'jenis_pelanggan
-                        form-control'.($errors->has('jenis_pelanggan') ? 'is-invalid':''), 'required'
-                        => '', 'placeholder' => 'Select jenis pelanggan ...']) !!}
-                        @if ($errors->has('jenis_pelanggan'))
-                        <div class="invalid-feedback">{{ $errors->first('jenis_pelanggan') }}</div>
-                        @endif
-                    </div>
-                    <div class="form-group col-md-4 mb-3">
-                        {{ Form::label('nomor_pelanggan','Nomor Pelanggan',['class' => 'required form-label'])}}
-                        {{ Form::text('nomor_pelanggan',null,['placeholder' => 'Nomor Pelanggan','class' => 'form-control '.($errors->has('nomor_pelanggan') ? 'is-invalid':''),'required', 'autocomplete' => 'off'])}}
-                        @if ($errors->has('nomor_pelanggan'))
-                        <div class="invalid-feedback">{{ $errors->first('nomor_pelanggan') }}</div>
+                        {{ Form::label('name','Nama Witel',['class' => 'required form-label'])}}
+                        {{ Form::text('name',null,['placeholder' => 'Nama Witel','class' => 'form-control '.($errors->has('name') ? 'is-invalid':''),'required', 'autocomplete' => 'off'])}}
+                        @if ($errors->has('name'))
+                        <div class="invalid-feedback">{{ $errors->first('name') }}</div>
                         @endif
                     </div>
                 <div
@@ -59,7 +50,7 @@
 <script src="{{asset('js/formplugins/select2/select2.bundle.js')}}"></script>
 <script>
     $(document).ready(function(){
-        $('.jenis_pelanggan').select2();
+        $('.select2').select2();
         
         // Generate a password string
         function randString(){

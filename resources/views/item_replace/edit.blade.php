@@ -4,6 +4,7 @@
 
 @section('css')
 <link rel="stylesheet" media="screen, print" href="{{asset('css/formplugins/select2/select2.bundle.css')}}">
+<link rel="stylesheet" media="screen, print" href="{{asset('css/datagrid/datatables/datatables.bundle.css')}}">
 @endsection
 
 @section('content')
@@ -11,7 +12,7 @@
     <div class="col-xl-6">
         <div id="panel-1" class="panel">
             <div class="panel-hdr">
-            <h2>Edit <span class="fw-300"><i>{{$gudang->repair_item_uuid}}</i></span></h2>
+            <h2>Edit <span class="fw-300"><i>{{$gudang->repairItem->ticket->ticket_number}}</i></span></h2>
                 <div class="panel-toolbar">
                     <a class="nav-link active" href="{{route('itemreplace.index')}}"><i class="fal fa-arrow-alt-left">
                         </i>
@@ -30,7 +31,7 @@
                     'needs-validation','novalidate']) !!}
                     <div class="form-group col-md-4 mb-3">
                         {{ Form::label('item_repair_uuid','Ticket Number',['class' => 'required form-label'])}}
-                        {{ Form::text('item_repair_uuid', $gudang->repair_item_uuid,['placeholder' => 'Ticket Number','class' => 'form-control '.($errors->has('item_repair_uuid') ? 'is-invalid':''),'required', 'autocomplete' => 'off'])}}
+                        {{ Form::text('item_repair_uuid', $gudang->repairItem->ticket->ticket_number,['placeholder' => 'Ticket Number','class' => 'form-control '.($errors->has('item_repair_uuid') ? 'is-invalid':''),'required', 'autocomplete' => 'off', 'disabled'])}}
                         @if ($errors->has('repair_item_uuid'))
                         <div class="invalid-feedback">{{ $errors->first('repair_item_uuid') }}</div>
                         @endif
@@ -43,11 +44,45 @@
                         <div class="invalid-feedback">{{ $errors->first('replace_from') }}</div>
                         @endif
                     </div>
-                    <div id="detailStock" class="form-group col-md-4 mb-3" hidden>
-                        {{ Form::label('item_replace_detail_from_stock','Item replace from stock',['class' => 'required form-label'])}}
-                        <select name="item_replace_detail_from_stock" class="detailStock form-control">
-                        
-                        </select>
+                    <div id="detailBufferStock" class="form-group col-md-20 mb-3" hidden>
+                        <table id="datatable" class="table table-bordered table-hover table-striped w-100">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>No</th>
+                                    <th>Item Type</th>
+                                    <th>Item Merk</th>
+                                    <th>Item Model</th>
+                                    <th>Part Number</th>
+                                    <th>Serial Number</th>
+                                    <th>Barcode</th>
+                                    <th>Kelengkapan</th>
+                                    <th>Buffer Ammount</th>
+                                    <th>Office City</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        @if ($errors->has('item_replace_detail_from_stock'))
+                        <div class="invalid-feedback">{{ $errors->first('item_detail_from_stock') }}</div>
+                        @endif
+                    </div>
+                    <div id="detailStock" class="form-group col-md-20 mb-3" hidden>
+                        <table id="datatable2" class="table table-bordered table-hover table-striped w-100">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>No</th>
+                                    <th>Item Type</th>
+                                    <th>Item Merk</th>
+                                    <th>Item Model</th>
+                                    <th>Part Number</th>
+                                    <th>Serial Number</th>
+                                    <th>Barcode</th>
+                                    <th>Kelengkapan</th>
+                                    <th>Ammount</th>
+                                </tr>
+                            </thead>
+                        </table>
                         @if ($errors->has('item_replace_detail_from_stock'))
                         <div class="invalid-feedback">{{ $errors->first('item_detail_from_stock') }}</div>
                         @endif
@@ -144,6 +179,7 @@
 
 @section('js')
 <script src="{{asset('js/formplugins/select2/select2.bundle.js')}}"></script>
+<script src="{{asset('js/datagrid/datatables/datatables.bundle.js')}}"></script>
 <script>
     $(document).ready(function(){
         $('.replaceFrom').select2();
@@ -151,28 +187,106 @@
 
         $('.replaceFrom').on('change', function(e){
             var detail = $(this).val();
-            $('#detailStock').attr('hidden',true);
+            $('#detailBufferStock').attr('hidden',true);
             $('#detailVendor').attr('hidden',true);
             if(detail == '3'){
-                $.ajax({
-                    url: '{{route('get.detailStock')}}',
-                    type: "GET",
-                    data: {detail: detail},
-                    success: function (response) {
-                        $('#button').attr('hidden',false);
-                        $('#detailStock').attr('hidden',false);
-                            $.each(response, function(key,value){
-                                $(".detailStock").append('<option value="'+ value.uuid +'">'+ value.barcode +'</option>');
-                            });
-                    }
-                });
+                $('#button').attr('hidden',false);
+                $('#detailBufferStock').attr('hidden',false);
+                $('#datatable').DataTable({
+                        "processing": true,
+                        "serverSide": true,
+                        "responsive": true,
+                        "order": [[ 0, "asc" ]],
+                        "columnDefs": [{
+                            // orderable : false,
+                            // className : 'select-checkbox',
+                            // target : 0
+                            "targets":0 ,
+                            "data":"text",
+                            "render":function(data,type,full,meta){
+                                
+                                // console.log(meta);
+                                return `<input type="checkbox" name="bufferstock" value="`+data+`">`;
+                            }
+                        }],
+                        "select" : {
+                            style : 'os',
+                            selector : 'td:first-child'
+                        },
+                        "ajax":{
+                            url:'{{route('get.detailBufferStock')}}',
+                            type : "GET",
+                            data : {detail: detail},
+                            dataType: 'json',
+                            error: function(data){
+                                console.log(data);
+                                }
+                        },
+                        "columns": [
+                            {data: 'uuid', name: 'uuid'},
+                            {data: 'rownum', name: 'rownum'},
+                            {data: 'item_type', name: 'item_type'},
+                            {data: 'item_merk', name: 'item_merk'},
+                            {data: 'item_model', name: 'item_model'},
+                            {data: 'part_number', name: 'part_number'},
+                            {data: 'serial_number', name: 'serial_number'},
+                            {data: 'barcode', name: 'barcode'},
+                            {data: 'kelengkapan', name: 'kelengkapan'},
+                            {data: 'buffer_ammount', name: 'buffer_ammount'},
+                            {data: 'office_city', name: 'office_city'},
+                        ]
+                    });
             }if(detail == '1'){
                 $('#button').attr('hidden',true);
                 $('#detailVendor').attr('hidden',false);
-            }else{
+            }if(detail == '2'){
                 $('#button').attr('hidden',false);
+                $('#detailStock').attr('hidden',false);
+                $('#datatable2').DataTable({
+                        "processing": true,
+                        "serverSide": true,
+                        "responsive": true,
+                        "order": [[ 0, "asc" ]],
+                        "columnDefs": [{
+                            // orderable : false,
+                            // className : 'select-checkbox',
+                            // target : 0
+                            "targets":0 ,
+                            "data":"text",
+                            "render":function(data,type,full,meta){
+                                
+                                // console.log(meta);
+                                return `<input type="checkbox" name="mainstock" value="`+data+`">`;
+                            }
+                        }],
+                        "select" : {
+                            style : 'os',
+                            selector : 'td:first-child'
+                        },
+                        "ajax":{
+                            url:'{{route('get.detailStock')}}',
+                            type : "GET",
+                            data : {detail: detail},
+                            dataType: 'json',
+                            error: function(data){
+                                console.log(data);
+                                }
+                        },
+                        "columns": [
+                            {data: 'uuid', name: 'uuid'},
+                            {data: 'rownum', name: 'rownum'},
+                            {data: 'item_type', name: 'item_type'},
+                            {data: 'item_merk', name: 'item_merk'},
+                            {data: 'item_model', name: 'item_model'},
+                            {data: 'part_number', name: 'part_number'},
+                            {data: 'serial_number', name: 'serial_number'},
+                            {data: 'barcode', name: 'barcode'},
+                            {data: 'kelengkapan', name: 'kelengkapan'},
+                            {data: 'amount', name: 'amount'},
+                        ]
+                    });
             }
-        });
+        }); 
         
         // Generate a password string
         function randString(){

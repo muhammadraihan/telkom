@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Customer;
-use App\Models\Customer_type;
+use App\Models\Unit;
+use App\Models\Witel;
 
 use Auth;
 use DataTables;
@@ -15,7 +15,7 @@ use Image;
 use Response;
 use URL;
 
-class CustomerController extends Controller
+class UnitController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -24,9 +24,9 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        $customer = Customer::all();
+        $unit = Unit::all();
         if (request()->ajax()) {
-            $data = Customer::latest()->get();
+            $data = Unit::latest()->get();
 
             return Datatables::of($data)
                     ->addIndexColumn()
@@ -36,13 +36,13 @@ class CustomerController extends Controller
                     ->editColumn('edited_by',function($row){
                         return $row->userEdit->name ?? null;
                     })
-                    ->editColumn('jenis_pelanggan',function($row){
-                        return $row->customerType->name;
+                    ->editColumn('witel_uuid',function($row){
+                        return $row->witel->name;
                     })
                     ->addColumn('action', function($row){
                         return '
-                        <a class="btn btn-success btn-sm btn-icon waves-effect waves-themed" href="'.route('customer.edit',$row->uuid).'"><i class="fal fa-edit"></i></a>
-                        <a class="btn btn-danger btn-sm btn-icon waves-effect waves-themed delete-btn" data-url="'.URL::route('customer.destroy',$row->uuid).'" data-id="'.$row->uuid.'" data-token="'.csrf_token().'" data-toggle="modal" data-target="#modal-delete"><i class="fal fa-trash-alt"></i></a>';
+                        <a class="btn btn-success btn-sm btn-icon waves-effect waves-themed" href="'.route('unit.edit',$row->uuid).'"><i class="fal fa-edit"></i></a>
+                        <a class="btn btn-danger btn-sm btn-icon waves-effect waves-themed delete-btn" data-url="'.URL::route('unit.destroy',$row->uuid).'" data-id="'.$row->uuid.'" data-token="'.csrf_token().'" data-toggle="modal" data-target="#modal-delete"><i class="fal fa-trash-alt"></i></a>';
                  })
             ->removeColumn('id')
             ->removeColumn('uuid')
@@ -50,7 +50,7 @@ class CustomerController extends Controller
             ->make(true);
         }
 
-        return view('customer.index');
+        return view('unit.index');
     }
 
     /**
@@ -60,8 +60,8 @@ class CustomerController extends Controller
      */
     public function create()
     {
-        $customer_type = Customer_type::all()->pluck('name', 'name');
-        return view('customer.create', compact('customer_type'));
+        $witel = Witel::all()->pluck('name', 'uuid');
+        return view('unit.create', compact('witel'));
     }
 
     /**
@@ -73,8 +73,8 @@ class CustomerController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'jenis_pelanggan' => 'required',
-            'nomor_pelanggan' => 'required'
+            'name' => 'required',
+            'witel_uuid' => 'required'
         ];
 
         $messages = [
@@ -84,16 +84,16 @@ class CustomerController extends Controller
 
         $this->validate($request, $rules, $messages);
 
-        $customer = new Customer();
-        $customer->jenis_pelanggan = $request->jenis_pelanggan;
-        $customer->nomor_pelanggan = $request->nomor_pelanggan;
-        $customer->created_by = Auth::user()->uuid;
+        $unit = new Unit();
+        $unit->name = $request->name;
+        $unit->witel_uuid = $request->witel_uuid;
+        $unit->created_by = Auth::user()->uuid;
 
-        $customer->save();        
+        $unit->save();        
 
         
-        toastr()->success('New Customer Added','Success');
-        return redirect()->route('customer.index');
+        toastr()->success('New Unit Added','Success');
+        return redirect()->route('unit.index');
     }
 
     /**
@@ -115,9 +115,9 @@ class CustomerController extends Controller
      */
     public function edit($id)
     {
-        $customer = Customer::uuid($id);
-        $customer_type = Customer_type::all()->pluck('name', 'name');
-        return view('customer.edit', compact('customer', 'customer_type'));
+        $unit = Unit::uuid($id);
+        $witel = Witel::all()->pluck('name', 'uuid');
+        return view('unit.edit', compact('unit', 'witel'));
     }
 
     /**
@@ -130,8 +130,8 @@ class CustomerController extends Controller
     public function update(Request $request, $id)
     {
         $rules = [
-            'jenis_pelanggan' => 'required',
-            'nomor_pelanggan' => 'required'
+            'name' => 'required',
+            'witel_uuid' => 'required'
         ];
 
         $messages = [
@@ -141,16 +141,16 @@ class CustomerController extends Controller
 
         $this->validate($request, $rules, $messages);
 
-        $customer = Customer::uuid($id);
-        $customer->jenis_pelanggan = $request->jenis_pelanggan;
-        $customer->nomor_pelanggan = $request->nomor_pelanggan;
-        $customer->edited_by = Auth::user()->uuid;
+        $unit = Unit::uuid($id);
+        $unit->name = $request->name;
+        $unit->witel_uuid = $request->witel_uuid;
+        $unit->edited_by = Auth::user()->uuid;
 
-        $customer->save();        
+        $unit->save(); 
 
         
-        toastr()->success('Customer Edited','Success');
-        return redirect()->route('customer.index');
+        toastr()->success('Unit Edited','Success');
+        return redirect()->route('unit.index');
     }
 
     /**
@@ -161,9 +161,9 @@ class CustomerController extends Controller
      */
     public function destroy($id)
     {
-        $customer = Customer::uuid($id);
-        $customer->delete();
-        toastr()->success('Customer Deleted','Success');
-        return redirect()->route('customer.index');
+        $unit = Unit::uuid($id);
+        $unit->delete();
+        toastr()->success('Unit Deleted','Success');
+        return redirect()->route('unit.index');
     }
 }

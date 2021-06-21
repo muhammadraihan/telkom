@@ -169,6 +169,12 @@ class TicketingController extends Controller
         $repair_item->kelengkapan = $request['kelengkapan'];
         $repair_item->kerusakan = $request->kerusakan;
         $repair_item->status_garansi = $request->status_garansi;
+<<<<<<< HEAD
+        if($repair_item->status_garansi == 0){
+            $ticketing->job_status = 2;
+        }else{
+            $ticketing->job_status = 4;
+=======
         /**
          * if item is non warranty send job order to tech for repair
          * if item is warranty send job order to gudang for replace
@@ -181,8 +187,19 @@ class TicketingController extends Controller
             $repair_item->ticket_uuid = $ticketing->uuid;
             $repair_item->created_by = Auth::user()->uuid;
             $repair_item->save();
+>>>>>>> origin
         }
 
+<<<<<<< HEAD
+        if($repair_item->status_garansi == 1){
+            $gudang = new Gudang_job_order();
+            $gudang->repair_item_uuid = $repair_item->uuid;
+            $gudang->item_status = 3;
+            $gudang->keterangan = $ticketing->keterangan;
+            $gudang->item_replace_uuid = $request->item_replace_uuid;
+            $gudang->job_status = 0;
+            $gudang->created_by = Auth::user()->uuid;
+=======
         if ($repair_item->status_garansi == 1) {
             // $gudang = new Gudang_job_order();
             // $gudang->repair_item_uuid = $repair_item->uuid;
@@ -191,6 +208,7 @@ class TicketingController extends Controller
             // $gudang->item_replace_uuid = $request->item_replace_uuid;
             // $gudang->job_status = 0;
             // $gudang->created_by = Auth::user()->uuid;
+>>>>>>> origin
 
             // $gudang->save();
         }
@@ -219,11 +237,16 @@ class TicketingController extends Controller
      */
     public function edit($uuid)
     {
+<<<<<<< HEAD
+        $ticketing = Ticketing::uuid($id);
+        $pelanggan = Customer::all()->pluck('jenis_pelanggan', 'jenis_pelanggan');
+=======
         $ticketing = Ticketing::uuid($uuid);
         $repair_item = Repair_item::where('ticket_uuid', $ticketing->uuid)->first();
         $pelanggan = Customer::all()->pluck('nomor_pelanggan', 'uuid');
+>>>>>>> origin
         $kelengkapan = Kelengkapan::all();
-        return view('ticketing.edit', compact('ticketing', 'kelengkapan', 'pelanggan', 'repair_item'));
+        return view('ticketing.edit', compact('ticketing', 'kelengkapan', 'pelanggan'));
     }
 
     /**
@@ -253,6 +276,16 @@ class TicketingController extends Controller
 
         $this->validate($request, $rules, $messages);
 
+<<<<<<< HEAD
+        $tickteting = Ticketing::uuid($id);
+        $tickteting->uuid_pelanggan = $request->uuid_pelanggan;
+        $tickteting->keterangan = $request->keterangan;
+        $tickteting->ticket_status = 0;
+        $tickteting->job_status = 1;
+        $tickteting->edited_by = Auth::user()->uuid;
+
+        $tickteting->save();  
+=======
         $ticketing = Ticketing::uuid($uuid);
         $ticketing->uuid_pelanggan = $request->uuid_pelanggan;
         $ticketing->edited_by = Auth::user()->uuid;
@@ -268,6 +301,7 @@ class TicketingController extends Controller
         $repair_item->kelengkapan = $request['kelengkapan'];
         $repair_item->kerusakan = $request->kerusakan;
         $repair_item->edited_by = Auth::user()->uuid;
+>>>>>>> origin
 
         $repair_item->save();
 
