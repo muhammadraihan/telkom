@@ -60,8 +60,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{route('witel.index')}}" title="Witel"
-                            data-filter-tags="witel">
+                        <a href="{{route('witel.index')}}" title="Witel" data-filter-tags="witel">
                             <i class="fal fa-users"></i>
                             <span class="nav-link-text" data-i18n="nav.users_managements">Witel</span>
                         </a>
@@ -134,24 +133,10 @@
                 </a>
                 <ul>
                     <li>
-                        <a href="{{route('buffer-stock.index')}}" title="Buffer Stock Managements"
-                            data-filter-tags="buffer stock managements">
-                            <i class="fal fa-suitcase"></i>
-                            <span class="nav-link-text" data-i18n="nav.users_managements">Buffer Stock</span>
-                        </a>
-                    </li>
-                    <li>
                         <a href="{{route('accessory.index')}}" title="accessory Managements"
                             data-filter-tags="accessory managements">
                             <i class="fal fa-clipboard-check"></i>
                             <span class="nav-link-text" data-i18n="nav.users_managements">Accessory</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{route('stock-item.index')}}" title="Stock Item Managements"
-                            data-filter-tags="stock item managements">
-                            <i class="fal fa-list-alt"></i>
-                            <span class="nav-link-text" data-i18n="nav.users_managements">Stock Item</span>
                         </a>
                     </li>
                 </ul>
