@@ -8,11 +8,6 @@ use App\Models\ModuleCategory;
 
 use Auth;
 use DataTables;
-use DB;
-use File;
-use Hash;
-use Image;
-use Response;
 use URL;
 
 class ModuleNameController extends Controller
@@ -29,25 +24,25 @@ class ModuleNameController extends Controller
             $data = ModuleName::get();
 
             return Datatables::of($data)
-                    ->addIndexColumn()
-                    ->editColumn('created_by',function($row){
-                        return $row->userCreate->name;
-                    })
-                    ->editColumn('edited_by',function($row){
-                        return $row->userEdit->name ?? null;
-                    })
-                    ->editColumn('module_category_uuid', function($row){
-                        return $row->category->name;
-                    })
-                    ->addColumn('action', function($row){
-                        return '
-                        <a class="btn btn-success btn-sm btn-icon waves-effect waves-themed" href="'.route('name.edit',$row->uuid).'"><i class="fal fa-edit"></i></a>
-                        <a class="btn btn-danger btn-sm btn-icon waves-effect waves-themed delete-btn" data-url="'.URL::route('name.destroy',$row->uuid).'" data-id="'.$row->uuid.'" data-token="'.csrf_token().'" data-toggle="modal" data-target="#modal-delete"><i class="fal fa-trash-alt"></i></a>';
-                 })
-            ->removeColumn('id')
-            ->removeColumn('uuid')
-            ->rawColumns(['action'])
-            ->make(true);
+                ->addIndexColumn()
+                ->editColumn('created_by', function ($row) {
+                    return $row->userCreate->name;
+                })
+                ->editColumn('edited_by', function ($row) {
+                    return $row->userEdit->name ?? null;
+                })
+                ->editColumn('module_category_uuid', function ($row) {
+                    return $row->category->name;
+                })
+                ->addColumn('action', function ($row) {
+                    return '
+                        <a class="btn btn-success btn-sm btn-icon waves-effect waves-themed" href="' . route('name.edit', $row->uuid) . '"><i class="fal fa-edit"></i></a>
+                        <a class="btn btn-danger btn-sm btn-icon waves-effect waves-themed delete-btn" data-url="' . URL::route('name.destroy', $row->uuid) . '" data-id="' . $row->uuid . '" data-token="' . csrf_token() . '" data-toggle="modal" data-target="#modal-delete"><i class="fal fa-trash-alt"></i></a>';
+                })
+                ->removeColumn('id')
+                ->removeColumn('uuid')
+                ->rawColumns(['action'])
+                ->make(true);
         }
 
         return view('name.index');
@@ -89,10 +84,10 @@ class ModuleNameController extends Controller
         $name->module_category_uuid = $request->module_category_uuid;
         $name->created_by = Auth::user()->uuid;
 
-        $name->save();        
+        $name->save();
 
-        
-        toastr()->success('New Name Added','Success');
+
+        toastr()->success('New Name Added', 'Success');
         return redirect()->route('name.index');
     }
 
@@ -146,10 +141,10 @@ class ModuleNameController extends Controller
         $name->module_category_uuid = $request->module_category_uuid;
         $name->edited_by = Auth::user()->uuid;
 
-        $name->save();        
+        $name->save();
 
-        
-        toastr()->success('Name Edited','Success');
+
+        toastr()->success('Name Edited', 'Success');
         return redirect()->route('name.index');
     }
 
@@ -163,7 +158,15 @@ class ModuleNameController extends Controller
     {
         $name = ModuleName::uuid($id);
         $name->delete();
-        toastr()->success('Name Deleted','Success');
+        toastr()->success('Name Deleted', 'Success');
         return redirect()->route('name.index');
+    }
+
+    public function GetModuleNameByCategory()
+    {
+        if (request()->ajax()) {
+            $module_name = ModuleName::where('module_category_uuid', request('category_uuid'))->pluck('name', 'uuid')->all();
+            return response()->json($module_name);
+        }
     }
 }

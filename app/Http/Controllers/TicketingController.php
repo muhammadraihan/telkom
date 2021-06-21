@@ -2,18 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Accessory;
+use App\Models\ModuleCategory;
+use App\Models\RepairItem;
 use App\Models\Ticketing;
-use App\Models\Customer;
-use App\Models\Repair_item;
-use App\Models\Kelengkapan;
-use App\Models\Gudang_job_order;
-use App\Models\Customer_type;
+use App\Models\Witel;
+use Illuminate\Http\Request;
+
 use Carbon\Carbon;
 
 use Auth;
 use DataTables;
-use DB;
 use URL;
 use Helper;
 
@@ -120,10 +119,10 @@ class TicketingController extends Controller
      */
     public function create()
     {
-        $kelengkapan = Kelengkapan::all();
-        $pelanggan = Customer::all()->pluck('nomor_pelanggan', 'uuid');
-        $customerType = Customer_type::all()->pluck('name', 'uuid');
-        return view('ticketing.create', compact('pelanggan', 'kelengkapan', 'customerType'));
+        $accessories = Accessory::all();
+        $witels = Witel::all()->pluck('name', 'uuid');
+        $module_category = ModuleCategory::all()->pluck('name', 'uuid');
+        return view('ticketing.create', compact('accessories', 'witels', 'module_category'));
     }
 
     /**
@@ -134,16 +133,18 @@ class TicketingController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
         $rules = [
-            'uuid_pelanggan' => 'required',
-            'item_model' => 'required',
-            'item_merk' => 'required',
-            'item_type' => 'required',
+            'unit' => 'required',
+            'module_category' => 'required',
+            'module_name' => 'required',
+            'module_brand' => 'required',
+            'module_type' => 'required',
             'part_number' => 'required',
             'serial_number' => 'required',
-            'barcode' => 'required',
-            'kerusakan' => 'required',
-            'status_garansi' => 'required',
+            'serial_number_msc' => 'required',
+            'warranty_status' => 'required',
+            'urgent_status' => 'required',
         ];
 
         $messages = [
@@ -152,28 +153,33 @@ class TicketingController extends Controller
         ];
 
         $this->validate($request, $rules, $messages);
-        $randomTicket = Helper::GenerateTicketNumber(13);
 
+        // get ticket number
+        $generated_ticket_number = Helper::generateTicketNumber();
+
+        // saving ticket
         $ticketing = new Ticketing();
-        $ticketing->uuid_pelanggan = $request->uuid_pelanggan;
-        $ticketing->ticket_number = 'TKT' . '-' . $randomTicket;
+        $ticketing->uuid_unit = $request->unit;
+        $ticketing->ticket_number = $generated_ticket_number;
         $ticketing->created_by = Auth::user()->uuid;
-
-        $repair_item = new Repair_item();
-        $repair_item->item_model = $request->item_model;
-        $repair_item->item_merk = $request->item_merk;
-        $repair_item->item_type = $request->item_type;
+        $ticketing->urgent_status = $request->urgent_status;
+        // saving repair item detail
+        $repair_item = new RepairItem();
+        $repair_item->module_category_uuid = $request->module_category;
+        $repair_item->module_name_uuid = $request->module_name;
+        $repair_item->module_brand_uuid = $request->module_brand;
+        $repair_item->module_type_uuid = $request->module_type;
         $repair_item->part_number = $request->part_number;
         $repair_item->serial_number = $request->serial_number;
-        $repair_item->barcode = $request->barcode;
-        $repair_item->kelengkapan = $request['kelengkapan'];
-        $repair_item->kerusakan = $request->kerusakan;
-        $repair_item->status_garansi = $request->status_garansi;
+        $repair_item->serial_number_msc = $request->serial_number_msc;
+        $repair_item->accessories = $request['accessories'];
+        $repair_item->warranty_status = $request->warranty_status;
+
         /**
          * if item is non warranty send job order to tech for repair
          * if item is warranty send job order to gudang for replace
          */
-        if ($repair_item->status_garansi == 0) {
+        if ($repair_item->warranty_status == 0) {
             $ticketing->ticket_status = 1;
             $ticketing->job_status = 1;
             $ticketing->save();
@@ -181,18 +187,6 @@ class TicketingController extends Controller
             $repair_item->ticket_uuid = $ticketing->uuid;
             $repair_item->created_by = Auth::user()->uuid;
             $repair_item->save();
-        }
-
-        if ($repair_item->status_garansi == 1) {
-            // $gudang = new Gudang_job_order();
-            // $gudang->repair_item_uuid = $repair_item->uuid;
-            // $gudang->item_status = $ticketing->job_status;
-            // $gudang->keterangan = $ticketing->keterangan;
-            // $gudang->item_replace_uuid = $request->item_replace_uuid;
-            // $gudang->job_status = 0;
-            // $gudang->created_by = Auth::user()->uuid;
-
-            // $gudang->save();
         }
 
         toastr()->success('New Ticketing Added', 'Success');
