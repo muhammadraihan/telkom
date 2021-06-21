@@ -26,7 +26,7 @@ class ModuleBrandController extends Controller
     {
         $brand = ModuleBrand::all();
             if (request()->ajax()) {
-                $data = ModuleBrand::latest()->get();
+                $data = ModuleBrand::get();
 
                 return Datatables::of($data)
                         ->addIndexColumn()

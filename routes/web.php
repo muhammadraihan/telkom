@@ -42,6 +42,7 @@ Route::group(['prefix' => 'backoffice', 'middleware' => ['auth']], function () {
     Route::resource('brand', 'ModuleBrandController');
     Route::resource('type', 'ModuleTypeController');
     Route::resource('stock', 'ModuleStockController');
+    Route::resource('material', 'MaterialController');
     Route::post('customer-save', 'TicketingController@CustomerStore')->name('post.customer');
     // user Profile
     Route::get('profile', 'UserController@profile')->name('profile');

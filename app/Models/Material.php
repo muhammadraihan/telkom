@@ -12,4 +12,58 @@ class Material extends Model
     use HasFactory;
     use Uuid;
     use LogsActivity;
+
+    protected $fillable = [
+        'module_category_uuid', 'module_name_uuid', 'material_type', 'material_description', 'volume', 'available', 'unit_price'
+    ];
+
+
+    protected static $logAttributes = ['*'];
+
+    /**
+     * Logging name
+     *
+     * @var string
+     */
+    protected static $logName = 'material';
+
+    /**
+     * Logging only the changed attributes
+     *
+     * @var boolean
+     */
+    protected static $logOnlyDirty = true;
+
+    /**
+     * Prevent save logs items that have no changed attribute
+     *
+     * @var boolean
+     */
+    protected static $submitEmptyLogs = false;
+
+    /**
+     * Custom logging description
+     *
+     * @param string $eventName
+     * @return string
+     */
+    public function getDescriptionForEvent(string $eventName): string
+    {
+        return "Data has been {$eventName}";
+    }
+
+    public function nameModule()
+    {
+        return $this->belongsTo(ModuleName::class, 'module_name_uuid', 'uuid');
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(ModuleCategory::class, 'module_category_uuid', 'uuid');
+    }
+
+    public function type()
+    {
+        return $this->belongsTo(ModuleType::class, 'material_type', 'uuid');
+    }
 }

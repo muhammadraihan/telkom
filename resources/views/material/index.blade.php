@@ -1,6 +1,6 @@
 @extends('layouts.page')
 
-@section('title', 'Module Brand Management')
+@section('title', 'Material Management')
 
 @section('css')
 <link rel="stylesheet" media="screen, print" href="{{asset('css/datagrid/datatables/datatables.bundle.css')}}">
@@ -9,9 +9,9 @@
 @section('content')
 <div class="subheader">
     <h1 class="subheader-title">
-        <i class='subheader-icon fal fa-users'></i> Module: <span class='fw-300'>Brand</span>
+        <i class='subheader-icon fal fa-users'></i> Module: <span class='fw-300'>Material</span>
         <small>
-            Module for manage Module Brand.
+            Module for manage Material.
         </small>
     </h1>
 </div>
@@ -20,10 +20,10 @@
         <div id="panel-1" class="panel">
             <div class="panel-hdr">
             <h2>
-                    Module Brand <span class="fw-300"><i>List</i></span>
+                    Material <span class="fw-300"><i>List</i></span>
                 </h2>
                 <div class="panel-toolbar">
-                    <a class="nav-link active" href="{{route('brand.create')}}"><i class="fal fa-plus-circle">
+                    <a class="nav-link active" href="{{route('material.create')}}"><i class="fal fa-plus-circle">
                         </i>
                         <span class="nav-link-text">Add New</span>
                     </a>
@@ -39,9 +39,12 @@
             <tr>
                 <th>No</th>
                 <th>Nama Module</th>
-                <th>Nama Brand</th>
-                <th>Created By</th>
-                <th>Edited By</th>
+                <th>Nama Kategori</th>
+                <th>Jenis Material</th>
+                <th>Deskripsi Material</th>
+                <th>Volume</th>
+                <th>Available</th>
+                <th>Harga Satuan</th>
                 <th width="120px">Action</th>
                 </tr>
                         </thead>
@@ -98,7 +101,7 @@
             "responsive": true,
             "order": [[ 0, "asc" ]],
             "ajax":{
-                url:'{{route('brand.index')}}',
+                url:'{{route('material.index')}}',
                 type : "GET",
                 dataType: 'json',
                 error: function(data){
@@ -108,9 +111,12 @@
             "columns": [
             {data: 'DT_RowIndex', name: 'DT_RowIndex'},
             {data: 'module_name_uuid', name: 'module_name_uuid'},
-            {data: 'name', name: 'name'},
-            {data: 'created_by', name: 'created_by'},
-            {data: 'edited_by', name: 'edited_by'},
+            {data: 'module_category_uuid', name: 'module_category_uuid'},
+            {data: 'material_type', name: 'material_type'},
+            {data: 'material_description', name: 'material_description'},
+            {data: 'volume', name: 'volume'},
+            {data: 'available', name: 'available'},
+            {data: 'unit_price', name: 'unit_price'},
             {data: 'action', name: 'action', orderable: false, searchable: false},
         ]
     });
