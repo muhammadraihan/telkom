@@ -30,9 +30,7 @@ Route::group(['prefix' => 'backoffice', 'middleware' => ['auth']], function () {
     Route::resource('users', 'UserController');
     Route::resource('permissions', 'PermissionController');
     Route::resource('roles', 'RoleController');
-    Route::resource('stock-item', 'Stock_itemController');
     Route::resource('accessory', 'AccessoryController');
-    Route::resource('buffer-stock', 'Buffer_stockController');
     Route::resource('unit', 'UnitController');
     Route::resource('witel', 'WitelController');
     Route::resource('ticketing', 'TicketingController');
@@ -44,8 +42,6 @@ Route::group(['prefix' => 'backoffice', 'middleware' => ['auth']], function () {
     Route::resource('brand', 'ModuleBrandController');
     Route::resource('type', 'ModuleTypeController');
     Route::resource('stock', 'ModuleStockController');
-    Route::get('bufferstockdetail', 'Item_replaceController@detailBufferStock')->name('get.detailBufferStock');
-    Route::get('stockdetail', 'Item_replaceController@detailStock')->name('get.detailStock');
     Route::post('customer-save', 'TicketingController@CustomerStore')->name('post.customer');
     // user Profile
     Route::get('profile', 'UserController@profile')->name('profile');
