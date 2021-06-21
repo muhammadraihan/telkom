@@ -127,6 +127,13 @@
                     </li>
                 </ul>
             </li>
+            <li>
+                <a href="{{route('material.index')}}" title="Material Managements"
+                    data-filter-tags="material managements">
+                    <i class="fal fa-retweet"></i>
+                    <span class="nav-link-text" data-i18n="nav.users_managements">Material Management</span>
+                </a>
+            </li>
             <li class="">
                 <a href="#" title="Theme Settings" data-filter-tags="theme settings">
                     <i class="fal fa-list"></i>
@@ -134,24 +141,10 @@
                 </a>
                 <ul>
                     <li>
-                        <a href="{{route('buffer-stock.index')}}" title="Buffer Stock Managements"
-                            data-filter-tags="buffer stock managements">
-                            <i class="fal fa-suitcase"></i>
-                            <span class="nav-link-text" data-i18n="nav.users_managements">Buffer Stock</span>
-                        </a>
-                    </li>
-                    <li>
                         <a href="{{route('accessory.index')}}" title="accessory Managements"
                             data-filter-tags="accessory managements">
                             <i class="fal fa-clipboard-check"></i>
                             <span class="nav-link-text" data-i18n="nav.users_managements">Accessory</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{route('stock-item.index')}}" title="Stock Item Managements"
-                            data-filter-tags="stock item managements">
-                            <i class="fal fa-list-alt"></i>
-                            <span class="nav-link-text" data-i18n="nav.users_managements">Stock Item</span>
                         </a>
                     </li>
                 </ul>
