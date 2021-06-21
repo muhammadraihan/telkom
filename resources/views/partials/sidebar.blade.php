@@ -60,8 +60,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{route('witel.index')}}" title="Witel"
-                            data-filter-tags="witel">
+                        <a href="{{route('witel.index')}}" title="Witel" data-filter-tags="witel">
                             <i class="fal fa-users"></i>
                             <span class="nav-link-text" data-i18n="nav.users_managements">Witel</span>
                         </a>
