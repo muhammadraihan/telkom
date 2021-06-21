@@ -14,7 +14,7 @@
     <div class="col-xl-6">
         <div id="panel-1" class="panel">
             <div class="panel-hdr">
-                <h2>Add/Search<span class="fw-300"><i>Customer</i></span></h2>
+                <h2>Add<span class="fw-300"><i>Customer</i></span></h2>
                 <div class="panel-toolbar">
                     <a class="nav-link active" href="{{route('ticketing.index')}}"><i class="fal fa-arrow-alt-left">
                         </i>
@@ -31,20 +31,24 @@
                     </div>
                     {!! Form::open(['route' => 'ticketing.store','method' => 'POST','class' =>
                     'needs-validation','novalidate']) !!}
-                    <div class="form-group">
-                        {{ Form::label('uuid_pelanggan','Nomor Pelanggan',['class' => 'required form-label'])}}
-                        <div class="input-group">
-                            <div class="input-group-prepend col-md-4">
-                                {!! Form::select('uuid_pelanggan', $pelanggan, '', ['id' => 'pelanggan','class' =>
-                                'form-control'.($errors->has('uuid_pelanggan') ? 'is-invalid':''), 'required'
-                                => '', 'placeholder' => 'Pilih Pelanggan']) !!}
-                            </div>
-                            <button type="button" class="btn btn-primary waves-effect waves-themed" data-toggle="modal"
-                                data-target="#customer-modal">Input Baru</button>
+                    <div class="form-row">
+                        <div class="form-group col-md-3 mb-3">
+                            {{ Form::label('witel','Witel',['class' => 'required form-label'])}}
+                            {!! Form::select('witel', $witels, '', ['id' => 'witel','class' =>
+                            'form-control'.($errors->has('witel') ? 'is-invalid':''), 'required'
+                            => '', 'placeholder' => 'Pilih Witel']) !!}
+                            @if ($errors->has('witel'))
+                            <div class="help-block text-danger">{{ $errors->first('witel') }}</div>
+                            @endif
                         </div>
-                        @if ($errors->has('uuid_pelanggan'))
-                        <div class="help-block text-danger">{{ $errors->first('uuid_pelanggan') }}</div>
-                        @endif
+                        <div class="form-group col-md-3 mb-3">
+                            {{ Form::label('unit','Unit',['class' => 'required form-label'])}}
+                            <select id="unit" class="form-control select2" name="unit">
+                            </select>
+                            @if ($errors->has('unit'))
+                            <div class="help-block text-danger">{{ $errors->first('unit') }}</div>
+                            @endif
+                        </div>
                     </div>
                 </div>
             </div>
@@ -54,7 +58,7 @@
     <div class="col-xl-6">
         <div id="panel-2" class="panel">
             <div class="panel-hdr">
-                <h2>Add<span class="fw-300"><i>Item Data</i></span></h2>
+                <h2>Add<span class="fw-300"><i>Module Data</i></span></h2>
                 <div class="panel-toolbar">
                     <button class="btn btn-panel" data-action="panel-fullscreen" data-toggle="tooltip"
                         data-offset="0,10" data-original-title="Fullscreen"></button>
@@ -66,36 +70,41 @@
                         Form with <code>*</code> can not be empty.
                     </div>
                     <div class="form-row">
-                        <div class="form-group col-md-4 mb-3">
-                            {{ Form::label('item_merk','Item Merk',['class' => 'required form-label'])}}
-                            {{ Form::text('item_merk', '',['placeholder' => 'Item Merk','class' => 'form-control '.($errors->has('item_merk') ? 'is-invalid':''),'required', 'autocomplete' => 'off'])}}
-                            @if ($errors->has('item_merk'))
-                            <div class="invalid-feedback">{{ $errors->first('item_merk') }}</div>
+                        <div class="form-group col-md-3 mb-3">
+                            {{ Form::label('module_category','Module Category',['class' => 'required form-label'])}}
+                            {!! Form::select('module_category', $module_category, '', ['id' =>
+                            'module_category','class' =>
+                            'form-control'.($errors->has('module_category') ? 'is-invalid':''), 'required'
+                            => '', 'placeholder' => 'Pilih Module Category']) !!} @if ($errors->has('module_category'))
+                            <div class="help-block text-danger">{{ $errors->first('module_category') }}</div>
                             @endif
                         </div>
-                        <div class="form-group col-md-4 mb-3">
-                            {{ Form::label('item_type','Item Type',['class' => 'required form-label'])}}
-                            {{ Form::text('item_type', '',['placeholder' => 'Item Type','class' => 'form-control '.($errors->has('item_type') ? 'is-invalid':''),'required', 'autocomplete' => 'off'])}}
-                            @if ($errors->has('item_type'))
-                            <div class="invalid-feedback">{{ $errors->first('item_type') }}</div>
+                        <div class="form-group col-md-3 mb-3">
+                            {{ Form::label('module_name','Module Name',['class' => 'required form-label'])}}
+                            <select id="module_name" class="form-control select2" name="module_name">
+                            </select>
+                            @if ($errors->has('module_name'))
+                            <div class="help-block text-danger">{{ $errors->first('module_name') }}</div>
                             @endif
                         </div>
-                        <div class="form-group col-md-4 mb-3">
-                            {{ Form::label('item_model','Item Model',['class' => 'required form-label'])}}
-                            {{ Form::text('item_model', '',['placeholder' => 'Item Model','class' => 'form-control '.($errors->has('item_model') ? 'is-invalid':''),'required', 'autocomplete' => 'off'])}}
-                            @if ($errors->has('item_model'))
-                            <div class="invalid-feedback">{{ $errors->first('item_model') }}</div>
+                        <div class="form-group col-md-3 mb-3">
+                            {{ Form::label('module_brand','Module Brand',['class' => 'required form-label'])}}
+                            <select id="module_brand" class="form-control select2" name="module_brand">
+                            </select>
+                            @if ($errors->has('module_brand'))
+                            <div class="help-block text-danger">{{ $errors->first('module_brand') }}</div>
+                            @endif
+                        </div>
+                        <div class="form-group col-md-3 mb-3">
+                            {{ Form::label('module_type','Module type',['class' => 'required form-label'])}}
+                            <select id="module_type" class="form-control select2" name="module_type">
+                            </select>
+                            @if ($errors->has('module_type'))
+                            <div class="help-block text-danger">{{ $errors->first('module_type') }}</div>
                             @endif
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="form-group col-md-4 mb-3">
-                            {{ Form::label('serial_number','Serial Number',['class' => 'required form-label'])}}
-                            {{ Form::text('serial_number', '',['placeholder' => 'Serial Number','class' => 'form-control '.($errors->has('serial_number') ? 'is-invalid':''),'required', 'autocomplete' => 'off'])}}
-                            @if ($errors->has('serial_number'))
-                            <div class="invalid-feedback">{{ $errors->first('serial_number') }}</div>
-                            @endif
-                        </div>
                         <div class="form-group col-md-4 mb-3">
                             {{ Form::label('part_number','Part Number',['class' => 'required form-label'])}}
                             {{ Form::text('part_number', '',['placeholder' => 'Part Number','class' => 'form-control '.($errors->has('part_number') ? 'is-invalid':''),'required', 'autocomplete' => 'off'])}}
@@ -104,40 +113,50 @@
                             @endif
                         </div>
                         <div class="form-group col-md-4 mb-3">
-                            {{ Form::label('barcode','Barcode',['class' => 'required form-label'])}}
-                            {{ Form::text('barcode', '',['placeholder' => 'Barcode','class' => 'form-control '.($errors->has('barcode') ? 'is-invalid':''),'required', 'autocomplete' => 'off'])}}
-                            @if ($errors->has('barcode'))
-                            <div class="invalid-feedback">{{ $errors->first('barcode') }}</div>
+                            {{ Form::label('serial_number','Serial Number',['class' => 'required form-label'])}}
+                            {{ Form::text('serial_number', '',['placeholder' => 'Serial Number','class' => 'form-control '.($errors->has('serial_number') ? 'is-invalid':''),'required', 'autocomplete' => 'off'])}}
+                            @if ($errors->has('serial_number'))
+                            <div class="invalid-feedback">{{ $errors->first('serial_number') }}</div>
+                            @endif
+                        </div>
+                        <div class="form-group col-md-4 mb-3">
+                            {{ Form::label('serial_number_msc','Serial Number MSC',['class' => 'required form-label'])}}
+                            {{ Form::text('serial_number_msc', '',['placeholder' => 'Serial Number MSC','class' => 'form-control '.($errors->has('serial_number_msc') ? 'is-invalid':''),'required', 'autocomplete' => 'off'])}}
+                            @if ($errors->has('serial_number_msc'))
+                            <div class="invalid-feedback">{{ $errors->first('serial_number_msc') }}</div>
                             @endif
                         </div>
                     </div>
                     <div class="form-group col-md-12 mb-3">
-                        {{ Form::label('kelengkapan','Kelengkapan',['class' => 'form-label'])}}
+                        {{ Form::label('accessories','Accessories',['class' => 'form-label'])}}
                         <div class="frame-wrap">
-                            @foreach($kelengkapan as $item)
+                            @foreach($accessories as $item)
                             <div class="custom-control custom-checkbox custom-control-inline">
                                 <input type="checkbox" class="custom-control-input" id="{{$item->name}}"
-                                    name="kelengkapan[]" value="{{$item->name}}">
+                                    name="accessories[]" value="{{$item->name}}">
                                 <label class="custom-control-label" for="{{$item->name}}">{{$item->name}}</label>
                             </div>
                             @endforeach
                         </div>
                     </div>
                     <div class="form-group col-md-4 mb-3">
-                        {{ Form::label('status_garansi','Status Garansi',['class' => 'required form-label'])}}
-                        {!! Form::select('status_garansi', array('0' => 'Non Warranty', '1' => 'Warranty'), '',
+                        {{ Form::label('warranty_status','Status Garansi',['class' => 'required form-label'])}}
+                        {!! Form::select('warranty_status', array('0' => 'Non Warranty', '1' => 'Warranty'), '',
                         ['id'=>'garansi','class'
-                        => 'custom-select'.($errors->has('status_garansi') ? 'is-invalid':''), 'required'
+                        => 'custom-select'.($errors->has('warranty_status') ? 'is-invalid':''), 'required'
                         => '', 'placeholder' => 'Select Status garansi ...']) !!}
-                        @if ($errors->has('status_garansi'))
-                        <div class="help-block text-danger">{{ $errors->first('status_garansi') }}</div>
+                        @if ($errors->has('warranty_status'))
+                        <div class="help-block text-danger">{{ $errors->first('warranty_status') }}</div>
                         @endif
                     </div>
                     <div class="form-group col-md-4 mb-3">
-                        {{ Form::label('kerusakan','Kerusakan',['class' => 'required form-label'])}}
-                        {{ Form::textarea('kerusakan', '',['placeholder' => 'Kerusakan','class' => 'form-control '.($errors->has('kerusakan') ? 'is-invalid':''),'required', 'autocomplete' => 'off'])}}
-                        @if ($errors->has('kerusakan'))
-                        <div class="invalid-feedback">{{ $errors->first('kerusakan') }}</div>
+                        {{ Form::label('urgent_status','Status Garansi',['class' => 'required form-label'])}}
+                        {!! Form::select('urgent_status', array('0' => 'Not Urgent', '1' => 'Urgent'), '',
+                        ['id'=>'urgent','class'
+                        => 'custom-select'.($errors->has('urgent_status') ? 'is-invalid':''), 'required'
+                        => '', 'placeholder' => 'Select Status Urgensi ...']) !!}
+                        @if ($errors->has('urgent_status'))
+                        <div class="help-block text-danger">{{ $errors->first('urgent_status') }}</div>
                         @endif
                     </div>
                     <div
@@ -149,77 +168,81 @@
             </div>
         </div>
     </div>
-    <!-- customer add modal start -->
-    <div class="modal fade" id="customer-modal" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">
-                        Add New Customer
-                        <small class="m-0 text-muted">
-                            Form with <code>*</code> can not be empty.
-                        </small>
-                    </h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true"><i class="fal fa-times"></i></span>
-                    </button>
-                </div>
-                {!! Form::open(['route' => 'post.customer','method' => 'POST','class' =>
-                'needs-validation','novalidate']) !!}
-                {{ csrf_field() }}
-                <div class="modal-body">
-                    <div class="form-row">
-                        <div class="form-group col-md-4 mb-3">
-                            {{ Form::label('jenis_pelanggan','Jenis Pelanggan',['class' => 'required form-label'])}}
-                            {!! Form::select('jenis_pelanggan', $customerType, '', ['id' =>
-                            'jenis-pelanggan','class' => 'form-control'.($errors->has('jenis_pelanggan') ?
-                            'is-invalid':''), 'required'
-                            => '', 'placeholder' => 'Jenis pelanggan ...']) !!}
-                            @if ($errors->has('jenis_pelanggan'))
-                            <div class="help-block text-danger">{{ $errors->first('jenis_pelanggan') }}</div>
-                            @endif
-                        </div>
-                        <div class="form-group col-md-4 mb-3">
-                            {{ Form::label('nomor_pelanggan','Nomor Pelanggan',['class' => 'required form-label'])}}
-                            {{ Form::text('nomor_pelanggan',null,['placeholder' => 'Nomor Pelanggan','class' => 'form-control '.($errors->has('nomor_pelanggan') ? 'is-invalid':''),'required'])}}
-                            @if ($errors->has('nomor_pelanggan'))
-                            <div class="invalid-feedback">{{ $errors->first('nomor_pelanggan') }}</div>
-                            @endif
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button id="save-customer" type="submit" class="btn btn-primary">Add New</button>
-                </div>
-                {!! Form::close() !!}
-            </div>
-        </div>
-    </div>
-    <!-- customer add modal end -->
-    @endsection
-    @section('js')
-    <script src="{{asset('js/formplugins/select2/select2.bundle.js')}}"></script>
-    <script>
-        $(document).ready(function(){
-                $('#pelanggan').select2();
-                $('#garansi').select2();
+</div>
+@endsection
+@section('js')
+<script src="{{asset('js/formplugins/select2/select2.bundle.js')}}"></script>
+<script>
+    $(document).ready(function(){
+        $('#witel').select2();
+        $('#garansi').select2();
+        $('#urgent').select2();
+        $('#unit').select2();
+        $('#module_category').select2();
+        $('#module_name').select2();
+        $('#module_brand').select2();
+        $('#module_type').select2();
 
-                // adding select inside modal
-                $('#jenis-pelanggan').select2({
-                    dropdownParent: $("#customer-modal"),
-                });
-                // dismis data when modal close
-                $('#customer-modal').on('hidden.bs.modal', function (e) {
-                    $(this).find("input").val('').end();
-                    $("#jenis-pelanggan").val('').trigger('change')
-                });
-
+        $("#witel").change(function(){
+            var witel_uuid = $(this).val();
+            $.ajax({
+                url:"{{route('getUnit')}}",
+                type: 'GET',
+                data: {witel_uuid:witel_uuid},
+                success: function(e) {
+                    $("#unit").empty();
+                    $("#unit").append('<option value="">Pilih Module Unit</option>');
+                    $.each(e, function(key, value) {
+                        $("#unit").append('<option value="'+ key +'">'+ value +'</option>');
+                    });
+                }
             });
-
-            @if ($errors->has('jenis_pelanggan') || $errors->has('nomor_pelanggan'))
-                $('#customer-modal').modal('show');
-            @endif
-
-    </script>
-    @endsection
+        });
+        $("#module_category").change(function(){
+            var category_uuid = $(this).val();
+            $.ajax({
+                url:"{{route('getModuleName')}}",
+                type: 'GET',
+                data: {category_uuid:category_uuid},
+                success: function(e) {
+                    $("#module_name").empty();
+                    $("#module_name").append('<option value="">Pilih Module Name</option>');
+                    $.each(e, function(key, value) {
+                        $("#module_name").append('<option value="'+ key +'">'+ value +'</option>');
+                    });
+                }
+            });
+        });
+        $("#module_name").change(function(){
+            var name_uuid = $(this).val();
+            $.ajax({
+                url:"{{route('getModuleBrand')}}",
+                type: 'GET',
+                data: {name_uuid:name_uuid},
+                success: function(e) {
+                    $("#module_brand").empty();
+                    $("#module_brand").append('<option value="">Pilih Module Brand</option>');
+                    $.each(e, function(key, value) {
+                        $("#module_brand").append('<option value="'+ key +'">'+ value +'</option>');
+                    });
+                }
+            });
+        });
+        $("#module_brand").change(function(){
+            var brand_uuid = $(this).val();
+            $.ajax({
+                url:"{{route('getModuleType')}}",
+                type: 'GET',
+                data: {brand_uuid:brand_uuid},
+                success: function(e) {
+                    $("#module_type").empty();
+                    $("#module_type").append('<option value="">Pilih Module Type</option>');
+                    $.each(e, function(key, value) {
+                        $("#module_type").append('<option value="'+ key +'">'+ value +'</option>');
+                    });
+                }
+            });
+        });
+    });
+</script>
+@endsection
