@@ -1,6 +1,6 @@
 @extends('layouts.page')
 
-@section('title', 'Buffer Stock Create')
+@section('title', 'Module Name Edit')
 
 @section('css')
 <link rel="stylesheet" media="screen, print" href="{{asset('css/formplugins/select2/select2.bundle.css')}}">
@@ -11,9 +11,9 @@
     <div class="col-xl-6">
         <div id="panel-1" class="panel">
             <div class="panel-hdr">
-                <h2>Add New <span class="fw-300"><i>Buffer Stock</i></span></h2>
+            <h2>Edit <span class="fw-300"><i>{{$name->name}}</i></span></h2>
                 <div class="panel-toolbar">
-                    <a class="nav-link active" href="{{route('buffer-stock.index')}}"><i class="fal fa-arrow-alt-left">
+                    <a class="nav-link active" href="{{route('name.index')}}"><i class="fal fa-arrow-alt-left">
                         </i>
                         <span class="nav-link-text">Back</span>
                     </a>
@@ -26,34 +26,24 @@
                     <div class="panel-tag">
                         Form with <code>*</code> can not be empty.
                     </div>
-                    {!! Form::open(['route' => 'buffer-stock.store','method' => 'POST','class' =>
+                    {!! Form::open(['route' => ['name.update',$name->uuid],'method' => 'PUT','class' =>
                     'needs-validation','novalidate']) !!}
                     <div class="form-group col-md-4 mb-3">
-                        {{ Form::label('stock_item_uuid','Serial Number',['class' => 'required form-label'])}}
-                        {!! Form::select('stock_item_uuid', $stock_item, '', ['class' => 'stock_item
-                        form-control'.($errors->has('stock_item_uuid') ? 'is-invalid':''), 'required'
-                        => '', 'placeholder' => 'Select serial number ...']) !!}
-                        @if ($errors->has('stock_item_uuid'))
-                        <div class="invalid-feedback">{{ $errors->first('stock_item_uuid') }}</div>
+                        {{ Form::label('module_category_uuid','Nama Kategori',['class' => 'required form-label'])}}
+                        {!! Form::select('module_category_uuid', $category, $name->module_category_uuid, ['class' => 'category
+                        form-control'.($errors->has('module_category_uuid') ? 'is-invalid':''), 'required'
+                        => '', 'placeholder' => 'Select Nama Kategori ...']) !!}
+                        @if ($errors->has('module_category_uuid'))
+                        <div class="invalid-feedback">{{ $errors->first('module_category_uuid') }}</div>
                         @endif
                     </div>
                     <div class="form-group col-md-4 mb-3">
-                        {{ Form::label('buffer_ammount','Buffer Ammount',['class' => 'required form-label'])}}
-                        {{ Form::text('buffer_ammount',null,['placeholder' => 'Buffer Amount','class' => 'form-control '.($errors->has('buffer_ammount') ? 'is-invalid':''),'required', 'autocomplete' => 'off'])}}
-                        @if ($errors->has('buffer_ammount'))
-                        <div class="invalid-feedback">{{ $errors->first('buffer_ammount') }}</div>
+                        {{ Form::label('name','Nama Module',['class' => 'required form-label'])}}
+                        {{ Form::text('name', $name->name,['placeholder' => 'Nama Module','class' => 'form-control '.($errors->has('name') ? 'is-invalid':''),'required', 'autocomplete' => 'off'])}}
+                        @if ($errors->has('name'))
+                        <div class="invalid-feedback">{{ $errors->first('name') }}</div>
                         @endif
                     </div>
-                    <div class="form-group col-md-4 mb-3">
-                        {{ Form::label('office_city','Office City',['class' => 'required form-label'])}}
-                        {!! Form::select('office_city', $kota, '', ['class' => 'office_city
-                        form-control'.($errors->has('office_city') ? 'is-invalid':''), 'required'
-                        => '', 'placeholder' => 'Select office city ...']) !!}
-                        @if ($errors->has('office_city'))
-                        <div class="invalid-feedback">{{ $errors->first('office_city') }}</div>
-                        @endif
-                    </div>
-                    
                 <div
                     class="panel-content border-faded border-left-0 border-right-0 border-bottom-0 d-flex flex-row align-items-center">
                     <button class="btn btn-primary ml-auto" type="submit">Submit</button>
@@ -69,8 +59,7 @@
 <script src="{{asset('js/formplugins/select2/select2.bundle.js')}}"></script>
 <script>
     $(document).ready(function(){
-        $('.stock_item').select2();
-        $('.office_city').select2();
+        $('.category').select2();
         
         // Generate a password string
         function randString(){
@@ -88,6 +77,17 @@
         $(".getNewPass").click(function(){
             var field = $('#password').closest('div').find('input[name="password"]');
             field.val(randString(field));
+        });
+
+        //Enable input and button change password
+        $('#enablePassChange').click(function() {
+            if ($(this).is(':checked')) {
+                $('#passwordForm').attr('disabled',false); //enable input
+                $('#getNewPass').attr('disabled',false); //enable button
+            } else {
+                    $('#passwordForm').attr('disabled', true); //disable input
+                    $('#getNewPass').attr('disabled', true); //disable button
+            }
         });
     });
 </script>

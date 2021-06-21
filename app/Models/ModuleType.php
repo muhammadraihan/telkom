@@ -60,4 +60,9 @@ class ModuleType extends Model
     {
         return $this->belongsTo(User::class, 'edited_by', 'uuid');
     }
+
+    public function brand()
+    {
+        return $this->belongsTo(ModuleBrand::class, 'module_brand_uuid', 'uuid');
+    }
 }

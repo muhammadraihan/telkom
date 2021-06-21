@@ -14,7 +14,7 @@ class ModuleName extends Model
     use LogsActivity;
 
     protected $fillable = [
-        'name', 'category_uuid', 'created_by', 'edited_by'
+        'name', 'module_category_uuid', 'created_by', 'edited_by'
     ];
 
     protected static $logAttributes = ['*'];
@@ -59,5 +59,10 @@ class ModuleName extends Model
     public function userEdit()
     {
         return $this->belongsTo(User::class, 'edited_by', 'uuid');
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(ModuleCategory::class, 'module_category_uuid', 'uuid');
     }
 }

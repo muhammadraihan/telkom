@@ -1,6 +1,6 @@
 @extends('layouts.page')
 
-@section('title', 'Customer Management')
+@section('title', 'Category Management')
 
 @section('css')
 <link rel="stylesheet" media="screen, print" href="{{asset('css/datagrid/datatables/datatables.bundle.css')}}">
@@ -9,9 +9,9 @@
 @section('content')
 <div class="subheader">
     <h1 class="subheader-title">
-        <i class='subheader-icon fal fa-users'></i> Module: <span class='fw-300'>Customer</span>
+        <i class='subheader-icon fal fa-users'></i> Module: <span class='fw-300'>Category</span>
         <small>
-            Module for manage Customer.
+            Module for manage Category.
         </small>
     </h1>
 </div>
@@ -20,10 +20,10 @@
         <div id="panel-1" class="panel">
             <div class="panel-hdr">
             <h2>
-                    Customer <span class="fw-300"><i>List</i></span>
+                    Category <span class="fw-300"><i>List</i></span>
                 </h2>
                 <div class="panel-toolbar">
-                    <a class="nav-link active" href="{{route('customer.create')}}"><i class="fal fa-plus-circle">
+                    <a class="nav-link active" href="{{route('category.create')}}"><i class="fal fa-plus-circle">
                         </i>
                         <span class="nav-link-text">Add New</span>
                     </a>
@@ -38,8 +38,7 @@
         <thead>
             <tr>
                 <th>No</th>
-                <th>Jenis Pelanggan</th>
-                <th>Nomor Pelanggan</th>
+                <th>Nama Kategori</th>
                 <th>Created By</th>
                 <th>Edited By</th>
                 <th width="120px">Action</th>
@@ -98,7 +97,7 @@
             "responsive": true,
             "order": [[ 0, "asc" ]],
             "ajax":{
-                url:'{{route('customer.index')}}',
+                url:'{{route('category.index')}}',
                 type : "GET",
                 dataType: 'json',
                 error: function(data){
@@ -107,8 +106,7 @@
             },
             "columns": [
             {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-            {data: 'jenis_pelanggan', name: 'jenis_pelanggan'},
-            {data: 'nomor_pelanggan', name: 'nomor_pelanggan'},
+            {data: 'name', name: 'name'},
             {data: 'created_by', name: 'created_by'},
             {data: 'edited_by', name: 'edited_by'},
             {data: 'action', name: 'action', orderable: false, searchable: false},

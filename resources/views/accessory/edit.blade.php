@@ -1,6 +1,6 @@
 @extends('layouts.page')
 
-@section('title', 'Kelengkapan Edit')
+@section('title', 'Accessory Edit')
 
 @section('css')
 <link rel="stylesheet" media="screen, print" href="{{asset('css/formplugins/select2/select2.bundle.css')}}">
@@ -11,9 +11,9 @@
     <div class="col-xl-6">
         <div id="panel-1" class="panel">
             <div class="panel-hdr">
-            <h2>Edit <span class="fw-300"><i>{{$kelengkapan->name}}</i></span></h2>
+            <h2>Edit <span class="fw-300"><i>{{$accessory->name}}</i></span></h2>
                 <div class="panel-toolbar">
-                    <a class="nav-link active" href="{{route('kelengkapan.index')}}"><i class="fal fa-arrow-alt-left">
+                    <a class="nav-link active" href="{{route('accessory.index')}}"><i class="fal fa-arrow-alt-left">
                         </i>
                         <span class="nav-link-text">Back</span>
                     </a>
@@ -26,11 +26,11 @@
                     <div class="panel-tag">
                         Form with <code>*</code> can not be empty.
                     </div>
-                    {!! Form::open(['route' => ['kelengkapan.update',$kelengkapan->uuid],'method' => 'PUT','class' =>
+                    {!! Form::open(['route' => ['accessory.update',$accessory->uuid],'method' => 'PUT','class' =>
                     'needs-validation','novalidate']) !!}
                     <div class="form-group col-md-4 mb-3">
-                        {{ Form::label('name','Nama Kelengkapan',['class' => 'required form-label'])}}
-                        {{ Form::text('name',$kelengkapan->name,['placeholder' => 'Nama Kelengkapan','class' => 'form-control '.($errors->has('name') ? 'is-invalid':''),'required', 'autocomplete' => 'off'])}}
+                        {{ Form::label('name','Nama Aksesoris',['class' => 'required form-label'])}}
+                        {{ Form::text('name',$accessory->name,['placeholder' => 'Nama Aksesoris','class' => 'form-control '.($errors->has('name') ? 'is-invalid':''),'required', 'autocomplete' => 'off'])}}
                         @if ($errors->has('name'))
                         <div class="invalid-feedback">{{ $errors->first('name') }}</div>
                         @endif

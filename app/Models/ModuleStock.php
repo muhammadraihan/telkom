@@ -60,4 +60,24 @@ class ModuleStock extends Model
     {
         return $this->belongsTo(User::class, 'edited_by', 'uuid');
     }
+
+    public function category()
+    {
+        return $this->belongsTo(ModuleCategory::class, 'module_category_uuid', 'uuid');
+    }
+
+    public function nameModule()
+    {
+        return $this->belongsTo(ModuleName::class, 'module_name_uuid', 'uuid');
+    }
+
+    public function brand()
+    {
+        return $this->belongsTo(ModuleBrand::class, 'module_brand_uuid', 'uuid');
+    }
+
+    public function type()
+    {
+        return $this->belongsTo(ModuleType::class, 'module_type_uuid', 'uuid');
+    }
 }

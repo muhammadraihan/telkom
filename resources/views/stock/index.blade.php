@@ -1,6 +1,6 @@
 @extends('layouts.page')
 
-@section('title', 'Buffer Stock Management')
+@section('title', 'Module Stock Management')
 
 @section('css')
 <link rel="stylesheet" media="screen, print" href="{{asset('css/datagrid/datatables/datatables.bundle.css')}}">
@@ -9,9 +9,9 @@
 @section('content')
 <div class="subheader">
     <h1 class="subheader-title">
-        <i class='subheader-icon fal fa-users'></i> Module: <span class='fw-300'>Buffer Stock</span>
+        <i class='subheader-icon fal fa-users'></i> Module: <span class='fw-300'>Stock</span>
         <small>
-            Module for manage Buffer Stock.
+            Module for manage Module Stock.
         </small>
     </h1>
 </div>
@@ -20,10 +20,10 @@
         <div id="panel-1" class="panel">
             <div class="panel-hdr">
             <h2>
-                    Buffer Stock <span class="fw-300"><i>List</i></span>
+                    Module Stock <span class="fw-300"><i>List</i></span>
                 </h2>
                 <div class="panel-toolbar">
-                    <a class="nav-link active" href="{{route('buffer-stock.create')}}"><i class="fal fa-plus-circle">
+                    <a class="nav-link active" href="{{route('stock.create')}}"><i class="fal fa-plus-circle">
                         </i>
                         <span class="nav-link-text">Add New</span>
                     </a>
@@ -38,9 +38,11 @@
         <thead>
             <tr>
                 <th>No</th>
-                <th>Stock Item</th>
-                <th>Buffer Ammount</th>
-                <th>Office City</th>
+                <th>Nama Kategori</th>
+                <th>Nama Module</th>
+                <th>Nama Brand</th>
+                <th>Nama Type</th>
+                <th>Available</th>
                 <th>Created By</th>
                 <th>Edited By</th>
                 <th width="120px">Action</th>
@@ -99,7 +101,7 @@
             "responsive": true,
             "order": [[ 0, "asc" ]],
             "ajax":{
-                url:'{{route('buffer-stock.index')}}',
+                url:'{{route('stock.index')}}',
                 type : "GET",
                 dataType: 'json',
                 error: function(data){
@@ -108,9 +110,11 @@
             },
             "columns": [
             {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-            {data: 'stock_item_uuid', name: 'stock_item_uuid'},
-            {data: 'buffer_ammount', name: 'buffer_ammount'},
-            {data: 'office_city', name: 'office_city'},
+            {data: 'module_category_uuid', name: 'module_category_uuid'},
+            {data: 'module_name_uuid', name: 'module_name_uuid'},
+            {data: 'module_brand_uuid', name: 'module_brand_uuid'},
+            {data: 'module_type_uuid', name: 'module_type_uuid'},
+            {data: 'available', name: 'available'},
             {data: 'created_by', name: 'created_by'},
             {data: 'edited_by', name: 'edited_by'},
             {data: 'action', name: 'action', orderable: false, searchable: false},

@@ -1,6 +1,6 @@
 @extends('layouts.page')
 
-@section('title', 'Customer Edit')
+@section('title', 'Module Type Edit')
 
 @section('css')
 <link rel="stylesheet" media="screen, print" href="{{asset('css/formplugins/select2/select2.bundle.css')}}">
@@ -11,9 +11,9 @@
     <div class="col-xl-6">
         <div id="panel-1" class="panel">
             <div class="panel-hdr">
-            <h2>Edit <span class="fw-300"><i>{{$customer->nomor_pelanggan}}</i></span></h2>
+            <h2>Edit <span class="fw-300"><i>{{$type->name}}</i></span></h2>
                 <div class="panel-toolbar">
-                    <a class="nav-link active" href="{{route('customer.index')}}"><i class="fal fa-arrow-alt-left">
+                    <a class="nav-link active" href="{{route('type.index')}}"><i class="fal fa-arrow-alt-left">
                         </i>
                         <span class="nav-link-text">Back</span>
                     </a>
@@ -26,22 +26,22 @@
                     <div class="panel-tag">
                         Form with <code>*</code> can not be empty.
                     </div>
-                    {!! Form::open(['route' => ['customer.update',$customer->uuid],'method' => 'PUT','class' =>
+                    {!! Form::open(['route' => ['type.update',$type->uuid],'method' => 'PUT','class' =>
                     'needs-validation','novalidate']) !!}
                     <div class="form-group col-md-4 mb-3">
-                        {{ Form::label('jenis_pelanggan','Jenis Pelanggan',['class' => 'required form-label'])}}
-                        {!! Form::select('jenis_pelanggan', $customer_type, $customer->jenis_pelanggan, ['class' => 'jenis_pelanggan
-                        form-control'.($errors->has('jenis_pelanggan') ? 'is-invalid':''), 'required'
-                        => '', 'placeholder' => 'Select jenis pelanggan ...']) !!}
-                        @if ($errors->has('jenis_pelanggan'))
-                        <div class="invalid-feedback">{{ $errors->first('jenis_pelanggan') }}</div>
+                        {{ Form::label('module_brand_uuid','Nama Brand',['class' => 'required form-label'])}}
+                        {!! Form::select('module_brand_uuid', $brand, $type->module_brand_uuid, ['class' => 'brand
+                        form-control'.($errors->has('module_category_uuid') ? 'is-invalid':''), 'required'
+                        => '', 'placeholder' => 'Select Nama Brand ...']) !!}
+                        @if ($errors->has('module_brand_uuid'))
+                        <div class="invalid-feedback">{{ $errors->first('module_brand_uuid') }}</div>
                         @endif
                     </div>
                     <div class="form-group col-md-4 mb-3">
-                        {{ Form::label('nomor_pelanggan','Nomor Pelanggan',['class' => 'required form-label'])}}
-                        {{ Form::text('nomor_pelanggan', $customer->nomor_pelanggan,['placeholder' => 'Nomor Pelanggan','class' => 'form-control '.($errors->has('nomor_pelanggan') ? 'is-invalid':''),'required', 'autocomplete' => 'off'])}}
-                        @if ($errors->has('nomor_pelanggan'))
-                        <div class="invalid-feedback">{{ $errors->first('nomor_pelanggan') }}</div>
+                        {{ Form::label('name','Nama Type',['class' => 'required form-label'])}}
+                        {{ Form::text('name', $type->name,['placeholder' => 'Nama Type','class' => 'form-control '.($errors->has('name') ? 'is-invalid':''),'required', 'autocomplete' => 'off'])}}
+                        @if ($errors->has('name'))
+                        <div class="invalid-feedback">{{ $errors->first('name') }}</div>
                         @endif
                     </div>
                 <div
@@ -59,7 +59,7 @@
 <script src="{{asset('js/formplugins/select2/select2.bundle.js')}}"></script>
 <script>
     $(document).ready(function(){
-        $('.jenis_pelanggan').select2();
+        $('.brand').select2();
         
         // Generate a password string
         function randString(){
