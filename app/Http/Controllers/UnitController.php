@@ -166,4 +166,12 @@ class UnitController extends Controller
         toastr()->success('Unit Deleted', 'Success');
         return redirect()->route('unit.index');
     }
+
+    public function GetUnitByWitel()
+    {
+        if (request()->ajax()) {
+            $units = Unit::where('witel_uuid', request('witel_uuid'))->pluck('name', 'uuid')->all();
+            return response()->json($units);
+        }
+    }
 }

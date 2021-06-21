@@ -29,25 +29,25 @@ class ModuleTypeController extends Controller
             $data = ModuleType::get();
 
             return Datatables::of($data)
-                    ->addIndexColumn()
-                    ->editColumn('created_by',function($row){
-                        return $row->userCreate->name;
-                    })
-                    ->editColumn('edited_by',function($row){
-                        return $row->userEdit->name ?? null;
-                    })
-                    ->editColumn('module_brand_uuid', function($row){
-                        return $row->brand->name;
-                    })
-                    ->addColumn('action', function($row){
-                        return '
-                        <a class="btn btn-success btn-sm btn-icon waves-effect waves-themed" href="'.route('type.edit',$row->uuid).'"><i class="fal fa-edit"></i></a>
-                        <a class="btn btn-danger btn-sm btn-icon waves-effect waves-themed delete-btn" data-url="'.URL::route('type.destroy',$row->uuid).'" data-id="'.$row->uuid.'" data-token="'.csrf_token().'" data-toggle="modal" data-target="#modal-delete"><i class="fal fa-trash-alt"></i></a>';
-                 })
-            ->removeColumn('id')
-            ->removeColumn('uuid')
-            ->rawColumns(['action'])
-            ->make(true);
+                ->addIndexColumn()
+                ->editColumn('created_by', function ($row) {
+                    return $row->userCreate->name;
+                })
+                ->editColumn('edited_by', function ($row) {
+                    return $row->userEdit->name ?? null;
+                })
+                ->editColumn('module_brand_uuid', function ($row) {
+                    return $row->brand->name;
+                })
+                ->addColumn('action', function ($row) {
+                    return '
+                        <a class="btn btn-success btn-sm btn-icon waves-effect waves-themed" href="' . route('type.edit', $row->uuid) . '"><i class="fal fa-edit"></i></a>
+                        <a class="btn btn-danger btn-sm btn-icon waves-effect waves-themed delete-btn" data-url="' . URL::route('type.destroy', $row->uuid) . '" data-id="' . $row->uuid . '" data-token="' . csrf_token() . '" data-toggle="modal" data-target="#modal-delete"><i class="fal fa-trash-alt"></i></a>';
+                })
+                ->removeColumn('id')
+                ->removeColumn('uuid')
+                ->rawColumns(['action'])
+                ->make(true);
         }
 
         return view('type.index');
@@ -89,10 +89,10 @@ class ModuleTypeController extends Controller
         $type->module_brand_uuid = $request->module_brand_uuid;
         $type->created_by = Auth::user()->uuid;
 
-        $type->save();        
+        $type->save();
 
-        
-        toastr()->success('New Type Added','Success');
+
+        toastr()->success('New Type Added', 'Success');
         return redirect()->route('type.index');
     }
 
@@ -146,10 +146,10 @@ class ModuleTypeController extends Controller
         $type->module_brand_uuid = $request->module_brand_uuid;
         $type->edited_by = Auth::user()->uuid;
 
-        $type->save();        
+        $type->save();
 
-        
-        toastr()->success('Type Edited','Success');
+
+        toastr()->success('Type Edited', 'Success');
         return redirect()->route('type.index');
     }
 
@@ -163,7 +163,15 @@ class ModuleTypeController extends Controller
     {
         $type = ModuleType::uuid($id);
         $type->delete();
-        toastr()->success('Type Deleted','Success');
+        toastr()->success('Type Deleted', 'Success');
         return redirect()->route('type.index');
+    }
+
+    public function GetModuleTypeByBrand()
+    {
+        if (request()->ajax()) {
+            $module_type = ModuleType::where('module_brand_uuid', request('brand_uuid'))->pluck('name', 'uuid')->all();
+            return response()->json($module_type);
+        }
     }
 }
