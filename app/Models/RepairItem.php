@@ -69,4 +69,24 @@ class RepairItem extends Model
     {
         return $this->belongsTo(Ticketing::class, 'ticket_uuid', 'uuid');
     }
+
+    public function ModuleCategory()
+    {
+        return $this->belongsTo(ModuleCategory::class, 'module_category_uuid', 'uuid');
+    }
+
+    public function ModuleName()
+    {
+        return $this->belongsTo(ModuleName::class, 'module_name_uuid', 'uuid');
+    }
+
+    public function ModuleBrand()
+    {
+        return $this->belongsTo(ModuleBrand::class, 'module_brand_uuid', 'uuid');
+    }
+
+    public function ModuleType()
+    {
+        return $this->belongsTo(ModuleType::class, 'module_type_uuid', 'uuid');
+    }
 }
