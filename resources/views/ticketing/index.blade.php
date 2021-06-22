@@ -38,13 +38,15 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Pelanggan</th>
+                                <th>Witel</th>
+                                <th>Unit</th>
                                 <th>Nomor Tiket</th>
                                 <th>Tiket Status</th>
                                 <th>Job Status</th>
+                                <th>Urgent Status</th>
                                 <th>Issued At</th>
                                 <th>Issuer</th>
-                                <th>Keterangan</th>
+                                <th>Note</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -102,13 +104,15 @@
             },
             "columns": [
             {data: 'DT_RowIndex'},
-            {data: 'uuid_pelanggan'},
+            {data: 'witel'},
+            {data: 'uuid_unit'},
             {data: 'ticket_number'},
             {data: 'ticket_status'},
             {data: 'job_status'},
+            {data: 'urgent_status'},
             {data: 'created_at'},
             {data: 'created_by'},
-            {data: 'keterangan'},
+            {data: 'note'},
             {data: 'action', name: 'action', orderable: false, searchable: false},
         ]
     });
