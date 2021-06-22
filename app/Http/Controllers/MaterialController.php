@@ -38,9 +38,6 @@ class MaterialController extends Controller
                         ->editColumn('module_category_uuid', function($row){
                             return $row->category->name;
                         })
-                        ->editColumn('material_type', function($row){
-                            return $row->type->name;
-                        })
                         ->editColumn('volume', function($row){
                             switch ($row->volume) {
                                 case '1':
@@ -76,9 +73,7 @@ class MaterialController extends Controller
     public function create()
     {
         $category = ModuleCategory::all()->pluck('name', 'uuid');
-        $name = ModuleName::all()->pluck('name', 'uuid');
-        $type = ModuleType::all()->pluck('name', 'uuid');
-        return view('material.create', compact('category', 'name', 'type'));
+        return view('material.create', compact('category'));
     }
 
     /**
@@ -90,7 +85,7 @@ class MaterialController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'module_name_uuid' => 'required',
+            'module_name' => 'required',
             'module_category_uuid' => 'required',
             'material_type' => 'required',
             'material_description' => 'required',
@@ -111,7 +106,7 @@ class MaterialController extends Controller
 
         $material = new Material();
         $material->module_category_uuid = $request->module_category_uuid;
-        $material->module_name_uuid = $request->module_name_uuid;
+        $material->module_name_uuid = $request->module_name;
         $material->material_type = $request->material_type;
         $material->material_description = $request->material_description;
         $material->volume = $request->volume;
@@ -145,10 +140,8 @@ class MaterialController extends Controller
     public function edit($id)
     {
         $category = ModuleCategory::all()->pluck('name', 'uuid');
-        $name = ModuleName::all()->pluck('name', 'uuid');
-        $type = ModuleType::all()->pluck('name', 'uuid');
         $material = Material::uuid($id);
-        return view('material.edit', compact('category', 'name', 'type', 'material'));
+        return view('material.edit', compact('category','material'));
     }
 
     /**
@@ -161,7 +154,7 @@ class MaterialController extends Controller
     public function update(Request $request, $id)
     {
         $rules = [
-            'module_name_uuid' => 'required',
+            'module_name' => 'required',
             'module_category_uuid' => 'required',
             'material_type' => 'required',
             'material_description' => 'required',
@@ -182,7 +175,7 @@ class MaterialController extends Controller
 
         $material = Material::uuid($id);
         $material->module_category_uuid = $request->module_category_uuid;
-        $material->module_name_uuid = $request->module_name_uuid;
+        $material->module_name_uuid = $request->module_name;
         $material->material_type = $request->material_type;
         $material->material_description = $request->material_description;
         $material->volume = $request->volume;

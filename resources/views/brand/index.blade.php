@@ -38,6 +38,7 @@
         <thead>
             <tr>
                 <th>No</th>
+                <th>Module Category</th>
                 <th>Nama Module</th>
                 <th>Nama Brand</th>
                 <th>Created By</th>
@@ -107,6 +108,7 @@
             },
             "columns": [
             {data: 'DT_RowIndex', name: 'DT_RowIndex'},
+            {data: 'module_category_uuid', name:'module_category_uuid'},
             {data: 'module_name_uuid', name: 'module_name_uuid'},
             {data: 'name', name: 'name'},
             {data: 'created_by', name: 'created_by'},

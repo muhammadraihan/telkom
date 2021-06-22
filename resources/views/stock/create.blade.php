@@ -28,41 +28,40 @@
                     </div>
                     {!! Form::open(['route' => 'stock.store','method' => 'POST','class' =>
                     'needs-validation','novalidate']) !!}
-                    <div class="form-group col-md-4 mb-3">
-                        {{ Form::label('module_category_uuid','Nama Kategori',['class' => 'required form-label'])}}
-                        {!! Form::select('module_category_uuid', $category, '', ['class' => 'category
+                    <div class="form-row">
+                    <div class="form-group col-md-3 mb-3">
+                        {{ Form::label('module_category_uuid','Module Category',['class' => 'required form-label'])}}
+                        {!! Form::select('module_category_uuid', $category, '', ['id' => 'module_category','class' => 'category
                         form-control'.($errors->has('module_category_uuid') ? 'is-invalid':''), 'required'
-                        => '', 'placeholder' => 'Select Nama Kategori ...']) !!}
+                        => '', 'placeholder' => 'Select Module Category ...']) !!}
                         @if ($errors->has('module_category_uuid'))
                         <div class="invalid-feedback">{{ $errors->first('module_category_uuid') }}</div>
                         @endif
                     </div>
-                    <div class="form-group col-md-4 mb-3">
-                        {{ Form::label('module_name_uuid','Nama Module',['class' => 'required form-label'])}}
-                        {!! Form::select('module_name_uuid', $name, '', ['class' => 'name
-                        form-control'.($errors->has('module_name_uuid') ? 'is-invalid':''), 'required'
-                        => '', 'placeholder' => 'Select Nama Module ...']) !!}
-                        @if ($errors->has('module_name_uuid'))
-                        <div class="invalid-feedback">{{ $errors->first('module_name_uuid') }}</div>
+                    <div class="form-group col-md-3 mb-3">
+                        {{ Form::label('module_name','Module Name',['class' => 'required form-label'])}}
+                        <select id="module_name" class="name form-control select2" name="module_name">
+                        </select>
+                        @if ($errors->has('module_name'))
+                        <div class="help-block text-danger">{{ $errors->first('module_name') }}</div>
                         @endif
                     </div>
-                    <div class="form-group col-md-4 mb-3">
-                        {{ Form::label('module_brand_uuid','Nama Brand',['class' => 'required form-label'])}}
-                        {!! Form::select('module_brand_uuid', $brand, '', ['class' => 'brand
-                        form-control'.($errors->has('module_brand_uuid') ? 'is-invalid':''), 'required'
-                        => '', 'placeholder' => 'Select Nama Brand ...']) !!}
-                        @if ($errors->has('module_brand_uuid'))
-                        <div class="invalid-feedback">{{ $errors->first('module_brand_uuid') }}</div>
+                    <div class="form-group col-md-3 mb-3">
+                        {{ Form::label('module_brand','Module Brand',['class' => 'required form-label'])}}
+                        <select id="module_brand" class="brand form-control select2" name="module_brand">
+                        </select>
+                        @if ($errors->has('module_brand'))
+                        <div class="help-block text-danger">{{ $errors->first('module_brand') }}</div>
                         @endif
                     </div>
-                    <div class="form-group col-md-4 mb-3">
-                        {{ Form::label('module_type_uuid','Nama Type',['class' => 'required form-label'])}}
-                        {!! Form::select('module_type_uuid', $type, '', ['class' => 'type
-                        form-control'.($errors->has('module_type_uuid') ? 'is-invalid':''), 'required'
-                        => '', 'placeholder' => 'Select Nama Type ...']) !!}
-                        @if ($errors->has('module_type_uuid'))
-                        <div class="invalid-feedback">{{ $errors->first('module_type_uuid') }}</div>
+                    <div class="form-group col-md-3 mb-3">
+                        {{ Form::label('module_type','Module type',['class' => 'required form-label'])}}
+                        <select id="module_type" class="type form-control select2" name="module_type">
+                        </select>
+                        @if ($errors->has('module_type'))
+                        <div class="help-block text-danger">{{ $errors->first('module_type') }}</div>
                         @endif
+                    </div>
                     </div>
                     <div class="form-group col-md-4 mb-3">
                         {{ Form::label('available','Available',['class' => 'required form-label'])}}
@@ -90,6 +89,55 @@
         $('.brand').select2();
         $('.name').select2();
         $('.type').select2();
+
+        $("#module_category").change(function(){
+            var category_uuid = $(this).val();
+            $.ajax({
+                url:"{{route('getModuleName')}}",
+                type: 'GET',
+                data: {category_uuid:category_uuid},
+                success: function(e) {
+                    $("#module_name").empty();
+                    $("#module_brand").empty();
+                    $("#module_type").empty();
+                    $("#module_name").append('<option value="">Pilih Module Name</option>');
+                    $.each(e, function(key, value) {
+                        $("#module_name").append('<option value="'+ key +'">'+ value +'</option>');
+                    });
+                }
+            });
+        });
+        $("#module_name").change(function(){
+            var name_uuid = $(this).val();
+            $.ajax({
+                url:"{{route('getModuleBrand')}}",
+                type: 'GET',
+                data: {name_uuid:name_uuid},
+                success: function(e) {
+                    $("#module_brand").empty();
+                    $("#module_type").empty();
+                    $("#module_brand").append('<option value="">Pilih Module Brand</option>');
+                    $.each(e, function(key, value) {
+                        $("#module_brand").append('<option value="'+ key +'">'+ value +'</option>');
+                    });
+                }
+            });
+        });
+        $("#module_brand").change(function(){
+            var brand_uuid = $(this).val();
+            $.ajax({
+                url:"{{route('getModuleType')}}",
+                type: 'GET',
+                data: {brand_uuid:brand_uuid},
+                success: function(e) {
+                    $("#module_type").empty();
+                    $("#module_type").append('<option value="">Pilih Module Type</option>');
+                    $.each(e, function(key, value) {
+                        $("#module_type").append('<option value="'+ key +'">'+ value +'</option>');
+                    });
+                }
+            });
+        });
         
         // Generate a password string
         function randString(){
