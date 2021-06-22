@@ -27,6 +27,10 @@ Route::group(['prefix' => 'backoffice', 'middleware' => ['auth']], function () {
     Route::get('dashboard', 'DashboardController@dashboard')->name('backoffice.dashboard');
     Route::get('logs', 'ActivityController@index')->name('logs');
     Route::get('teknisi/history', 'TeknisiController@history')->name('teknisi.history');
+    Route::get('getUnit', 'UnitController@GetUnitByWitel')->name('getUnit');
+    Route::get('getModuleName', 'ModuleNameController@GetModuleNameByCategory')->name('getModuleName');
+    Route::get('getModuleBrand', 'ModuleBrandController@GetModuleBrandByName')->name('getModuleBrand');
+    Route::get('getModuleType', 'ModuleTypeController@GetModuleTypeByBrand')->name('getModuleType');
     Route::resource('users', 'UserController');
     Route::resource('permissions', 'PermissionController');
     Route::resource('roles', 'RoleController');
