@@ -38,8 +38,8 @@
         <thead>
             <tr>
                 <th>No</th>
-                <th>Nama Module</th>
-                <th>Nama Kategori</th>
+                <th>Module Category</th>
+                <th>Module Name</th>
                 <th>Jenis Material</th>
                 <th>Deskripsi Material</th>
                 <th>Volume</th>
@@ -110,8 +110,8 @@
             },
             "columns": [
             {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-            {data: 'module_name_uuid', name: 'module_name_uuid'},
             {data: 'module_category_uuid', name: 'module_category_uuid'},
+            {data: 'module_name_uuid', name: 'module_name_uuid'},
             {data: 'material_type', name: 'material_type'},
             {data: 'material_description', name: 'material_description'},
             {data: 'volume', name: 'volume'},

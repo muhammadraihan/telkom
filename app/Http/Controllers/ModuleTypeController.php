@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\ModuleCategory;
+use App\Models\ModuleName;
 use App\Models\ModuleBrand;
 use App\Models\ModuleType;
 
@@ -36,6 +38,12 @@ class ModuleTypeController extends Controller
                 ->editColumn('edited_by', function ($row) {
                     return $row->userEdit->name ?? null;
                 })
+                ->editColumn('module_category_uuid', function ($row) {
+                    return $row->category->name;
+                })
+                ->editColumn('module_name_uuid', function ($row) {
+                    return $row->nameModule->name;
+                })
                 ->editColumn('module_brand_uuid', function ($row) {
                     return $row->brand->name;
                 })
@@ -60,8 +68,9 @@ class ModuleTypeController extends Controller
      */
     public function create()
     {
-        $brand = ModuleBrand::all()->pluck('name', 'uuid');
-        return view('type.create', compact('brand'));
+        
+        $category = ModuleCategory::all()->pluck('name', 'uuid');
+        return view('type.create', compact('category'));
     }
 
     /**
@@ -74,7 +83,9 @@ class ModuleTypeController extends Controller
     {
         $rules = [
             'name' => 'required',
-            'module_brand_uuid' => 'required'
+            'module_name' => 'required',
+            'module_brand' => 'required',
+            'module_category_uuid' => 'required'
         ];
 
         $messages = [
@@ -86,7 +97,9 @@ class ModuleTypeController extends Controller
 
         $type = new ModuleType();
         $type->name = $request->name;
-        $type->module_brand_uuid = $request->module_brand_uuid;
+        $type->module_category_uuid = $request->module_category_uuid;
+        $type->module_name_uuid = $request->module_name;
+        $type->module_brand_uuid = $request->module_brand;
         $type->created_by = Auth::user()->uuid;
 
         $type->save();
@@ -116,8 +129,8 @@ class ModuleTypeController extends Controller
     public function edit($id)
     {
         $type = ModuleType::uuid($id);
-        $brand = ModuleBrand::all()->pluck('name', 'uuid');
-        return view('type.edit', compact('type', 'brand'));
+        $category = ModuleCategory::all()->pluck('name', 'uuid');
+        return view('type.edit', compact('type', 'category'));
     }
 
     /**
@@ -131,7 +144,9 @@ class ModuleTypeController extends Controller
     {
         $rules = [
             'name' => 'required',
-            'module_brand_uuid' => 'required'
+            'module_name' => 'required',
+            'module_brand' => 'required',
+            'module_category_uuid' => 'required'
         ];
 
         $messages = [
@@ -143,7 +158,9 @@ class ModuleTypeController extends Controller
 
         $type = ModuleType::uuid($id);
         $type->name = $request->name;
-        $type->module_brand_uuid = $request->module_brand_uuid;
+        $type->module_category_uuid = $request->module_category_uuid;
+        $type->module_name_uuid = $request->module_name;
+        $type->module_brand_uuid = $request->module_brand;
         $type->edited_by = Auth::user()->uuid;
 
         $type->save();

@@ -28,14 +28,25 @@
                     </div>
                     {!! Form::open(['route' => ['brand.update',$brand->uuid],'method' => 'PUT','class' =>
                     'needs-validation','novalidate']) !!}
-                    <div class="form-group col-md-4 mb-3">
-                        {{ Form::label('module_name_uuid','Nama Module',['class' => 'required form-label'])}}
-                        {!! Form::select('module_name_uuid', $name, $brand->module_name_uuid, ['class' => 'name
-                        form-control'.($errors->has('module_name_uuid') ? 'is-invalid':''), 'required'
-                        => '', 'placeholder' => 'Select Nama Module ...']) !!}
-                        @if ($errors->has('module_name_uuid'))
-                        <div class="invalid-feedback">{{ $errors->first('module_name_uuid') }}</div>
+                    <div class="form-row">
+                    <div class="form-group col-md-6 mb-3">
+                        {{ Form::label('module_category_uuid','Module Category',['class' => 'required form-label'])}}
+                        {!! Form::select('module_category_uuid', $category, $brand->module_category_uuid, ['id' => 'module_category','class' => 'category
+                        form-control'.($errors->has('module_category_uuid') ? 'is-invalid':''), 'required'
+                        => '', 'placeholder' => 'Select Module Category ...']) !!}
+                        @if ($errors->has('module_category_uuid'))
+                        <div class="invalid-feedback">{{ $errors->first('module_category_uuid') }}</div>
                         @endif
+                    </div>
+                    <div class="form-group col-md-6 mb-3">
+                        {{ Form::label('module_name','Module Name',['class' => 'required form-label'])}}
+                        <select id="module_name" class="name form-control" name="module_name">
+                            <option value="{{$brand->nameModule->uuid}}">{{$brand->nameModule->name}}
+                        </select>
+                        @if ($errors->has('module_name'))
+                        <div class="help-block text-danger">{{ $errors->first('module_name') }}</div>
+                        @endif
+                    </div>
                     </div>
                     <div class="form-group col-md-4 mb-3">
                         {{ Form::label('name','Nama Brand',['class' => 'required form-label'])}}
@@ -59,7 +70,25 @@
 <script src="{{asset('js/formplugins/select2/select2.bundle.js')}}"></script>
 <script>
     $(document).ready(function(){
+        $('.name').select2();
         $('.category').select2();
+
+
+        $("#module_category").change(function(){
+            var category_uuid = $(this).val();
+            $.ajax({
+                url:"{{route('getModuleName')}}",
+                type: 'GET',
+                data: {category_uuid:category_uuid},
+                success: function(e) {
+                    $("#module_name").empty();
+                    $("#module_name").append('<option value="">Pilih Module Name</option>');
+                    $.each(e, function(key, value) {
+                        $("#module_name").append('<option value="'+ key +'">'+ value +'</option>');
+                    });
+                }
+            });
+        });
         
         // Generate a password string
         function randString(){

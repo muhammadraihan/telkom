@@ -61,9 +61,4 @@ class Material extends Model
     {
         return $this->belongsTo(ModuleCategory::class, 'module_category_uuid', 'uuid');
     }
-
-    public function type()
-    {
-        return $this->belongsTo(ModuleType::class, 'material_type', 'uuid');
-    }
 }
