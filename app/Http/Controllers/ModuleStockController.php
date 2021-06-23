@@ -73,10 +73,7 @@ class ModuleStockController extends Controller
     public function create()
     {
         $category = ModuleCategory::all()->pluck('name', 'uuid');
-        $name = ModuleName::all()->pluck('name', 'uuid');
-        $brand = ModuleBrand::all()->pluck('name', 'uuid');
-        $type = ModuleType::all()->pluck('name', 'uuid');
-        return view('stock.create', compact('category','name','brand','type'));
+        return view('stock.create', compact('category'));
     }
 
     /**
@@ -89,9 +86,9 @@ class ModuleStockController extends Controller
     {
         $rules = [
             'module_category_uuid' => 'required',
-            'module_name_uuid' => 'required',
-            'module_brand_uuid' => 'required',
-            'module_type_uuid' => 'required',
+            'module_name' => 'required',
+            'module_brand' => 'required',
+            'module_type' => 'required',
             'available' => 'required'
         ];
 
@@ -104,9 +101,9 @@ class ModuleStockController extends Controller
 
         $stock = new ModuleStock();
         $stock->module_category_uuid = $request->module_category_uuid;
-        $stock->module_name_uuid = $request->module_name_uuid;
-        $stock->module_brand_uuid = $request->module_brand_uuid;
-        $stock->module_type_uuid = $request->module_type_uuid;
+        $stock->module_name_uuid = $request->module_name;
+        $stock->module_brand_uuid = $request->module_brand;
+        $stock->module_type_uuid = $request->module_type;
         $stock->available = $request->available;
         $stock->created_by = Auth::user()->uuid;
 
@@ -137,11 +134,8 @@ class ModuleStockController extends Controller
     public function edit($id)
     {
         $category = ModuleCategory::all()->pluck('name', 'uuid');
-        $name = ModuleName::all()->pluck('name', 'uuid');
-        $brand = ModuleBrand::all()->pluck('name', 'uuid');
-        $type = ModuleType::all()->pluck('name', 'uuid');
         $stock = ModuleStock::uuid($id);
-        return view('stock.edit', compact('category','name','brand','type','stock'));
+        return view('stock.edit', compact('category','stock'));
     }
 
     /**
@@ -155,9 +149,9 @@ class ModuleStockController extends Controller
     {
         $rules = [
             'module_category_uuid' => 'required',
-            'module_name_uuid' => 'required',
-            'module_brand_uuid' => 'required',
-            'module_type_uuid' => 'required',
+            'module_name' => 'required',
+            'module_brand' => 'required',
+            'module_type' => 'required',
             'available' => 'required'
         ];
 
@@ -170,9 +164,9 @@ class ModuleStockController extends Controller
 
         $stock = ModuleStock::uuid($id);
         $stock->module_category_uuid = $request->module_category_uuid;
-        $stock->module_name_uuid = $request->module_name_uuid;
-        $stock->module_brand_uuid = $request->module_brand_uuid;
-        $stock->module_type_uuid = $request->module_type_uuid;
+        $stock->module_name_uuid = $request->module_name;
+        $stock->module_brand_uuid = $request->module_brand;
+        $stock->module_type_uuid = $request->module_type;
         $stock->available = $request->available;
         $stock->edited_by = Auth::user()->uuid;
 

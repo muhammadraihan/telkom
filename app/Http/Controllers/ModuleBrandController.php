@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\ModuleName;
 use App\Models\ModuleBrand;
+use App\Models\ModuleCategory;
 
 use Auth;
 use DataTables;
@@ -34,6 +35,9 @@ class ModuleBrandController extends Controller
                 ->editColumn('module_name_uuid', function ($row) {
                     return $row->nameModule->name;
                 })
+                ->editColumn('module_category_uuid', function($row){
+                    return $row->category->name;
+                })
                 ->addColumn('action', function ($row) {
                     return '
                             <a class="btn btn-success btn-sm btn-icon waves-effect waves-themed" href="' . route('brand.edit', $row->uuid) . '"><i class="fal fa-edit"></i></a>
@@ -55,8 +59,8 @@ class ModuleBrandController extends Controller
      */
     public function create()
     {
-        $name = ModuleName::all()->pluck('name', 'uuid');
-        return view('brand.create', compact('name'));
+        $category = ModuleCategory::all()->pluck('name', 'uuid');
+        return view('brand.create', compact('category'));
     }
 
     /**
@@ -69,7 +73,8 @@ class ModuleBrandController extends Controller
     {
         $rules = [
             'name' => 'required',
-            'module_name_uuid' => 'required'
+            'module_name' => 'required',
+            'module_category_uuid' => 'required'
         ];
 
         $messages = [
@@ -78,10 +83,11 @@ class ModuleBrandController extends Controller
         ];
 
         $this->validate($request, $rules, $messages);
-
+        // dd($request->all());
         $brand = new ModuleBrand();
         $brand->name = $request->name;
-        $brand->module_name_uuid = $request->module_name_uuid;
+        $brand->module_name_uuid = $request->module_name;
+        $brand->module_category_uuid = $request->module_category_uuid;
         $brand->created_by = Auth::user()->uuid;
 
         $brand->save();
@@ -111,8 +117,8 @@ class ModuleBrandController extends Controller
     public function edit($id)
     {
         $brand = ModuleBrand::uuid($id);
-        $name = ModuleName::all()->pluck('name', 'uuid');
-        return view('brand.edit', compact('brand', 'name'));
+        $category = ModuleCategory::all()->pluck('name', 'uuid');
+        return view('brand.edit', compact('brand', 'category'));
     }
 
     /**
@@ -126,7 +132,8 @@ class ModuleBrandController extends Controller
     {
         $rules = [
             'name' => 'required',
-            'module_name_uuid' => 'required'
+            'module_name' => 'required',
+            'module_category_uuid' => 'required'
         ];
 
         $messages = [
@@ -138,7 +145,8 @@ class ModuleBrandController extends Controller
 
         $brand = ModuleBrand::uuid($id);
         $brand->name = $request->name;
-        $brand->module_name_uuid = $request->module_name_uuid;
+        $brand->module_name_uuid = $request->module_name;
+        $brand->module_category_uuid = $request->module_category_uuid;
         $brand->edited_by = Auth::user()->uuid;
 
         $brand->save();
