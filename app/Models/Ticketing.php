@@ -60,4 +60,9 @@ class Ticketing extends Model
     {
         return $this->belongsTo(User::class, 'edited_by', 'uuid');
     }
+
+    public function unit()
+    {
+        return $this->belongsTo(Unit::class, 'uuid_unit', 'uuid');
+    }
 }
