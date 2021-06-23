@@ -35,8 +35,8 @@ class ModuleBrandController extends Controller
                 ->editColumn('module_name_uuid', function ($row) {
                     return $row->nameModule->name;
                 })
-                ->editColumn('module_category_uuid', function($row){
-                    return $row->category->name;
+                ->addColumn('module_category_uuid', function($row){
+                    return $row->nameModule->category->name;
                 })
                 ->addColumn('action', function ($row) {
                     return '
@@ -73,8 +73,7 @@ class ModuleBrandController extends Controller
     {
         $rules = [
             'name' => 'required',
-            'module_name' => 'required',
-            'module_category_uuid' => 'required'
+            'module_name' => 'required'
         ];
 
         $messages = [
@@ -87,7 +86,6 @@ class ModuleBrandController extends Controller
         $brand = new ModuleBrand();
         $brand->name = $request->name;
         $brand->module_name_uuid = $request->module_name;
-        $brand->module_category_uuid = $request->module_category_uuid;
         $brand->created_by = Auth::user()->uuid;
 
         $brand->save();
@@ -132,8 +130,7 @@ class ModuleBrandController extends Controller
     {
         $rules = [
             'name' => 'required',
-            'module_name' => 'required',
-            'module_category_uuid' => 'required'
+            'module_name' => 'required'
         ];
 
         $messages = [
@@ -146,7 +143,6 @@ class ModuleBrandController extends Controller
         $brand = ModuleBrand::uuid($id);
         $brand->name = $request->name;
         $brand->module_name_uuid = $request->module_name;
-        $brand->module_category_uuid = $request->module_category_uuid;
         $brand->edited_by = Auth::user()->uuid;
 
         $brand->save();

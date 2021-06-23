@@ -14,7 +14,7 @@ class ModuleType extends Model
     use LogsActivity;
 
     protected $fillable = [
-        'name', 'module_category_uuid', 'module_name_uuid','module_brand_uuid', 'created_by', 'edited_by'
+        'name', 'module_brand_uuid', 'created_by', 'edited_by'
     ];
 
     protected static $logAttributes = ['*'];
@@ -64,15 +64,5 @@ class ModuleType extends Model
     public function brand()
     {
         return $this->belongsTo(ModuleBrand::class, 'module_brand_uuid', 'uuid');
-    }
-
-    public function nameModule()
-    {
-        return $this->belongsTo(ModuleName::class, 'module_name_uuid', 'uuid');
-    }
-
-    public function category()
-    {
-        return $this->belongsTo(ModuleCategory::class, 'module_category_uuid', 'uuid');
     }
 }
