@@ -31,7 +31,7 @@
                     <div class="form-row">
                     <div class="form-group col-md-3 mb-3">
                         {{ Form::label('module_category_uuid','Module Category',['class' => 'required form-label'])}}
-                        {!! Form::select('module_category_uuid', $category, '', ['id' => 'module_category','class' => 'category
+                        {!! Form::select('module_category_uuid', $category, $stock->module_category_uuid, ['id' => 'module_category','class' => 'category
                         form-control'.($errors->has('module_category_uuid') ? 'is-invalid':''), 'required'
                         => '', 'placeholder' => 'Select Module Category ...']) !!}
                         @if ($errors->has('module_category_uuid'))

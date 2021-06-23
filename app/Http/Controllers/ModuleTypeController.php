@@ -38,11 +38,11 @@ class ModuleTypeController extends Controller
                 ->editColumn('edited_by', function ($row) {
                     return $row->userEdit->name ?? null;
                 })
-                ->editColumn('module_category_uuid', function ($row) {
-                    return $row->category->name;
+                ->addColumn('module_category_uuid', function ($row) {
+                    return $row->brand->nameModule->category->name;
                 })
-                ->editColumn('module_name_uuid', function ($row) {
-                    return $row->nameModule->name;
+                ->addColumn('module_name_uuid', function ($row) {
+                    return $row->brand->nameModule->name;
                 })
                 ->editColumn('module_brand_uuid', function ($row) {
                     return $row->brand->name;
@@ -68,7 +68,6 @@ class ModuleTypeController extends Controller
      */
     public function create()
     {
-        
         $category = ModuleCategory::all()->pluck('name', 'uuid');
         return view('type.create', compact('category'));
     }
@@ -83,9 +82,7 @@ class ModuleTypeController extends Controller
     {
         $rules = [
             'name' => 'required',
-            'module_name' => 'required',
-            'module_brand' => 'required',
-            'module_category_uuid' => 'required'
+            'module_brand' => 'required'
         ];
 
         $messages = [
@@ -97,8 +94,6 @@ class ModuleTypeController extends Controller
 
         $type = new ModuleType();
         $type->name = $request->name;
-        $type->module_category_uuid = $request->module_category_uuid;
-        $type->module_name_uuid = $request->module_name;
         $type->module_brand_uuid = $request->module_brand;
         $type->created_by = Auth::user()->uuid;
 
@@ -144,9 +139,7 @@ class ModuleTypeController extends Controller
     {
         $rules = [
             'name' => 'required',
-            'module_name' => 'required',
-            'module_brand' => 'required',
-            'module_category_uuid' => 'required'
+            'module_brand' => 'required'
         ];
 
         $messages = [
@@ -158,8 +151,6 @@ class ModuleTypeController extends Controller
 
         $type = ModuleType::uuid($id);
         $type->name = $request->name;
-        $type->module_category_uuid = $request->module_category_uuid;
-        $type->module_name_uuid = $request->module_name;
         $type->module_brand_uuid = $request->module_brand;
         $type->edited_by = Auth::user()->uuid;
 
