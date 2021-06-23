@@ -6,6 +6,7 @@ use App\Models\Accessory;
 use App\Models\ModuleCategory;
 use App\Models\RepairItem;
 use App\Models\Ticketing;
+use App\Models\Unit;
 use App\Models\Witel;
 use Illuminate\Http\Request;
 
@@ -29,25 +30,29 @@ class TicketingController extends Controller
             $tickets = Ticketing::select(
                 'id',
                 'uuid',
-                'uuid_pelanggan',
+                'uuid_unit',
                 'ticket_number',
-                'keterangan',
                 'ticket_status',
                 'job_status',
+                'urgent_status',
+                'note',
                 'created_by',
                 'created_at',
             )->latest()->get();
 
             return Datatables::of($tickets)
                 ->addIndexColumn()
+                ->addColumn('witel', function ($row) {
+                    return $row->unit->witel->name;
+                })
+                ->editColumn('uuid_unit', function ($row) {
+                    return $row->unit->name;
+                })
                 ->editColumn('created_by', function ($row) {
                     return $row->userCreate->name;
                 })
                 ->editColumn('created_at', function ($row) {
                     return Carbon::parse($row->created_at)->translatedFormat('l\\, j F Y H:i:s');
-                })
-                ->editColumn('uuid_pelanggan', function ($row) {
-                    return $row->customer->nomor_pelanggan ?? null;
                 })
                 ->editColumn('ticket_status', function ($row) {
                     switch ($row->ticket_status) {
@@ -80,7 +85,7 @@ class TicketingController extends Controller
                             return '<span class="badge badge-warning">Butuh klaim garansi</span>';
                             break;
                         case '4':
-                            return '<span class="badge badge-warning">Butuh penggantian barang</span>';
+                            return '<span class="badge badge-warning">Proses penggantian module</span>';
                             break;
                         case '5':
                             return '<span class="badge badge-info">Dalam perbaikan oleh vendor</span>';
@@ -99,16 +104,28 @@ class TicketingController extends Controller
                             break;
                     }
                 })
+                ->editColumn('urgent_status', function ($row) {
+                    switch ($row->urgent_status) {
+                        case 0:
+                            return '<span class="badge badge-success">Not Urgent</span>';
+                            break;
+                        case 0:
+                            return '<span class="badge badge-danger">Urgent</span>';
+                            break;
+                        default:
+                            return '<span class="badge badge-dark">Status Unknown</span>';
+                            break;
+                    }
+                })
                 ->addColumn('action', function ($row) {
-                    return '<a class="btn btn-info btn-sm btn-icon waves-effect waves-themed" data-toggle="modal" id="detail-button" data-target="#detail-modal" data-attr="' . URL::route('ticketing.show', $row->uuid) . '" title="Detail Barang" href=""><i class="fal fa-search-plus"></i></a>
+                    return '<a class="btn btn-info btn-sm btn-icon waves-effect waves-themed" data-toggle="modal" id="detail-button" data-target="#detail-modal" data-attr="' . URL::route('ticketing.show', $row->uuid) . '" title="Detail Module" href=""><i class="fal fa-search-plus"></i></a>
                     <a class="btn btn-success btn-sm btn-icon waves-effect waves-themed" href="' . route('ticketing.edit', $row->uuid) . '" title="Edit Tiket"><i class="fal fa-edit"></i></a>';
                 })
                 ->removeColumn('id')
                 ->removeColumn('uuid')
-                ->rawColumns(['action', 'ticket_status', 'job_status'])
+                ->rawColumns(['action', 'ticket_status', 'job_status', 'urgent_status'])
                 ->make();
         }
-
         return view('ticketing.index');
     }
 
@@ -133,8 +150,8 @@ class TicketingController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
         $rules = [
+            'witel' => 'required',
             'unit' => 'required',
             'module_category' => 'required',
             'module_name' => 'required',
@@ -201,7 +218,7 @@ class TicketingController extends Controller
      */
     public function show($uuid)
     {
-        $repair_item = Repair_item::where('ticket_uuid', $uuid)->first();
+        $repair_item = RepairItem::where('ticket_uuid', $uuid)->first();
         return view('ticketing.show', compact('repair_item'));
     }
 
@@ -214,10 +231,11 @@ class TicketingController extends Controller
     public function edit($uuid)
     {
         $ticketing = Ticketing::uuid($uuid);
-        $repair_item = Repair_item::where('ticket_uuid', $ticketing->uuid)->first();
-        $pelanggan = Customer::all()->pluck('nomor_pelanggan', 'uuid');
-        $kelengkapan = Kelengkapan::all();
-        return view('ticketing.edit', compact('ticketing', 'kelengkapan', 'pelanggan'));
+        $repair_item = RepairItem::where('ticket_uuid', $ticketing->uuid)->first();
+        $module_category = ModuleCategory::all()->pluck('name', 'uuid');
+        $witels = Witel::all();
+        $accessories = Accessory::all();
+        return view('ticketing.edit', compact('ticketing', 'repair_item', 'module_category', 'witels', 'accessories'));
     }
 
     /**
@@ -229,44 +247,44 @@ class TicketingController extends Controller
      */
     public function update(Request $request, $uuid)
     {
+        // dd($request->all());
         $rules = [
-            'uuid_pelanggan' => 'required',
-            'item_model' => 'required',
-            'item_merk' => 'required',
-            'item_type' => 'required',
+            'witel' => 'required',
+            'unit' => 'required',
+            'module_category' => 'required',
+            'module_name' => 'required',
+            'module_brand' => 'required',
+            'module_type' => 'required',
             'part_number' => 'required',
             'serial_number' => 'required',
-            'barcode' => 'required',
-            'kerusakan' => 'required',
+            'serial_number_msc' => 'required',
         ];
 
         $messages = [
             '*.required' => 'Field tidak boleh kosong !',
-            '*.min' => 'Nama tidak boleh kurang dari 2 karakter !',
         ];
 
         $this->validate($request, $rules, $messages);
 
         $ticketing = Ticketing::uuid($uuid);
-        $ticketing->uuid_pelanggan = $request->uuid_pelanggan;
+        $ticketing->uuid_unit = $request->unit;
         $ticketing->edited_by = Auth::user()->uuid;
         $ticketing->save();
 
-        $repair_item = Repair_item::where('ticket_uuid', '=', $uuid)->first();
-        $repair_item->item_model = $request->item_model;
-        $repair_item->item_merk = $request->item_merk;
-        $repair_item->item_type = $request->item_type;
+        $repair_item = RepairItem::where('ticket_uuid', '=', $uuid)->first();
+        $repair_item->module_category_uuid = $request->module_category;
+        $repair_item->module_name_uuid = $request->module_name;
+        $repair_item->module_brand_uuid = $request->module_brand;
+        $repair_item->module_type_uuid = $request->module_type;
         $repair_item->part_number = $request->part_number;
         $repair_item->serial_number = $request->serial_number;
-        $repair_item->barcode = $request->barcode;
-        $repair_item->kelengkapan = $request['kelengkapan'];
-        $repair_item->kerusakan = $request->kerusakan;
+        $repair_item->serial_number_msc = $request->serial_number_msc;
+        $repair_item->accessories = $request['accessories'];
         $repair_item->edited_by = Auth::user()->uuid;
 
         $repair_item->save();
 
-
-        toastr()->success('Ticketing Edited', 'Success');
+        toastr()->success('Ticketing Number ' . $ticketing->ticket_number . ' Updated', 'Success');
         return redirect()->route('ticketing.index');
     }
 
