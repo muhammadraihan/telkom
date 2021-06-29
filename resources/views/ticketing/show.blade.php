@@ -9,19 +9,19 @@
                     <div class="col-xs-12 col-sm-12 col-md-12">
                         <div class="d-flex mb-2">
                             <strong>Module Category :</strong><span class="fw-400"><i>
-                                    {{ $repair_item->ModuleCategory->name }}</i></span>
+                                    {{ $repair_item->ModuleType->brand->moduleName->category->name }}</i></span>
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-12">
                         <div class="d-flex mb-2">
                             <strong>Module Name :</strong><span class="fw-400"><i>
-                                    {{ $repair_item->ModuleName->name }}</i></span>
+                                    {{ $repair_item->ModuleType->brand->moduleName->name }}</i></span>
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-12">
                         <div class="d-flex mb-2">
                             <strong>Module Brand :</strong><span class="fw-400"><i>
-                                    {{ $repair_item->ModuleBrand->name }}</i></span>
+                                    {{ $repair_item->ModuleType->brand->name }}</i></span>
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-12">
