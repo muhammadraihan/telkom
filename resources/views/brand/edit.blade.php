@@ -11,7 +11,7 @@
     <div class="col-xl-6">
         <div id="panel-1" class="panel">
             <div class="panel-hdr">
-            <h2>Edit <span class="fw-300"><i>{{$brand->name}}</i></span></h2>
+                <h2>Edit <span class="fw-300"><i>{{$brand->name}}</i></span></h2>
                 <div class="panel-toolbar">
                     <a class="nav-link active" href="{{route('brand.index')}}"><i class="fal fa-arrow-alt-left">
                         </i>
@@ -29,24 +29,26 @@
                     {!! Form::open(['route' => ['brand.update',$brand->uuid],'method' => 'PUT','class' =>
                     'needs-validation','novalidate']) !!}
                     <div class="form-row">
-                    <div class="form-group col-md-6 mb-3">
-                        {{ Form::label('module_category_uuid','Module Category',['class' => 'required form-label'])}}
-                        {!! Form::select('module_category_uuid', $category, $brand->nameModule->category->uuid, ['id' => 'module_category','class' => 'category
-                        form-control'.($errors->has('module_category_uuid') ? 'is-invalid':''), 'required'
-                        => '', 'placeholder' => 'Select Module Category ...']) !!}
-                        @if ($errors->has('module_category_uuid'))
-                        <div class="invalid-feedback">{{ $errors->first('module_category_uuid') }}</div>
-                        @endif
-                    </div>
-                    <div class="form-group col-md-6 mb-3">
-                        {{ Form::label('module_name','Module Name',['class' => 'required form-label'])}}
-                        <select id="module_name" class="name form-control" name="module_name">
-                            <option value="{{$brand->nameModule->uuid}}">{{$brand->nameModule->name}}
-                        </select>
-                        @if ($errors->has('module_name'))
-                        <div class="help-block text-danger">{{ $errors->first('module_name') }}</div>
-                        @endif
-                    </div>
+                        <div class="form-group col-md-6 mb-3">
+                            {{ Form::label('module_category_uuid','Module Category',['class' => 'required form-label'])}}
+                            {!! Form::select('module_category_uuid', $category, $brand->moduleName->category->uuid,
+                            ['id' =>
+                            'module_category','class' => 'category
+                            form-control'.($errors->has('module_category_uuid') ? 'is-invalid':''), 'required'
+                            => '', 'placeholder' => 'Select Module Category ...']) !!}
+                            @if ($errors->has('module_category_uuid'))
+                            <div class="invalid-feedback">{{ $errors->first('module_category_uuid') }}</div>
+                            @endif
+                        </div>
+                        <div class="form-group col-md-6 mb-3">
+                            {{ Form::label('module_name','Module Name',['class' => 'required form-label'])}}
+                            <select id="module_name" class="name form-control" name="module_name">
+                                <option value="{{$brand->moduleName->uuid}}">{{$brand->moduleName->name}}
+                            </select>
+                            @if ($errors->has('module_name'))
+                            <div class="help-block text-danger">{{ $errors->first('module_name') }}</div>
+                            @endif
+                        </div>
                     </div>
                     <div class="form-group col-md-4 mb-3">
                         {{ Form::label('name','Nama Brand',['class' => 'required form-label'])}}
@@ -55,21 +57,21 @@
                         <div class="invalid-feedback">{{ $errors->first('name') }}</div>
                         @endif
                     </div>
-                <div
-                    class="panel-content border-faded border-left-0 border-right-0 border-bottom-0 d-flex flex-row align-items-center">
-                    <button class="btn btn-primary ml-auto" type="submit">Submit</button>
+                    <div
+                        class="panel-content border-faded border-left-0 border-right-0 border-bottom-0 d-flex flex-row align-items-center">
+                        <button class="btn btn-primary ml-auto" type="submit">Submit</button>
+                    </div>
+                    {!! Form::close() !!}
                 </div>
-                {!! Form::close() !!}
             </div>
         </div>
     </div>
-</div>
-@endsection
+    @endsection
 
-@section('js')
-<script src="{{asset('js/formplugins/select2/select2.bundle.js')}}"></script>
-<script>
-    $(document).ready(function(){
+    @section('js')
+    <script src="{{asset('js/formplugins/select2/select2.bundle.js')}}"></script>
+    <script>
+        $(document).ready(function(){
         $('.name').select2();
         $('.category').select2();
 
@@ -119,5 +121,5 @@
             }
         });
     });
-</script>
-@endsection
+    </script>
+    @endsection
