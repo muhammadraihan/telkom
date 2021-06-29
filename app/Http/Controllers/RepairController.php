@@ -130,7 +130,7 @@ class RepairController extends Controller
                 ->rawColumns(['action', 'ticket_status', 'job_status', 'urgent_status', 'assign', 'assign_date'])
                 ->make();
         }
-        return view('supervisi.index');
+        return view('repair.index');
     }
 
     /**
@@ -163,7 +163,7 @@ class RepairController extends Controller
     public function show($uuid)
     {
         $repair_item = RepairItem::where('ticket_uuid', $uuid)->first();
-        return view('supervisi.show', compact('repair_item'));
+        return view('repair.show', compact('repair_item'));
     }
 
     /**
@@ -176,7 +176,7 @@ class RepairController extends Controller
     {
         $repair_item = RepairItem::where('ticket_uuid', $uuid)->first();
         $techs = User::role('repair')->pluck('name', 'uuid');
-        return view('supervisi.assign', compact('repair_item', 'techs'));
+        return view('repair.assign', compact('repair_item', 'techs'));
     }
 
     /**
