@@ -76,18 +76,20 @@
                 <div class="form-row">
                     <div class="form-group col-md-3 mb-3">
                         {{ Form::label('module_category','Module Category',['class' => 'required form-label'])}}
-                        {!! Form::select('module_category', $module_category, $repair_item->ModuleCategory->uuid, ['id'
+                        {!! Form::select('module_category', $module_category,
+                        $repair_item->ModuleType->brand->moduleName->uuid, ['id'
                         =>
                         'module_category','class' =>
                         'form-control'.($errors->has('module_category') ? 'is-invalid':''), 'required'
-                        => '', 'placeholder' => 'Pilih Module Category']) !!} @if ($errors->has('module_category'))
+                        => '']) !!} @if ($errors->has('module_category'))
                         <div class="help-block text-danger">{{ $errors->first('module_category') }}</div>
                         @endif
                     </div>
                     <div class="form-group col-md-3 mb-3">
                         {{ Form::label('module_name','Module Name',['class' => 'required form-label'])}}
                         <select id="module_name" class="form-control" name="module_name">
-                            <option value="{{$repair_item->ModuleName->uuid}}">{{$repair_item->ModuleName->name}}
+                            <option value="{{$repair_item->ModuleType->brand->moduleName->uuid}}">
+                                {{$repair_item->ModuleType->brand->moduleName->name}}
                         </select>
                         @if ($errors->has('module_name'))
                         <div class="help-block text-danger">{{ $errors->first('module_name') }}</div>
@@ -96,7 +98,8 @@
                     <div class="form-group col-md-3 mb-3">
                         {{ Form::label('module_brand','Module Brand',['class' => 'required form-label'])}}
                         <select id="module_brand" class="form-control" name="module_brand">
-                            <option value="{{$repair_item->ModuleBrand->uuid}}">{{$repair_item->ModuleBrand->name}}
+                            <option value="{{$repair_item->ModuleType->brand->uuid}}">
+                                {{$repair_item->ModuleType->brand->name}}
                         </select>
                         @if ($errors->has('module_brand'))
                         <div class="help-block text-danger">{{ $errors->first('module_brand') }}</div>
