@@ -26,43 +26,32 @@ class MaterialController extends Controller
      */
     public function index()
     {
-        $material = Material::all();
-            if (request()->ajax()) {
-                $data = Material::get();
+        if (request()->ajax()) {
+            $data = Material::get();
 
-                return Datatables::of($data)
-                        ->addIndexColumn()
-                        ->editColumn('module_name_uuid', function($row){
-                            return $row->nameModule->name;
-                        })
-                        ->editColumn('module_category_uuid', function($row){
-                            return $row->category->name;
-                        })
-                        ->editColumn('volume', function($row){
-                            switch ($row->volume) {
-                                case '1':
-                                    return 'Buah';
-                                    break;
-                                case '2':
-                                    return 'Kotak';
-                                    break;
-                            }
-                        })
-                        ->editColumn('unit_price',function($row){
-                            return $row->unit_price ? 'Rp.'.' '.number_format($row->unit_price,2) : '' ;
-                        })
-                        ->addColumn('action', function($row){
-                            return '
-                            <a class="btn btn-success btn-sm btn-icon waves-effect waves-themed" href="'.route('material.edit',$row->uuid).'"><i class="fal fa-edit"></i></a>
-                            <a class="btn btn-danger btn-sm btn-icon waves-effect waves-themed delete-btn" data-url="'.URL::route('material.destroy',$row->uuid).'" data-id="'.$row->uuid.'" data-token="'.csrf_token().'" data-toggle="modal" data-target="#modal-delete"><i class="fal fa-trash-alt"></i></a>';
-                    })
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->editColumn('module_name_uuid', function ($row) {
+                    return $row->moduleName->name;
+                })
+                ->addColumn('category', function ($row) {
+                    return $row->moduleName->category->name;
+                })
+                ->editColumn('unit_price', function ($row) {
+                    return $row->unit_price ? 'Rp.' . ' ' . number_format($row->unit_price, 2) : '';
+                })
+                ->addColumn('action', function ($row) {
+                    return '
+                            <a class="btn btn-success btn-sm btn-icon waves-effect waves-themed" href="' . route('material.edit', $row->uuid) . '"><i class="fal fa-edit"></i></a>
+                            <a class="btn btn-danger btn-sm btn-icon waves-effect waves-themed delete-btn" data-url="' . URL::route('material.destroy', $row->uuid) . '" data-id="' . $row->uuid . '" data-token="' . csrf_token() . '" data-toggle="modal" data-target="#modal-delete"><i class="fal fa-trash-alt"></i></a>';
+                })
                 ->removeColumn('id')
                 ->removeColumn('uuid')
                 ->rawColumns(['action'])
                 ->make(true);
-            }
+        }
 
-            return view('material.index');
+        return view('material.index');
     }
 
     /**
@@ -90,7 +79,7 @@ class MaterialController extends Controller
             'material_type' => 'required',
             'material_description' => 'required',
             'volume' => 'required',
-            'available' => 'required', 
+            'available' => 'required',
             'unit_price' => 'required'
         ];
 
@@ -105,7 +94,6 @@ class MaterialController extends Controller
         $formattedprice = str_replace(',', '', $unit_price);
 
         $material = new Material();
-        $material->module_category_uuid = $request->module_category_uuid;
         $material->module_name_uuid = $request->module_name;
         $material->material_type = $request->material_type;
         $material->material_description = $request->material_description;
@@ -113,10 +101,10 @@ class MaterialController extends Controller
         $material->available = $request->available;
         $material->unit_price = $formattedprice;
 
-        $material->save();        
+        $material->save();
 
-        
-        toastr()->success('New Material Added','Success');
+
+        toastr()->success('New Material Added', 'Success');
         return redirect()->route('material.index');
     }
 
@@ -141,7 +129,7 @@ class MaterialController extends Controller
     {
         $category = ModuleCategory::all()->pluck('name', 'uuid');
         $material = Material::uuid($id);
-        return view('material.edit', compact('category','material'));
+        return view('material.edit', compact('category', 'material'));
     }
 
     /**
@@ -159,7 +147,7 @@ class MaterialController extends Controller
             'material_type' => 'required',
             'material_description' => 'required',
             'volume' => 'required',
-            'available' => 'required', 
+            'available' => 'required',
             'unit_price' => 'required'
         ];
 
@@ -174,7 +162,6 @@ class MaterialController extends Controller
         $formattedprice = str_replace(',', '', $unit_price);
 
         $material = Material::uuid($id);
-        $material->module_category_uuid = $request->module_category_uuid;
         $material->module_name_uuid = $request->module_name;
         $material->material_type = $request->material_type;
         $material->material_description = $request->material_description;
@@ -182,10 +169,10 @@ class MaterialController extends Controller
         $material->available = $request->available;
         $material->unit_price = $formattedprice;
 
-        $material->save();        
+        $material->save();
 
-        
-        toastr()->success('Material Edited','Success');
+
+        toastr()->success('Material Edited', 'Success');
         return redirect()->route('material.index');
     }
 
@@ -199,7 +186,7 @@ class MaterialController extends Controller
     {
         $material = Material::uuid($id);
         $material->delete();
-        toastr()->success('Material Deleted','Success');
+        toastr()->success('Material Deleted', 'Success');
         return redirect()->route('material.index');
     }
 }
