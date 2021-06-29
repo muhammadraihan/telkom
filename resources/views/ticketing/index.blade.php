@@ -40,12 +40,12 @@
                                 <th>No</th>
                                 <th>Witel</th>
                                 <th>Unit</th>
-                                <th>Nomor Tiket</th>
-                                <th>Tiket Status</th>
+                                <th>Ticket Number</th>
+                                <th>Ticket Status</th>
                                 <th>Job Status</th>
                                 <th>Urgent Status</th>
-                                <th>Issued At</th>
-                                <th>Issuer</th>
+                                <th>Ticket Date</th>
+                                <th>Ticket Issuer</th>
                                 <th>Note</th>
                                 <th>Action</th>
                             </tr>
@@ -103,7 +103,7 @@
                     }
             },
             "columns": [
-            {data: 'DT_RowIndex'},
+            {data: 'DT_RowIndex',searchable:false},
             {data: 'witel'},
             {data: 'uuid_unit'},
             {data: 'ticket_number'},
@@ -122,8 +122,6 @@
             var id = $(this).attr('data-id');
             var url = $(this).attr('data-url');
             var token = $(this).attr('data-token');
-            console.log(id,url,token);
-            
             $(".delete-form").attr("action",url);
             $('body').find('.delete-form').append('<input name="_token" type="hidden" value="'+ token +'">');
             $('body').find('.delete-form').append('<input name="_method" type="hidden" value="DELETE">');
