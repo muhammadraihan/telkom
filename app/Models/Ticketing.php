@@ -65,4 +65,9 @@ class Ticketing extends Model
     {
         return $this->belongsTo(Unit::class, 'uuid_unit', 'uuid');
     }
+
+    public function RepairItem()
+    {
+        return $this->hasOne(RepairItem::class, 'ticket_uuid', 'uuid');
+    }
 }
