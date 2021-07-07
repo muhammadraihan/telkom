@@ -115,7 +115,7 @@
                 </ul>
             </li>
             @endhasanyrole
-            @hasanyrole('superadmin|admin')
+            @hasanyrole('superadmin|admin|supervisi|repair')
             <li>
                 <a href="#" title="Repair Department" data-filter-tags="repair departmen">
                     <i class="fal fa-cogs"></i>
@@ -133,7 +133,7 @@
                     @endhasanyrole
                     @hasanyrole('superadmin|admin|repair')
                     <li>
-                        <a href="#" title="Repair Task" data-filter-tags="repair task">
+                        <a href="{{route('repair-job.index')}}" title="Repair Task" data-filter-tags="repair task">
                             <i class="fal fa-wrench"></i>
                             <span class="nav-link-text" data-i18n="nav.repair_task">Repair Job</span>
                         </a>
