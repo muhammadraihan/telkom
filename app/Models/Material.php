@@ -52,13 +52,8 @@ class Material extends Model
         return "Data has been {$eventName}";
     }
 
-    public function nameModule()
+    public function moduleName()
     {
         return $this->belongsTo(ModuleName::class, 'module_name_uuid', 'uuid');
-    }
-
-    public function category()
-    {
-        return $this->belongsTo(ModuleCategory::class, 'module_category_uuid', 'uuid');
     }
 }

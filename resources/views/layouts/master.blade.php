@@ -18,6 +18,7 @@
     <!-- base css -->
     <link rel="stylesheet" media="screen, print" href="{{asset('css/vendors.bundle.css')}}">
     <link rel="stylesheet" media="screen, print" href="{{asset('css/app.bundle.css')}}">
+    <link id="mytheme" rel="stylesheet" media="screen, print" href="{{asset('css/themes/cust-theme-4.css')}}">
     @yield('themes_css')
     <!-- Place favicon.ico in the root directory -->
     <link rel="apple-touch-icon" sizes="180x180" href="{{asset('img/favicon/apple-touch-icon.png')}}">

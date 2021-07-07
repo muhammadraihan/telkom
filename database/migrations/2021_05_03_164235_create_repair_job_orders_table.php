@@ -17,7 +17,7 @@ class CreateRepairJobOrdersTable extends Migration
             $table->id();
             $table->string('uuid')->unique();
             $table->string('repair_item_uuid')->nullable();
-            $table->integer('item_status')->nullable()->comment("0=Butuh Penggantian, 1=Telah diperbaiki oleh teknisi,2=Ticket cancel");
+            $table->integer('item_status')->nullable()->comment("0=Tidak dapat diperbaiki, 1=Telah diperbaiki oleh teknisi,2=Ticket cancel");
             $table->integer('job_status')->nullable()->comment("0=Open, 1=Close, 2=Cancel");
             $table->text('repair_notes')->nullable();
             $table->json('component_used')->nullable();

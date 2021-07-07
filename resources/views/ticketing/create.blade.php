@@ -4,9 +4,6 @@
 
 @section('css')
 <link rel="stylesheet" media="screen, print" href="{{asset('css/formplugins/select2/select2.bundle.css')}}">
-<link rel="stylesheet" media="screen, print" href="{{asset('css/vendors.bundle.css')}}">
-<link rel="stylesheet" media="screen, print" href="{{asset('css/app.bundle.css')}}">
-
 @endsection
 
 @section('content')

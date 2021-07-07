@@ -1,38 +1,33 @@
 <div class="row">
-    <div class="col-xl-8">
+    <div class="col-xl-6">
         <div id="panel-1" class="panel">
             <div class="panel-hdr">
                 <h2>Tiket Nomor :<span class="fw-300"><i>{{ $repair_item->ticket->ticket_number }}</i></span></h2>
-                <a class="nav-link active" href="#"><i class="fal fa-calendar-alt">
-                    </i>
-                    <span
-                        class="nav-link-text">{{ \Carbon\Carbon::parse($repair_item->ticket->created_at)->translatedFormat('j F Y H:i:s') }}</span>
-                </a>
             </div>
             <div class="panel-container show">
                 <div class="panel-content">
                     <div class="col-xs-12 col-sm-12 col-md-12">
                         <div class="d-flex mb-2">
-                            <strong>Merk :</strong><span class="fw-400"><i>
-                                    {{ $repair_item->item_merk }}</i></span>
+                            <strong>Module Category :</strong><span class="fw-400"><i>
+                                    {{ $repair_item->ModuleType->brand->moduleName->category->name }}</i></span>
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-12">
                         <div class="d-flex mb-2">
-                            <strong>Type :</strong><span class="fw-400"><i>
-                                    {{ $repair_item->item_type }}</i></span>
+                            <strong>Module Name :</strong><span class="fw-400"><i>
+                                    {{ $repair_item->ModuleType->brand->moduleName->name }}</i></span>
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-12">
                         <div class="d-flex mb-2">
-                            <strong>Model :</strong><span class="fw-400"><i>
-                                    {{ $repair_item->item_model }}</i></span>
+                            <strong>Module Brand :</strong><span class="fw-400"><i>
+                                    {{ $repair_item->ModuleType->brand->name }}</i></span>
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-12">
                         <div class="d-flex mb-2">
-                            <strong>Serial Number :</strong><span class="fw-400"><i>
-                                    {{ $repair_item->serial_number }}</i></span>
+                            <strong>Module Type :</strong><span class="fw-400"><i>
+                                    {{ $repair_item->ModuleType->name }}</i></span>
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-12">
@@ -43,18 +38,29 @@
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-12">
                         <div class="d-flex mb-2">
-                            <strong>Barcode :</strong><span class="fw-400"><i>
-                                    {{ $repair_item->barcode }}</i></span>
+                            <strong>Serial Number :</strong><span class="fw-400"><i>
+                                    {{ $repair_item->serial_number }}</i></span>
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-12">
                         <div class="d-flex mb-2">
-                            <strong>Status Garansi :</strong><span class="fw-400"><i>
-                                    @if ($repair_item->kelengkapan == 0)
-                                    Masih Garansi
-                                    @else
-                                    Garansi Habis
-                                    @endif</i></span>
+                            <strong>Serial Number MSC :</strong><span class="fw-400"><i>
+                                    {{ $repair_item->serial_number_msc }}</i></span>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12">
+                        <div class="d-flex mb-2">
+                            <strong>Warranty Status :</strong><span class="fw-400"><i>
+                                    @switch($repair_item->warranty_status)
+                                    @case(1)
+                                    Warranty
+                                    @break
+                                    @case(0)
+                                    Non Warranty
+                                    @break
+                                    @default
+                                    Status Unknown
+                                    @endswitch
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-12">
@@ -63,8 +69,8 @@
                         </div>
                         <div>
                             <ul class="">
-                                @isset($repair_item->kelengkapan)
-                                @foreach ($repair_item->kelengkapan as $item)
+                                @isset($repair_item->accessories)
+                                @foreach ($repair_item->accessories as $item)
                                 <li class="">
                                     <span>{{$item}}</span>
                                 </li>
@@ -75,8 +81,8 @@
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-12">
                         <div class="d-flex mb-2">
-                            <strong>Kerusakan :</strong><span class="fw-400"><i>
-                                    {{ $repair_item->kerusakan }}</i></span>
+                            <strong>Complain :</strong><span class="fw-400"><i>
+                                    {{ $repair_item->complain }}</i></span>
                         </div>
                     </div>
                 </div>

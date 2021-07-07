@@ -19,7 +19,7 @@
     <div class="col-xl-12">
         <div id="panel-1" class="panel">
             <div class="panel-hdr">
-            <h2>
+                <h2>
                     Material <span class="fw-300"><i>List</i></span>
                 </h2>
                 <div class="panel-toolbar">
@@ -35,18 +35,18 @@
                 <div class="panel-content">
                     <!-- datatable start -->
                     <table id="datatable" class="table table-bordered table-hover table-striped w-100">
-        <thead>
-            <tr>
-                <th>No</th>
-                <th>Module Category</th>
-                <th>Module Name</th>
-                <th>Jenis Material</th>
-                <th>Deskripsi Material</th>
-                <th>Volume</th>
-                <th>Available</th>
-                <th>Harga Satuan</th>
-                <th width="120px">Action</th>
-                </tr>
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Module Category</th>
+                                <th>Module Name</th>
+                                <th>Material</th>
+                                <th>Desc. Material</th>
+                                <th>Volume</th>
+                                <th>Available</th>
+                                <th>Unit Price</th>
+                                <th>Action</th>
+                            </tr>
                         </thead>
                     </table>
                 </div>
@@ -88,14 +88,7 @@
 <script src="{{asset('js/datagrid/datatables/datatables.bundle.js')}}"></script>
 <script>
     $(document).ready(function(){
-        $.ajaxSetup({
-          headers: {
-              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-          }
-    });
-     
-     
-       var table = $('#datatable').DataTable({
+        $('#datatable').DataTable({
             "processing": true,
             "serverSide": true,
             "responsive": true,
@@ -109,15 +102,15 @@
                     }
             },
             "columns": [
-            {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-            {data: 'module_category_uuid', name: 'module_category_uuid'},
+            {data: 'DT_RowIndex', name: 'DT_RowIndex', searchable:false},
+            {data: 'category'},
             {data: 'module_name_uuid', name: 'module_name_uuid'},
             {data: 'material_type', name: 'material_type'},
             {data: 'material_description', name: 'material_description'},
             {data: 'volume', name: 'volume'},
             {data: 'available', name: 'available'},
             {data: 'unit_price', name: 'unit_price'},
-            {data: 'action', name: 'action', orderable: false, searchable: false},
+            {data: 'action', width:'10%', orderable: false, searchable: false},
         ]
     });
     // Delete Data
@@ -126,8 +119,6 @@
             var id = $(this).attr('data-id');
             var url = $(this).attr('data-url');
             var token = $(this).attr('data-token');
-            console.log(id,url,token);
-            
             $(".delete-form").attr("action",url);
             $('body').find('.delete-form').append('<input name="_token" type="hidden" value="'+ token +'">');
             $('body').find('.delete-form').append('<input name="_method" type="hidden" value="DELETE">');

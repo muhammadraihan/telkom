@@ -17,9 +17,6 @@ class CreateRepairItemsTable extends Migration
             $table->id();
             $table->string('uuid')->unique();
             $table->string('ticket_uuid')->nullable();
-            $table->string('module_category_uuid')->nullable();
-            $table->string('module_name_uuid')->nullable();
-            $table->string('module_brand_uuid')->nullable();
             $table->string('module_type_uuid')->nullable();
             $table->string('part_number')->nullable();
             $table->string('serial_number')->nullable();

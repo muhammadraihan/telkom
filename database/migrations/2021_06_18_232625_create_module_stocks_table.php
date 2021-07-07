@@ -16,9 +16,6 @@ class CreateModuleStocksTable extends Migration
         Schema::create('module_stocks', function (Blueprint $table) {
             $table->id();
             $table->string('uuid')->unique();
-            $table->string('module_category_uuid')->nullable();
-            $table->string('module_name_uuid')->nullable();
-            $table->string('module_brand_uuid')->nullable();
             $table->string('module_type_uuid')->nullable();
             $table->bigInteger('available')->nullable();
             $table->string('created_by')->nullable();

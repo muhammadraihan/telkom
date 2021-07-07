@@ -16,13 +16,12 @@ class CreateMaterialsTable extends Migration
         Schema::create('materials', function (Blueprint $table) {
             $table->id();
             $table->string('uuid')->unique();
-            $table->string('module_category_uuid')->nullable();
             $table->string('module_name_uuid')->nullable();
             $table->string('material_type')->nullable();
-            $table->string('material_description')->nullable();
+            $table->text('material_description')->nullable();
             $table->string('volume')->nullable()->comment('exp= buah,kotak');
             $table->bigInteger('available')->nullable();
-            $table->double('unit_price', 9, 2)->nullable();
+            $table->double('unit_price', 15, 2)->nullable();
             $table->timestamps();
         });
     }

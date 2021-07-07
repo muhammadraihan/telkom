@@ -56,16 +56,16 @@ class TicketingController extends Controller
                 })
                 ->editColumn('ticket_status', function ($row) {
                     switch ($row->ticket_status) {
-                        case '1':
+                        case 1:
                             return '<span class="badge badge-primary">Diproses ke bagian repair</span>';
                             break;
-                        case '2':
+                        case 2:
                             return '<span class="badge badge-warning">Diproses ke bagian gudang</span>';
                             break;
-                        case '3':
+                        case 3:
                             return '<span class="badge badge-success">Selesai</span>';
                             break;
-                        case '4':
+                        case 4:
                             return '<span class="badge badge-danger">Cancel</span>';
                             break;
                         default:
@@ -75,32 +75,38 @@ class TicketingController extends Controller
                 })
                 ->editColumn('job_status', function ($row) {
                     switch ($row->job_status) {
-                        case '1':
+                        case 0:
+                            return '<span class="badge badge-secondary">None</span>';
+                            break;
+                        case 1:
                             return '<span class="badge badge-primary">Dalam penanganan oleh teknisi</span>';
                             break;
-                        case '2':
+                        case 2:
                             return '<span class="badge badge-success">Telah diperbaiki oleh teknisi</span>';
                             break;
-                        case '3':
+                        case 3:
+                            return '<span class="badge badge-danger">Tidak dapat diperbaiki teknisi</span>';
+                            break;
+                        case 4:
                             return '<span class="badge badge-warning">Butuh klaim garansi</span>';
                             break;
-                        case '4':
-                            return '<span class="badge badge-warning">Proses penggantian module</span>';
+                        case 5:
+                            return '<span class="badge badge-warning">Butuh penggantian barang</span>';
                             break;
-                        case '5':
+                        case 6:
                             return '<span class="badge badge-info">Dalam perbaikan oleh vendor</span>';
                             break;
-                        case '6':
+                        case 7:
                             return '<span class="badge badge-info">Menunggu penggantian dari vendor</span>';
                             break;
-                        case '7':
-                            return '<span class="badge badge-success">Dalam perbaikan oleh Telah di kirim ke customer</span>';
+                        case 8:
+                            return '<span class="badge badge-success">Telah di kirim ke customer</span>';
                             break;
-                        case '8':
+                        case 9:
                             return '<span class="badge badge-danger">Ticket di cancel</span>';
                             break;
                         default:
-                            return '<span class="badge badge-dark">Status Unknown</span>';
+                            return '<span class="badge badge-dark">None</span>';
                             break;
                     }
                 })
@@ -109,7 +115,7 @@ class TicketingController extends Controller
                         case 0:
                             return '<span class="badge badge-success">Not Urgent</span>';
                             break;
-                        case 0:
+                        case 1:
                             return '<span class="badge badge-danger">Urgent</span>';
                             break;
                         default:
@@ -182,9 +188,6 @@ class TicketingController extends Controller
         $ticketing->urgent_status = $request->urgent_status;
         // saving repair item detail
         $repair_item = new RepairItem();
-        $repair_item->module_category_uuid = $request->module_category;
-        $repair_item->module_name_uuid = $request->module_name;
-        $repair_item->module_brand_uuid = $request->module_brand;
         $repair_item->module_type_uuid = $request->module_type;
         $repair_item->part_number = $request->part_number;
         $repair_item->serial_number = $request->serial_number;
@@ -198,7 +201,7 @@ class TicketingController extends Controller
          */
         if ($repair_item->warranty_status == 0) {
             $ticketing->ticket_status = 1;
-            $ticketing->job_status = 1;
+            $ticketing->job_status = 0;
             $ticketing->save();
 
             $repair_item->ticket_uuid = $ticketing->uuid;
@@ -247,7 +250,6 @@ class TicketingController extends Controller
      */
     public function update(Request $request, $uuid)
     {
-        // dd($request->all());
         $rules = [
             'witel' => 'required',
             'unit' => 'required',
@@ -272,9 +274,6 @@ class TicketingController extends Controller
         $ticketing->save();
 
         $repair_item = RepairItem::where('ticket_uuid', '=', $uuid)->first();
-        $repair_item->module_category_uuid = $request->module_category;
-        $repair_item->module_name_uuid = $request->module_name;
-        $repair_item->module_brand_uuid = $request->module_brand;
         $repair_item->module_type_uuid = $request->module_type;
         $repair_item->part_number = $request->part_number;
         $repair_item->serial_number = $request->serial_number;
@@ -297,29 +296,5 @@ class TicketingController extends Controller
     public function destroy($id)
     {
         //
-    }
-
-    public function CustomerStore(Request $request)
-    {
-        $rules = [
-            'jenis_pelanggan' => 'required',
-            'nomor_pelanggan' => 'required'
-        ];
-
-        $messages = [
-            '*.required' => 'Field tidak boleh kosong !',
-            '*.min' => 'Nama tidak boleh kurang dari 2 karakter !',
-        ];
-
-        $this->validate($request, $rules, $messages);
-
-        $customer = new Customer();
-        $customer->jenis_pelanggan = $request->jenis_pelanggan;
-        $customer->nomor_pelanggan = $request->nomor_pelanggan;
-        $customer->created_by = Auth::user()->uuid;
-
-        $customer->save();
-        toastr()->success('New Customer Added', 'Success');
-        return redirect()->back();
     }
 }

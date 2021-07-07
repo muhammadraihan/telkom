@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\ModuleName;
 use App\Models\ModuleBrand;
 use App\Models\ModuleCategory;
 
@@ -20,7 +19,6 @@ class ModuleBrandController extends Controller
      */
     public function index()
     {
-        $brand = ModuleBrand::all();
         if (request()->ajax()) {
             $data = ModuleBrand::get();
 
@@ -33,10 +31,10 @@ class ModuleBrandController extends Controller
                     return $row->userEdit->name ?? null;
                 })
                 ->editColumn('module_name_uuid', function ($row) {
-                    return $row->nameModule->name;
+                    return $row->moduleName->name;
                 })
-                ->addColumn('module_category_uuid', function($row){
-                    return $row->nameModule->category->name;
+                ->addColumn('module_category_uuid', function ($row) {
+                    return $row->moduleName->category->name;
                 })
                 ->addColumn('action', function ($row) {
                     return '
@@ -82,14 +80,11 @@ class ModuleBrandController extends Controller
         ];
 
         $this->validate($request, $rules, $messages);
-        // dd($request->all());
         $brand = new ModuleBrand();
         $brand->name = $request->name;
         $brand->module_name_uuid = $request->module_name;
         $brand->created_by = Auth::user()->uuid;
-
         $brand->save();
-
 
         toastr()->success('New Brand Added', 'Success');
         return redirect()->route('brand.index');

@@ -1,6 +1,6 @@
 @extends('layouts.page')
 
-@section('title', 'Technician Job Order Management')
+@section('title', 'Repair Job History')
 
 @section('css')
 <link rel="stylesheet" media="screen, print" href="{{asset('css/datagrid/datatables/datatables.bundle.css')}}">
@@ -9,9 +9,9 @@
 @section('content')
 <div class="subheader">
     <h1 class="subheader-title">
-        <i class='subheader-icon fal fa-wrench'></i> Module: <span class='fw-300'>Technician Job Order</span>
+        <i class='subheader-icon fal fa-wrench'></i> Module: <span class='fw-300'>Repair Job History</span>
         <small>
-            Module for manage Technician Job Order.
+            Module for manage Repair Job History.
         </small>
     </h1>
 </div>
@@ -20,12 +20,12 @@
         <div id="panel-1" class="panel">
             <div class="panel-hdr">
                 <h2>
-                    Technician Job Order <span class="fw-300"><i>List</i></span>
+                    Repair Job <span class="fw-300"><i>History</i></span>
                 </h2>
                 <div class="panel-toolbar">
-                    <a class="nav-link active" href="{{route('teknisi.history')}}"><i class="fal fa-list-alt">
+                    <a class="nav-link active" href="{{route('repair.index')}}"><i class="fal fa-arrow-alt-left">
                         </i>
-                        <span class="nav-link-text">All Progress</span>
+                        <span class="nav-link-text">Back</span>
                     </a>
                     <button class="btn btn-panel" data-action="panel-fullscreen" data-toggle="tooltip"
                         data-offset="0,10" data-original-title="Fullscreen"></button>
@@ -39,9 +39,12 @@
                             <tr>
                                 <th>No</th>
                                 <th>Ticket</th>
-                                <th>Ticket Status</th>
+                                <th>Assign To</th>
+                                <th>Repair Status</th>
                                 <th>Job Status</th>
-                                <th>Item Status</th>
+                                <th>Job Date</th>
+                                <th>Job Finished</th>
+                                <th>Repair Time</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -51,13 +54,13 @@
         </div>
     </div>
 </div>
-<!-- item detail modal start -->
+<!-- repair detail modal start -->
 <div class="modal fade" id="detail-modal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">
-                    Detail Item
+                    Repair Job Detail
                 </h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true"><i class="fal fa-times"></i></span>
@@ -71,53 +74,37 @@
         </div>
     </div>
 </div>
-<!-- item detail modal end -->
+<!-- repair detail modal end -->
 @endsection
 
 @section('js')
 <script src="{{asset('js/datagrid/datatables/datatables.bundle.js')}}"></script>
 <script>
     $(document).ready(function(){
-     
-       $('#datatable').DataTable({
+        $('#datatable').DataTable({
             "processing": true,
             "serverSide": true,
             "responsive": true,
             "order": [[ 0, "asc" ]],
-            "ajax":{
-                url:'{{route('teknisi.index')}}',
+            "ajax": {
+                url:'{{route('repair.job-history')}}',
                 type : "GET",
                 dataType: 'json',
                 error: function(data){
                     console.log(data);
-                    }
+                }
             },
             "columns": [
-            {data: 'rownum'},
-            {data: 'ticket_number'},
-            {data: 'ticket_status'},
-            {data: 'job_status'},
-            {data: 'repair_status'},
-            {data: 'action', name: 'action', orderable: false, searchable: false},
-        ]
-    });
-    // Delete Data
-    $('#datatable').on('click', '.delete-btn[data-url]', function (e) {
-            e.preventDefault();
-            var id = $(this).attr('data-id');
-            var url = $(this).attr('data-url');
-            var token = $(this).attr('data-token');
-            console.log(id,url,token);
-            
-            $(".delete-form").attr("action",url);
-            $('body').find('.delete-form').append('<input name="_token" type="hidden" value="'+ token +'">');
-            $('body').find('.delete-form').append('<input name="_method" type="hidden" value="DELETE">');
-            $('body').find('.delete-form').append('<input name="id" type="hidden" value="'+ id +'">');
-        });
-
-        // Clear Data When Modal Close
-        $('.remove-data-from-delete-form').on('click',function() {
-            $('body').find('.delete-form').find("input").remove();
+                {data: 'DT_RowIndex', searchable: false},
+                {data: 'ticket_number'},
+                {data: 'assign_to'},
+                {data: 'repair_status'},
+                {data: 'job_status'},
+                {data: 'created_at'},
+                {data: 'updated_at'},
+                {data: 'time_to_repair',searchable:false},
+                {data: 'action',searchable:false,orderable: false},
+            ],
         });
 
         $('#datatable').on('click', '#detail-button[data-attr]', function (e) {

@@ -20,7 +20,7 @@ class CreateTicketingsTable extends Migration
             $table->string('ticket_number')->nullable();
             $table->integer('urgent_status')->nullable()->comment('0=non urgent, 1=urgent');
             $table->integer('ticket_status')->nullable()->comment('1=Diproses ke bagian repair, 2=Diproses ke bagian gudang, 3=Selesai', '4=Cancel');
-            $table->integer('job_status')->nullable()->comment("1=Dalam penanganan oleh teknisi, 2=Telah diperbaiki oleh teknisi,3=Dalam proses klaim garansi,4=Proses penggantian module,5=Dalam perbaikan oleh vendor, 6=Menunggu penggantian dari vendor, 7=Telah di kirim ke customer, 8=Ticket cancel");
+            $table->integer('job_status')->nullable()->comment("1=Dalam penanganan oleh teknisi, 2=Telah diperbaiki oleh teknisi, 3=Tidak dapat diperbaiki teknisi,4=Butuh klaim garansi, 5=Butuh penggantian barang, 6=Dalam perbaikan oleh vendor, 7=Menunggu penggantian dari vendor, 8=Telah di kirim ke customer, 9=Ticket di cancel");
             $table->text('note')->nullable();
             $table->string('created_by')->nullable();
             $table->string('edited_by')->nullable();
