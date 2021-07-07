@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.0-alpha.1](https://git.wbaindonesia.com/wbaindonesia/telkom-service-mgmt-system/compare/v1.3.0-alpha.0...v1.3.0-alpha.1) (2021-07-07)
+
+
+### Features
+
+* Adding function for counting repair time ([7beae5f](https://git.wbaindonesia.com/wbaindonesia/telkom-service-mgmt-system/commit/7beae5f45e9407e0142c56ba55b8de510ef51ffb))
+* Page for new job assign to technician ([ff72a67](https://git.wbaindonesia.com/wbaindonesia/telkom-service-mgmt-system/commit/ff72a675e9ca3315030bddf70fbd2a411c97bf52))
+* Repair job progress feature ([2a926a4](https://git.wbaindonesia.com/wbaindonesia/telkom-service-mgmt-system/commit/2a926a4486bf5ff3b72c3daffe25b4c9e3260415))
+
 ## 1.3.0-alpha.0 (2021-06-14)
 
 
