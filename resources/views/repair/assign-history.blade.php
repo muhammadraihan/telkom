@@ -1,6 +1,6 @@
 @extends('layouts.page')
 
-@section('title', 'Ticketing Management')
+@section('title', 'Repair Assign History')
 
 @section('css')
 <link rel="stylesheet" media="screen, print" href="{{asset('css/datagrid/datatables/datatables.bundle.css')}}">
@@ -9,9 +9,9 @@
 @section('content')
 <div class="subheader">
     <h1 class="subheader-title">
-        <i class='subheader-icon fal fa-users'></i> Module: <span class='fw-300'>Ticketing</span>
+        <i class='subheader-icon fal fa-wrench'></i> Module: <span class='fw-300'>Repair Assign History</span>
         <small>
-            Module for manage Ticketing.
+            Module for all repair assign history.
         </small>
     </h1>
 </div>
@@ -20,12 +20,12 @@
         <div id="panel-1" class="panel">
             <div class="panel-hdr">
                 <h2>
-                    Ticketing <span class="fw-300"><i>List</i></span>
+                    Assign <span class="fw-300"><i>History</i></span>
                 </h2>
                 <div class="panel-toolbar">
-                    <a class="nav-link active" href="{{route('ticketing.create')}}"><i class="fal fa-plus-circle">
+                    <a class="nav-link active" href="{{route('repair.index')}}"><i class="fal fa-arrow-alt-left">
                         </i>
-                        <span class="nav-link-text">Add New</span>
+                        <span class="nav-link-text">Back</span>
                     </a>
                     <button class="btn btn-panel" data-action="panel-fullscreen" data-toggle="tooltip"
                         data-offset="0,10" data-original-title="Fullscreen"></button>
@@ -38,15 +38,13 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Witel</th>
-                                <th>Unit</th>
                                 <th>Ticket Number</th>
+                                <th>Ticket Date</th>
+                                <th>Urgent Status</th>
                                 <th>Ticket Status</th>
                                 <th>Job Status</th>
-                                <th>Urgent Status</th>
-                                <th>Ticket Date</th>
-                                <th>Ticket Issuer</th>
-                                <th>Note</th>
+                                <th>Assign To</th>
+                                <th>Assign Date</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -86,10 +84,10 @@
        $('#datatable').DataTable({
             "processing": true,
             "serverSide": true,
-            responsive: true,
+            "responsive": true,
             "order": [[ 0, "asc" ]],
             "ajax":{
-                url:'{{route('ticketing.index')}}',
+                url:'{{route('repair.assign-history')}}',
                 type : "GET",
                 dataType: 'json',
                 error: function(data){
@@ -98,16 +96,14 @@
             },
             "columns": [
             {data: 'DT_RowIndex',searchable:false},
-            {data: 'witel'},
-            {data: 'uuid_unit'},
             {data: 'ticket_number'},
+            {data: 'ticket_date'},
+            {data: 'urgent_status'},
             {data: 'ticket_status'},
             {data: 'job_status'},
-            {data: 'urgent_status'},
+            {data: 'assign'},
             {data: 'created_at'},
-            {data: 'created_by'},
-            {data: 'note'},
-            {data: 'action', name: 'action', orderable: false, searchable: false},
+            {data: 'action', width: '10%', orderable: false, searchable: false},
         ]
     });
     // Delete Data

@@ -14,7 +14,7 @@ class ModuleStock extends Model
     use LogsActivity;
 
     protected $fillable = [
-        'module_category_uuid', 'module_name_uuid', 'module_brand_uuid', 'module_type_uuid', 'available', 'created_by', 'edited_by'
+        'module_type_uuid', 'available', 'created_by', 'edited_by'
     ];
 
     protected static $logAttributes = ['*'];
@@ -59,21 +59,6 @@ class ModuleStock extends Model
     public function userEdit()
     {
         return $this->belongsTo(User::class, 'edited_by', 'uuid');
-    }
-
-    public function category()
-    {
-        return $this->belongsTo(ModuleCategory::class, 'module_category_uuid', 'uuid');
-    }
-
-    public function nameModule()
-    {
-        return $this->belongsTo(ModuleName::class, 'module_name_uuid', 'uuid');
-    }
-
-    public function brand()
-    {
-        return $this->belongsTo(ModuleBrand::class, 'module_brand_uuid', 'uuid');
     }
 
     public function type()

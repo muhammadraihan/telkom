@@ -61,7 +61,7 @@ class ModuleBrand extends Model
         return $this->belongsTo(User::class, 'edited_by', 'uuid');
     }
 
-    public function nameModule()
+    public function moduleName()
     {
         return $this->belongsTo(ModuleName::class, 'module_name_uuid', 'uuid');
     }

@@ -19,23 +19,6 @@
                 </a>
             </div>
         </div>
-        {{-- <div class="info-card">
-            <img src="{{asset('img/avatar').'/'.Auth::user()->avatar}}" class="profile-image rounded-circle"
-        alt="Dr. Codex Lantern">
-        <div class="info-card-text">
-            <a href="#" class="d-flex align-items-center text-white">
-                <span class="text-truncate text-truncate-sm d-inline-block">
-                    {{Auth::user()->name}}
-                </span>
-            </a>
-            <span class="d-inline-block text-truncate text-truncate-sm">Toronto, Canada</span>
-        </div>
-        <img src="{{asset('img/card-backgrounds/cover-2-lg.png')}}" class="cover" alt="cover">
-        <a href="#" onclick="return false;" class="pull-trigger-btn" data-action="toggle"
-            data-class="list-filter-active" data-target=".page-sidebar" data-focus="nav_filter_input">
-            <i class="fal fa-angle-down"></i>
-        </a>
-        </div> --}}
         <ul id="js-nav-menu" class="nav-menu">
             <li>
                 <a href="{{route('backoffice.dashboard')}}" title="Dashboard" data-filter-tags="dashboard">
@@ -43,14 +26,11 @@
                     <span class="nav-link-text">Dashboard</span>
                 </a>
             </li>
-            @hasanyrole('superadmin|gudang')
-
-            @endhasanyrole
-            @hasanyrole('superadmin|cs')
+            @hasanyrole('superadmin')
             <li class="">
-                <a href="#" title="Theme Settings" data-filter-tags="theme settings">
+                <a href="#" title="Customer" data-filter-tags="customer settings">
                     <i class="fal fa-user-alt"></i>
-                    <span class="nav-link-text" data-i18n="nav.theme_settings">Customer Management</span>
+                    <span class="nav-link-text" data-i18n="nav.customer_settings">Customer</span>
                 </a>
                 <ul>
                     <li>
@@ -68,32 +48,18 @@
                 </ul>
             </li>
             @endhasanyrole
-            @hasanyrole('superadmin|gudang')
-            <li>
-                <a href="{{route('gudang.index')}}" title="Gudang Job Order Managements"
-                    data-filter-tags="gudang job order managements">
-                    <i class="fal fa-boxes"></i>
-                    <span class="nav-link-text" data-i18n="nav.users_managements">Gudang Job Order Management</span>
-                </a>
-            </li>
-            <li>
-                <a href="{{route('itemreplace.index')}}" title="Item Replace Managements"
-                    data-filter-tags="item replace managements">
-                    <i class="fal fa-retweet"></i>
-                    <span class="nav-link-text" data-i18n="nav.users_managements">Item Replace Management</span>
-                </a>
-            </li>
+            @hasanyrole('superadmin')
             <li class="">
-                <a href="#" title="Theme Settings" data-filter-tags="theme settings">
-                    <i class="fal fa-list"></i>
-                    <span class="nav-link-text" data-i18n="nav.theme_settings">Module Management</span>
+                <a href="#" title="Module and Material" data-filter-tags="module material">
+                    <i class="fal fa-inventory"></i>
+                    <span class="nav-link-text" data-i18n="nav.module_material">Module & Material</span>
                 </a>
                 <ul>
                     <li>
                         <a href="{{route('category.index')}}" title="Category Managements"
                             data-filter-tags="category managements">
                             <i class="fal fa-suitcase"></i>
-                            <span class="nav-link-text" data-i18n="nav.users_managements">Category</span>
+                            <span class="nav-link-text" data-i18n="nav.users_managements"> Module Category</span>
                         </a>
                     </li>
                     <li>
@@ -124,55 +90,81 @@
                             <span class="nav-link-text" data-i18n="nav.users_managements">Module Stock</span>
                         </a>
                     </li>
+                    <li>
+                        <a href="{{route('material.index')}}" title="Material Managements"
+                            data-filter-tags="material managements">
+                            <i class="fal fa-suitcase"></i>
+                            <span class="nav-link-text" data-i18n="nav.users_managements">Material</span>
+                        </a>
+                    </li>
                 </ul>
             </li>
-            <li>
-                <a href="{{route('material.index')}}" title="Material Managements"
-                    data-filter-tags="material managements">
-                    <i class="fal fa-retweet"></i>
-                    <span class="nav-link-text" data-i18n="nav.users_managements">Material Management</span>
-                </a>
-            </li>
             <li class="">
-                <a href="#" title="Theme Settings" data-filter-tags="theme settings">
-                    <i class="fal fa-list"></i>
-                    <span class="nav-link-text" data-i18n="nav.theme_settings">Stock Item Management</span>
+                <a href="#" title="Reference Data" data-filter-tags="reference data">
+                    <i class="fal fa-book"></i>
+                    <span class="nav-link-text" data-i18n="nav.reference_data">Reference Data</span>
                 </a>
                 <ul>
                     <li>
-                        <a href="{{route('accessory.index')}}" title="accessory Managements"
+                        <a href="{{route('accessory.index')}}" title="Accessory Data"
                             data-filter-tags="accessory managements">
                             <i class="fal fa-clipboard-check"></i>
-                            <span class="nav-link-text" data-i18n="nav.users_managements">Accessory</span>
+                            <span class="nav-link-text" data-i18n="nav.accessory_data">Accessory</span>
                         </a>
                     </li>
                 </ul>
             </li>
             @endhasanyrole
-            @hasanyrole('superadmin|teknisi')
+            @hasanyrole('superadmin|admin|supervisi|repair')
             <li>
-                <a href="{{route('teknisi.index')}}" title="Technician Job Order Managements"
-                    data-filter-tags="technician job order managements">
+                <a href="#" title="Repair Department" data-filter-tags="repair departmen">
                     <i class="fal fa-cogs"></i>
-                    <span class="nav-link-text" data-i18n="nav.users_managements">Technician Job Order Management</span>
+                    <span class="nav-link-text" data-i18n="nav.repair_department">Repair Department</span>
                 </a>
+                <ul>
+                    @hasanyrole('superadmin|admin|supervisi')
+                    <li>
+                        <a href="{{route('repair.index')}}" title="Repair Management"
+                            data-filter-tags="repair management">
+                            <i class="fal fa-clipboard-list"></i>
+                            <span class="nav-link-text" data-i18n="nav.repair_management">Repair List</span>
+                        </a>
+                    </li>
+                    @endhasanyrole
+                    @hasanyrole('superadmin|admin|repair')
+                    <li>
+                        <a href="{{route('repair-job.index')}}" title="Repair Task" data-filter-tags="repair task">
+                            <i class="fal fa-wrench"></i>
+                            <span class="nav-link-text" data-i18n="nav.repair_task">Repair Job</span>
+                        </a>
+                    </li>
+                    @endhasanyrole
+                </ul>
             </li>
             @endhasanyrole
-            @hasanyrole('superadmin|cs')
+            @hasanyrole('superadmin|admin|customer-care')
             <li>
-                <a href="{{route('ticketing.index')}}" title="Ticketing Managements"
-                    data-filter-tags="ticketing managements">
+                <a href="{{route('ticketing.index')}}" title="Ticketing Management"
+                    data-filter-tags="ticketing management">
                     <i class="fal fa-ticket-alt"></i>
-                    <span class="nav-link-text" data-i18n="nav.users_managements">Ticketing Management</span>
+                    <span class="nav-link-text" data-i18n="nav.ticketing_managements">Ticket Complain</span>
                 </a>
             </li>
             @endhasanyrole
-            @hasanyrole('superadmin')
+            @hasanyrole('superadmin|admin|warehouse')
+            <li>
+                <a href="#" title="Warehouse" data-filter-tags="Warehouse">
+                    <i class="fal fa-warehouse"></i>
+                    <span class="nav-link-text" data-i18n="nav.warehouse">Warehouse</span>
+                </a>
+            </li>
+            @endhasanyrole
+            @hasanyrole('superadmin|admin')
             <li class="nav-title">ACL & Settings</li>
             <li class="">
-                <a href="#" title="Theme Settings" data-filter-tags="theme settings">
+                <a href="#" title="ACL & Settings" data-filter-tags="acl settings">
                     <i class="fal fa-cog"></i>
-                    <span class="nav-link-text" data-i18n="nav.theme_settings">Access Control List</span>
+                    <span class="nav-link-text" data-i18n="nav.acl_settings">Access Control List</span>
                 </a>
                 <ul>
                     <li>

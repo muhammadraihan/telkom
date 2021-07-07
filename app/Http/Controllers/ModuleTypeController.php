@@ -39,10 +39,10 @@ class ModuleTypeController extends Controller
                     return $row->userEdit->name ?? null;
                 })
                 ->addColumn('module_category_uuid', function ($row) {
-                    return $row->brand->nameModule->category->name;
+                    return $row->brand->moduleName->category->name;
                 })
                 ->addColumn('module_name_uuid', function ($row) {
-                    return $row->brand->nameModule->name;
+                    return $row->brand->moduleName->name;
                 })
                 ->editColumn('module_brand_uuid', function ($row) {
                     return $row->brand->name;

@@ -9,7 +9,7 @@
 @section('content')
 <div class="subheader">
     <h1 class="subheader-title">
-        <i class='subheader-icon fal fa-users'></i> Module: <span class='fw-300'>Name</span>
+        <i class='subheader-icon fal fa-clipboard-list'></i> Module: <span class='fw-300'>Name</span>
         <small>
             Module for manage Module Name.
         </small>
@@ -19,7 +19,7 @@
     <div class="col-xl-12">
         <div id="panel-1" class="panel">
             <div class="panel-hdr">
-            <h2>
+                <h2>
                     Module Name <span class="fw-300"><i>List</i></span>
                 </h2>
                 <div class="panel-toolbar">
@@ -35,15 +35,15 @@
                 <div class="panel-content">
                     <!-- datatable start -->
                     <table id="datatable" class="table table-bordered table-hover table-striped w-100">
-        <thead>
-            <tr>
-                <th>No</th>
-                <th>Nama Kategori</th>
-                <th>Nama Module</th>
-                <th>Created By</th>
-                <th>Edited By</th>
-                <th width="120px">Action</th>
-                </tr>
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Module Category</th>
+                                <th>Module Name</th>
+                                <th>Created By</th>
+                                <th>Edited By</th>
+                                <th width="120px">Action</th>
+                            </tr>
                         </thead>
                     </table>
                 </div>
@@ -85,14 +85,7 @@
 <script src="{{asset('js/datagrid/datatables/datatables.bundle.js')}}"></script>
 <script>
     $(document).ready(function(){
-        $.ajaxSetup({
-          headers: {
-              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-          }
-    });
-     
-     
-       var table = $('#datatable').DataTable({
+       $('#datatable').DataTable({
             "processing": true,
             "serverSide": true,
             "responsive": true,
@@ -106,7 +99,7 @@
                     }
             },
             "columns": [
-            {data: 'DT_RowIndex', name: 'DT_RowIndex'},
+            {data: 'DT_RowIndex', name: 'DT_RowIndex',searchable:false},
             {data: 'module_category_uuid', name: 'module_category_uuid'},
             {data: 'name', name: 'name'},
             {data: 'created_by', name: 'created_by'},
@@ -120,8 +113,6 @@
             var id = $(this).attr('data-id');
             var url = $(this).attr('data-url');
             var token = $(this).attr('data-token');
-            console.log(id,url,token);
-            
             $(".delete-form").attr("action",url);
             $('body').find('.delete-form').append('<input name="_token" type="hidden" value="'+ token +'">');
             $('body').find('.delete-form').append('<input name="_method" type="hidden" value="DELETE">');

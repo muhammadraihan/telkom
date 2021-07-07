@@ -16,8 +16,6 @@ class CreateModuleTypesTable extends Migration
         Schema::create('module_types', function (Blueprint $table) {
             $table->id();
             $table->string('uuid')->unique();
-            $table->string('module_category_uuid')->nullable();
-            $table->string('module_name_uuid')->nullable();
             $table->string('name')->nullable();
             $table->string('module_brand_uuid')->nullable();
             $table->string('created_by')->nullable();
