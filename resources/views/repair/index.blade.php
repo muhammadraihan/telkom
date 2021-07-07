@@ -23,9 +23,13 @@
                     Ticket <span class="fw-300"><i>List</i></span>
                 </h2>
                 <div class="panel-toolbar">
-                    <a class="nav-link active" href="{{route('ticketing.create')}}"><i class="fal fa-plus-circle">
+                    <a class="nav-link active" href="{{route('repair.assign-history')}}"><i class="fal fa-list">
                         </i>
-                        <span class="nav-link-text">Add New</span>
+                        <span class="nav-link-text">All Repair Assign</span>
+                    </a>
+                    <a class="nav-link active" href="{{route('repair.job-history')}}"><i class="fal fa-list">
+                        </i>
+                        <span class="nav-link-text">All Repair Job</span>
                     </a>
                     <button class="btn btn-panel" data-action="panel-fullscreen" data-toggle="tooltip"
                         data-offset="0,10" data-original-title="Fullscreen"></button>
