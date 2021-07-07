@@ -67,7 +67,7 @@ class RepairJobOrder extends Model
 
     public function repair()
     {
-        return $this->belongsTo(Repair_item::class, 'repair_item_uuid', 'uuid');
+        return $this->belongsTo(RepairItem::class, 'repair_item_uuid', 'uuid');
     }
 
     public function UserAssign()
