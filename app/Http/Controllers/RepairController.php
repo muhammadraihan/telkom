@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Material;
 use App\Models\RepairItem;
 use App\Models\RepairJobOrder;
 use App\Models\Ticketing;
@@ -41,16 +42,16 @@ class RepairController extends Controller
                 })
                 ->editColumn('ticket_status', function ($row) {
                     switch ($row->ticket_status) {
-                        case '1':
+                        case 1:
                             return '<span class="badge badge-primary">Diproses ke bagian repair</span>';
                             break;
-                        case '2':
+                        case 2:
                             return '<span class="badge badge-warning">Diproses ke bagian gudang</span>';
                             break;
-                        case '3':
+                        case 3:
                             return '<span class="badge badge-success">Selesai</span>';
                             break;
-                        case '4':
+                        case 4:
                             return '<span class="badge badge-danger">Cancel</span>';
                             break;
                         default:
@@ -60,31 +61,34 @@ class RepairController extends Controller
                 })
                 ->editColumn('job_status', function ($row) {
                     switch ($row->job_status) {
-                        case '0':
+                        case 0:
                             return '<span class="badge badge-secondary">None</span>';
                             break;
-                        case '1':
+                        case 1:
                             return '<span class="badge badge-primary">Dalam penanganan oleh teknisi</span>';
                             break;
-                        case '2':
+                        case 2:
                             return '<span class="badge badge-success">Telah diperbaiki oleh teknisi</span>';
                             break;
-                        case '3':
+                        case 3:
+                            return '<span class="badge badge-danger">Tidak dapat diperbaiki teknisi</span>';
+                            break;
+                        case 4:
                             return '<span class="badge badge-warning">Butuh klaim garansi</span>';
                             break;
-                        case '4':
-                            return '<span class="badge badge-warning">Proses penggantian module</span>';
+                        case 5:
+                            return '<span class="badge badge-warning">Butuh penggantian barang</span>';
                             break;
-                        case '5':
+                        case 6:
                             return '<span class="badge badge-info">Dalam perbaikan oleh vendor</span>';
                             break;
-                        case '6':
+                        case 7:
                             return '<span class="badge badge-info">Menunggu penggantian dari vendor</span>';
                             break;
-                        case '7':
-                            return '<span class="badge badge-success">Dalam perbaikan oleh Telah di kirim ke customer</span>';
+                        case 8:
+                            return '<span class="badge badge-success">Telah di kirim ke customer</span>';
                             break;
-                        case '8':
+                        case 9:
                             return '<span class="badge badge-danger">Ticket di cancel</span>';
                             break;
                         default:
@@ -131,27 +135,6 @@ class RepairController extends Controller
                 ->make();
         }
         return view('repair.index');
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
     }
 
     /**
@@ -220,13 +203,217 @@ class RepairController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Display all job assign
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function AssignHistory()
     {
-        //
+        if (request()->ajax()) {
+            $repairs = RepairJobOrder::select(
+                'id',
+                'uuid',
+                'repair_item_uuid',
+                'assign_to',
+                'created_at'
+            )->latest()->get();
+
+            return Datatables::of($repairs)
+                ->addIndexColumn()
+                ->addColumn('ticket_number', function ($row) {
+                    return $row->repair->ticket->ticket_number;
+                })
+                ->addColumn('ticket_date', function ($row) {
+                    return Carbon::parse($row->repair->ticket->created_at)->translatedFormat('l\\, j F Y H:i:s');
+                })
+                ->addColumn('ticket_status', function ($row) {
+                    switch ($row->repair->ticket->ticket_status) {
+                        case 1:
+                            return '<span class="badge badge-primary">Diproses ke bagian repair</span>';
+                            break;
+                        case 2:
+                            return '<span class="badge badge-warning">Diproses ke bagian gudang</span>';
+                            break;
+                        case 3:
+                            return '<span class="badge badge-success">Selesai</span>';
+                            break;
+                        case 4:
+                            return '<span class="badge badge-danger">Cancel</span>';
+                            break;
+                        default:
+                            return '<span class="badge badge-dark">Status Unknown</span>';
+                            break;
+                    }
+                })
+                ->addColumn('job_status', function ($row) {
+                    switch ($row->repair->ticket->job_status) {
+                        case 0:
+                            return '<span class="badge badge-secondary">None</span>';
+                            break;
+                        case 1:
+                            return '<span class="badge badge-primary">Dalam penanganan oleh teknisi</span>';
+                            break;
+                        case 2:
+                            return '<span class="badge badge-success">Telah diperbaiki oleh teknisi</span>';
+                            break;
+                        case 3:
+                            return '<span class="badge badge-danger">Tidak dapat diperbaiki teknisi</span>';
+                            break;
+                        case 4:
+                            return '<span class="badge badge-warning">Butuh klaim garansi</span>';
+                            break;
+                        case 5:
+                            return '<span class="badge badge-warning">Butuh penggantian barang</span>';
+                            break;
+                        case 6:
+                            return '<span class="badge badge-info">Dalam perbaikan oleh vendor</span>';
+                            break;
+                        case 7:
+                            return '<span class="badge badge-info">Menunggu penggantian dari vendor</span>';
+                            break;
+                        case 8:
+                            return '<span class="badge badge-success">Telah di kirim ke customer</span>';
+                            break;
+                        case 9:
+                            return '<span class="badge badge-danger">Ticket di cancel</span>';
+                            break;
+                        default:
+                            return '<span class="badge badge-dark">None</span>';
+                            break;
+                    }
+                })
+                ->addColumn('urgent_status', function ($row) {
+                    switch ($row->repair->ticket->urgent_status) {
+                        case 0:
+                            return '<span class="badge badge-success">Not Urgent</span>';
+                            break;
+                        case 1:
+                            return '<span class="badge badge-danger">Urgent</span>';
+                            break;
+                        default:
+                            return '<span class="badge badge-dark">Status Unknown</span>';
+                            break;
+                    }
+                })
+                ->addColumn('assign', function ($row) {
+                    if (!empty($row->assign_to)) {
+                        return $row->UserAssign->name;
+                    }
+                    return '<span class="badge badge-secondary">None</span>';
+                })
+                ->editColumn('created_at', function ($row) {
+                    return Carbon::parse($row->created_at)->translatedFormat('l\\, j F Y H:i:s');
+                })
+                ->addColumn('action', function ($row) {
+                    return '<a class="btn btn-info btn-sm btn-icon waves-effect waves-themed" data-toggle="modal" id="detail-button" data-target="#detail-modal" data-attr="' . URL::route('repair.show', $row->repair->ticket_uuid) . '" title="Detail Module" href=""><i class="fal fa-search-plus"></i></a>';
+                })
+                ->removeColumn('id')
+                ->removeColumn('uuid')
+                ->rawColumns(['action', 'ticket_status', 'job_status', 'urgent_status', 'assign', 'assign_date'])
+                ->make();
+        }
+        return view('repair.assign-history');
+    }
+
+    /**
+     * Display a listing of tech job order history.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function RepairHistory()
+    {
+        if (request()->ajax()) {
+            $repair_jobs = RepairJobOrder::select(
+                'id',
+                'uuid',
+                'repair_item_uuid',
+                'job_status',
+                'time_to_repair',
+                'assign_to',
+                'created_at',
+                'updated_at',
+            )->latest()->where('job_status', 1)->get();
+            return Datatables::of($repair_jobs)
+                ->addIndexColumn()
+                ->addColumn('ticket_number', function ($repair_job) {
+                    return $repair_job->repair->ticket->ticket_number;
+                })
+                ->addColumn('repair_status', function ($repair_job) {
+                    switch ($repair_job->repair->repair_status) {
+                        case 0:
+                            return '<span class="badge badge-danger">Non Repair</span>';
+                            break;
+                        case 1;
+                            return '<span class="badge badge-success">Repaired</span>';
+                        default:
+                            return '<span class="badge badge-secondary">Unknown</span>';
+                            break;
+                    }
+                })
+                ->editColumn('job_status', function ($repair_job) {
+                    switch ($repair_job->job_status) {
+                        case 0:
+                            return '<span class="badge badge-primary">Dalam proses</span>';
+                            break;
+                        case 1;
+                            return '<span class="badge badge-success">Selesai</span>';
+                            break;
+                        case 2;
+                            return '<span class="badge badge-danger">Ticket cancel</span>';
+                            break;
+                        default:
+                            return '<span class="badge badge-dark">Status Unknown</span>';
+                            break;
+                    }
+                })
+                ->editColumn('time_to_repair', function ($repair_job) {
+                    return number_format($repair_job->time_to_repair, 2) . ' ' . 'Hours';
+                })
+                ->editColumn('assign_to', function ($repair_job) {
+                    return $repair_job->UserAssign->name;
+                })
+                ->editColumn('created_at', function ($repair_job) {
+                    return Carbon::parse($repair_job->created_at)->translatedFormat('j M Y h:i:s');
+                })
+                ->editColumn('updated_at', function ($repair_job) {
+                    return Carbon::parse($repair_job->updated_at)->translatedFormat('j M Y h:i:s');
+                })
+                ->addColumn('action', function ($repair_job) {
+                    return '<a class="btn btn-info btn-sm btn-icon waves-effect waves-themed" data-toggle="modal" id="detail-button" data-target="#detail-modal" data-attr="' . URL::route('repair.job-detail', $repair_job->uuid) . '" title="Detail Task" href=""><i class="fal fa-search-plus"></i></a>';
+                })
+                ->removeColumn('id')
+                ->removeColumn('uuid')
+                ->removeColumn('repair_item_uuid')
+                ->rawColumns(['repair_status', 'job_status', 'action'])
+                ->make();
+        }
+        return view('repair.repair-history');
+    }
+
+    /**
+     * Display og repair job
+     *
+     * @param string $uuid
+     * @return \Illuminate\Http\Response
+     */
+    public function RepairDetail($uuid)
+    {
+        $materials = [];
+        $repair_job = RepairJobOrder::uuid($uuid);
+        // check if there's component used
+        if (!empty($repair_job->component_used)) {
+            // loop component used array to get material name
+            for ($i = 0; $i < count($repair_job->component_used); $i++) {
+                $component = Material::select('material_type')
+                    ->where('uuid', $repair_job->component_used[$i]['uuid'])->first();
+
+                $materials[$i]['uuid'] = $repair_job->component_used[$i]['uuid'];
+                $materials[$i]['material_type'] = $component->material_type;
+                $materials[$i]['unit_price'] = $repair_job->component_used[$i]['unit_price'];
+                $materials[$i]['amount_used'] = $repair_job->component_used[$i]['amount_used'];
+                $materials[$i]['total_price'] = $repair_job->component_used[$i]['total_price'];
+            }
+        }
+        return view('repair.repair-detail', compact('repair_job', 'materials'));
     }
 }
