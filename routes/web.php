@@ -27,13 +27,18 @@ Route::group(['prefix' => 'backoffice', 'middleware' => ['auth']], function () {
     Route::get('dashboard', 'DashboardController@dashboard')->name('backoffice.dashboard');
     Route::get('logs', 'ActivityController@index')->name('logs');
 
+    // repair
+    Route::get('repair/assign/history', 'RepairController@AssignHistory')->name('repair.assign-history');
+    Route::get('repair/job/history', 'RepairController@RepairHistory')->name('repair.job-history');
+    Route::get('repair/history/detail/{repair}', 'RepairController@detail')->name('repair.job-detail');
+    Route::get('repair-job/detail/{repair_job}', 'RepairJobController@detail')->name('repair-job.detail');
+    Route::get('repair-job/history', 'RepairJobController@history')->name('repair-job.history');
+
     // reference
-    Route::get('teknisi/history', 'TeknisiController@history')->name('teknisi.history');
     Route::get('getUnit', 'UnitController@GetUnitByWitel')->name('getUnit');
     Route::get('getModuleName', 'ModuleNameController@GetModuleNameByCategory')->name('getModuleName');
     Route::get('getModuleBrand', 'ModuleBrandController@GetModuleBrandByName')->name('getModuleBrand');
     Route::get('getModuleType', 'ModuleTypeController@GetModuleTypeByBrand')->name('getModuleType');
-    Route::post('customer-save', 'TicketingController@CustomerStore')->name('post.customer');
 
     // resource
     Route::resource('accessory', 'AccessoryController');
