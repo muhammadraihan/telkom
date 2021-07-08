@@ -61,8 +61,8 @@ class WarehouseJobOrder extends Model
         return $this->belongsTo(User::class, 'edited_by', 'uuid');
     }
 
-    public function ticket()
+    public function repair()
     {
-        return $this->belongsTo(Ticketing::class, 'ticket_uuid', 'uuid');
+        return $this->belongsTo(RepairItem::class, 'repair_item_uuid', 'uuid');
     }
 }
