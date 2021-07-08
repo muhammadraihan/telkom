@@ -38,7 +38,7 @@ class RepairController extends Controller
             return Datatables::of($tickets)
                 ->addIndexColumn()
                 ->editColumn('created_at', function ($row) {
-                    return Carbon::parse($row->created_at)->translatedFormat('l\\, j F Y H:i:s');
+                    return Carbon::parse($row->created_at)->translatedFormat('l\\, j F Y H:i');
                 })
                 ->editColumn('ticket_status', function ($row) {
                     switch ($row->ticket_status) {
@@ -117,7 +117,7 @@ class RepairController extends Controller
                 })
                 ->addColumn('assign_date', function ($row) {
                     if (!empty($row->RepairItem->JobOrder->assign_to)) {
-                        return Carbon::parse($row->RepairItem->JobOrder->created_at)->translatedFormat('l\\, j F Y H:i:s');
+                        return Carbon::parse($row->RepairItem->JobOrder->created_at)->translatedFormat('l\\, j F Y H:i');
                     }
                     return '<span class="badge badge-secondary">None</span>';
                 })
@@ -224,7 +224,7 @@ class RepairController extends Controller
                     return $row->repair->ticket->ticket_number;
                 })
                 ->addColumn('ticket_date', function ($row) {
-                    return Carbon::parse($row->repair->ticket->created_at)->translatedFormat('l\\, j F Y H:i:s');
+                    return Carbon::parse($row->repair->ticket->created_at)->translatedFormat('l\\, j F Y H:i');
                 })
                 ->addColumn('ticket_status', function ($row) {
                     switch ($row->repair->ticket->ticket_status) {
@@ -302,7 +302,7 @@ class RepairController extends Controller
                     return '<span class="badge badge-secondary">None</span>';
                 })
                 ->editColumn('created_at', function ($row) {
-                    return Carbon::parse($row->created_at)->translatedFormat('l\\, j F Y H:i:s');
+                    return Carbon::parse($row->created_at)->translatedFormat('l\\, j F Y H:i');
                 })
                 ->addColumn('action', function ($row) {
                     return '<a class="btn btn-info btn-sm btn-icon waves-effect waves-themed" data-toggle="modal" id="detail-button" data-target="#detail-modal" data-attr="' . URL::route('repair.show', $row->repair->ticket_uuid) . '" title="Detail Module" href=""><i class="fal fa-search-plus"></i></a>';
@@ -373,10 +373,10 @@ class RepairController extends Controller
                     return $repair_job->UserAssign->name;
                 })
                 ->editColumn('created_at', function ($repair_job) {
-                    return Carbon::parse($repair_job->created_at)->translatedFormat('j M Y h:i:s');
+                    return Carbon::parse($repair_job->created_at)->translatedFormat('j M Y H:i');
                 })
                 ->editColumn('updated_at', function ($repair_job) {
-                    return Carbon::parse($repair_job->updated_at)->translatedFormat('j M Y h:i:s');
+                    return Carbon::parse($repair_job->updated_at)->translatedFormat('j M Y H:i');
                 })
                 ->addColumn('action', function ($repair_job) {
                     return '<a class="btn btn-info btn-sm btn-icon waves-effect waves-themed" data-toggle="modal" id="detail-button" data-target="#detail-modal" data-attr="' . URL::route('repair.job-detail', $repair_job->uuid) . '" title="Detail Task" href=""><i class="fal fa-search-plus"></i></a>';
