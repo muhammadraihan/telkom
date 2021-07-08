@@ -6,7 +6,6 @@ use App\Models\Accessory;
 use App\Models\ModuleCategory;
 use App\Models\RepairItem;
 use App\Models\Ticketing;
-use App\Models\Unit;
 use App\Models\Witel;
 use Illuminate\Http\Request;
 
@@ -52,7 +51,7 @@ class TicketingController extends Controller
                     return $row->userCreate->name;
                 })
                 ->editColumn('created_at', function ($row) {
-                    return Carbon::parse($row->created_at)->translatedFormat('l\\, j F Y H:i:s');
+                    return Carbon::parse($row->created_at)->translatedFormat('l\\, j F Y H:i');
                 })
                 ->editColumn('ticket_status', function ($row) {
                     switch ($row->ticket_status) {
