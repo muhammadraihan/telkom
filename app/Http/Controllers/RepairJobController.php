@@ -37,7 +37,7 @@ class RepairJobController extends Controller
                         return $row->repair->ticket->ticket_number;
                     })
                     ->editColumn('created_at', function ($row) {
-                        return Carbon::parse($row->created_at)->translatedFormat('l\\, j F Y h:i:s');
+                        return Carbon::parse($row->created_at)->translatedFormat('l\\, j F Y H:i');
                     })
                     ->addColumn('action', function ($row) {
                         return '<a class="btn btn-info btn-sm btn-icon waves-effect waves-themed" data-toggle="modal" id="detail-button" data-target="#detail-modal" data-attr="' . URL::route('repair-job.show', $row->uuid) . '" title="Detail Barang" href=""><i class="fal fa-search-plus"></i></a>
@@ -56,7 +56,7 @@ class RepairJobController extends Controller
                     return $row->repair->ticket->ticket_number;
                 })
                 ->editColumn('created_at', function ($row) {
-                    return Carbon::parse($row->created_at)->translatedFormat('l\\, j F Y h:i:s');
+                    return Carbon::parse($row->created_at)->translatedFormat('l\\, j F Y H:i');
                 })
                 ->addColumn('action', function ($row) {
                     return '<a class="btn btn-info btn-sm btn-icon waves-effect waves-themed" data-toggle="modal" id="detail-button" data-target="#detail-modal" data-attr="' . URL::route('repair-job.show', $row->uuid) . '" title="Detail Barang" href=""><i class="fal fa-search-plus"></i></a>
@@ -189,6 +189,7 @@ class RepairJobController extends Controller
                     $repair_item = RepairItem::where('uuid', $repair_job->repair_item_uuid)->first();
                     $repair_item->complain = $request->complain;
                     $repair_item->repair_status = 1; // item can repair
+                    $repair_item->edited_by = Auth::user()->uuid;
                     $repair_item->save();
                     // create job order for warehouse
                     $warehouse_job = new WarehouseJobOrder();
@@ -229,6 +230,7 @@ class RepairJobController extends Controller
                     $repair_item = RepairItem::where('uuid', $repair_job->repair_item_uuid)->first();
                     $repair_item->complain = $request->complain;
                     $repair_item->repair_status = 1; // item can repair
+                    $repair_item->edited_by = Auth::user()->uuid;
                     $repair_item->save();
                     // create job order for warehouse
                     $warehouse_job = new WarehouseJobOrder();
@@ -270,6 +272,7 @@ class RepairJobController extends Controller
                 $repair_item = RepairItem::where('uuid', $repair_job->repair_item_uuid)->first();
                 $repair_item->complain = $request->complain;
                 $repair_item->repair_status = 0; // item can't repair
+                $repair_item->edited_by = Auth::user()->uuid;
                 $repair_item->save();
                 // create job order for warehouse
                 $warehouse_job = new WarehouseJobOrder();
@@ -351,10 +354,10 @@ class RepairJobController extends Controller
                     return number_format($repair_job->time_to_repair, 2) . ' ' . 'Hours';
                 })
                 ->editColumn('created_at', function ($repair_job) {
-                    return Carbon::parse($repair_job->created_at)->translatedFormat('j M Y h:i:s');
+                    return Carbon::parse($repair_job->created_at)->translatedFormat('j M Y H:i');
                 })
                 ->editColumn('updated_at', function ($repair_job) {
-                    return Carbon::parse($repair_job->updated_at)->translatedFormat('j M Y h:i:s');
+                    return Carbon::parse($repair_job->updated_at)->translatedFormat('j M Y H:i');
                 })
                 ->addColumn('action', function ($repair_job) {
                     return '<a class="btn btn-info btn-sm btn-icon waves-effect waves-themed" data-toggle="modal" id="detail-button" data-target="#detail-modal" data-attr="' . URL::route('repair-job.detail', $repair_job->uuid) . '" title="Detail Task" href=""><i class="fal fa-search-plus"></i></a>';
