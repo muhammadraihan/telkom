@@ -78,44 +78,26 @@
 <script src="{{asset('js/datagrid/datatables/datatables.bundle.js')}}"></script>
 <script>
     $(document).ready(function(){
-    $('#datatable').DataTable({
-        "processing": true,
-        "serverSide": true,
-        "responsive": true,
-        "order": [[ 0, "asc" ]],
-        "ajax": {
-            url:'{{route('repair-job.index')}}',
-            type : "GET",
-            dataType: 'json',
-            error: function(data) {
-                console.log(data);
-            }
-        },
-        "columns": [
-            {data: 'rownum',searchable: false},
-            {data: 'ticket_number'},
-            {data: 'created_at'},
-            {data: 'action', name: 'action', orderable: false, searchable: false},
-        ]
-    });
-    // Delete Data
-    $('#datatable').on('click', '.delete-btn[data-url]', function (e) {
-            e.preventDefault();
-            var id = $(this).attr('data-id');
-            var url = $(this).attr('data-url');
-            var token = $(this).attr('data-token');
-            
-            $(".delete-form").attr("action",url);
-            $('body').find('.delete-form').append('<input name="_token" type="hidden" value="'+ token +'">');
-            $('body').find('.delete-form').append('<input name="_method" type="hidden" value="DELETE">');
-            $('body').find('.delete-form').append('<input name="id" type="hidden" value="'+ id +'">');
+        $('#datatable').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "responsive": true,
+            "order": [[ 0, "asc" ]],
+            "ajax": {
+                url:'{{route('repair-job.index')}}',
+                type : "GET",
+                dataType: 'json',
+                error: function(data) {
+                    console.log(data);
+                }
+            },
+            "columns": [
+                {data: 'rownum',searchable: false},
+                {data: 'ticket_number'},
+                {data: 'created_at'},
+                {data: 'action', name: 'action', orderable: false, searchable: false},
+            ]
         });
-
-        // Clear Data When Modal Close
-        $('.remove-data-from-delete-form').on('click',function() {
-            $('body').find('.delete-form').find("input").remove();
-        });
-
         $('#datatable').on('click', '#detail-button[data-attr]', function (e) {
             e.preventDefault();
             var href = $(this).attr('data-attr');
