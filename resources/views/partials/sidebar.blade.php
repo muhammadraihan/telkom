@@ -153,7 +153,7 @@
             @endhasanyrole
             @hasanyrole('superadmin|admin|warehouse')
             <li>
-                <a href="#" title="Warehouse" data-filter-tags="Warehouse">
+                <a href="{{route('warehouse.index')}}" title="Warehouse" data-filter-tags="Warehouse">
                     <i class="fal fa-warehouse"></i>
                     <span class="nav-link-text" data-i18n="nav.warehouse">Warehouse</span>
                 </a>
