@@ -30,7 +30,7 @@ Route::group(['prefix' => 'backoffice', 'middleware' => ['auth']], function () {
     // repair
     Route::get('repair/assign/history', 'RepairController@AssignHistory')->name('repair.assign-history');
     Route::get('repair/job/history', 'RepairController@RepairHistory')->name('repair.job-history');
-    Route::get('repair/history/detail/{repair}', 'RepairController@detail')->name('repair.job-detail');
+    Route::get('repair/history/detail/{repair}', 'RepairController@RepairDetail')->name('repair.job-detail');
     Route::get('repair-job/detail/{repair_job}', 'RepairJobController@detail')->name('repair-job.detail');
     Route::get('repair-job/history', 'RepairJobController@history')->name('repair-job.history');
 
@@ -44,19 +44,18 @@ Route::group(['prefix' => 'backoffice', 'middleware' => ['auth']], function () {
     Route::resource('accessory', 'AccessoryController');
     Route::resource('brand', 'ModuleBrandController');
     Route::resource('category', 'ModuleCategoryController');
-    Route::resource('gudang', 'GudangController');
-    Route::resource('itemreplace', 'ItemReplaceController');
     Route::resource('material', 'MaterialController');
     Route::resource('name', 'ModuleNameController');
     Route::resource('permissions', 'PermissionController');
     Route::resource('repair', 'RepairController');
+    Route::resource('repair-job', 'RepairJobController');
     Route::resource('roles', 'RoleController');
     Route::resource('stock', 'ModuleStockController');
     Route::resource('ticketing', 'TicketingController');
-    Route::resource('repair-job', 'RepairJobController');
     Route::resource('type', 'ModuleTypeController');
     Route::resource('users', 'UserController');
     Route::resource('unit', 'UnitController');
+    Route::resource('warehouse', 'WarehouseController');
     Route::resource('witel', 'WitelController');
 
     // user Profile
