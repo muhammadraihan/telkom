@@ -148,10 +148,10 @@ class Helper
         return '<span class="badge badge-info">Selesai penggantian module</span>';
         break;
       case 7:
-        return '<span class="badge badge-info">Dalam perbaikan oleh vendor</span>';
+        return '<span class="badge badge-info">Dalam penanganan oleh vendor</span>';
         break;
       case 8:
-        return '<span class="badge badge-info">Menunggu penggantian dari vendor</span>';
+        return '<span class="badge badge-info">Selesai penanganan dari vendor</span>';
         break;
       case 9:
         return '<span class="badge badge-success">Telah di kirim ke customer</span>';
@@ -226,6 +226,22 @@ class Helper
         return '<span class="badge badge-danger">Non Repair</span>';
         break;
       case 1;
+        return '<span class="badge badge-success">Repaired By Tech</span>';
+      case 2;
+        return '<span class="badge badge-info">Repaired By Vendor</span>';
+      default:
+        return '<span class="badge badge-secondary">Unknown</span>';
+        break;
+    }
+  }
+
+  public static function RepairJobItemStatus($repair_item_status)
+  {
+    switch ($repair_item_status) {
+      case 0:
+        return '<span class="badge badge-danger">Non Repair</span>';
+        break;
+      case 1;
         return '<span class="badge badge-success">Repaired</span>';
       default:
         return '<span class="badge badge-secondary">Unknown</span>';
@@ -274,6 +290,20 @@ class Helper
         break;
       default:
         return '<span class="badge badge-primary">Unknown</span>';
+        break;
+    }
+  }
+
+  public static function WarrantyStatus($warranty_status)
+  {
+    switch ($warranty_status) {
+      case 0:
+        return '<span class="badge badge-danger">Not Warranty</span>';
+        break;
+      case 1:
+        return '<span class="badge badge-info">Warranty</span>';
+      default:
+        return '<span class="badge badge-secondary">Unknown</span>';
         break;
     }
   }
