@@ -18,9 +18,6 @@ class CreateItemReplaceVendorDetailsTable extends Migration
             $table->string('uuid')->unique();
             $table->string('item_repair_uuid')->nullable();
             $table->string('vendor_name')->nullable();
-            $table->string('module_category_uuid')->nullable();
-            $table->string('module_name_uuid')->nullable();
-            $table->string('module_brand_uuid')->nullable();
             $table->string('module_type_uuid')->nullable();
             $table->string('part_number')->nullable();
             $table->string('serial_number')->nullable();
