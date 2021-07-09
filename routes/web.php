@@ -31,8 +31,8 @@ Route::group(['prefix' => 'backoffice', 'middleware' => ['auth']], function () {
     Route::get('repair/assign/history', 'RepairController@AssignHistory')->name('repair.assign-history');
     Route::get('repair/job/history', 'RepairController@RepairHistory')->name('repair.job-history');
     Route::get('repair/history/detail/{repair}', 'RepairController@RepairDetail')->name('repair.job-detail');
-    Route::get('repair-job/detail/{repair_job}', 'RepairJobController@detail')->name('repair-job.detail');
     Route::get('repair-job/history', 'RepairJobController@history')->name('repair-job.history');
+    Route::get('repair-job/history/detail/{repair_job}', 'RepairJobController@detail')->name('repair-job.detail');
 
     // reference
     Route::get('getUnit', 'UnitController@GetUnitByWitel')->name('getUnit');
@@ -40,6 +40,9 @@ Route::group(['prefix' => 'backoffice', 'middleware' => ['auth']], function () {
     Route::get('getModuleBrand', 'ModuleBrandController@GetModuleBrandByName')->name('getModuleBrand');
     Route::get('getModuleType', 'ModuleTypeController@GetModuleTypeByBrand')->name('getModuleType');
 
+    // warehouse
+    Route::get('warehouse/history', 'WarehouseController@history')->name('warehouse.history');
+    Route::get('warehouse/history/detail/{warehouse}', 'WarehouseController@detail')->name('warehouse.detail');
     // resource
     Route::resource('accessory', 'AccessoryController');
     Route::resource('brand', 'ModuleBrandController');
