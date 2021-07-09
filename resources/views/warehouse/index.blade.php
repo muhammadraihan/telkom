@@ -20,8 +20,12 @@
         <div id="panel-1" class="panel">
             <div class="panel-hdr">
                 <h2>
-                    Warehouse Job Order <span class="fw-300"><i>List</i></span>
+                    Warehouse Job<span class="fw-300"><i>List</i></span>
                 </h2>
+                <a class="nav-link active" href="{{route('warehouse.history')}}"><i class="fal fa-list">
+                    </i>
+                    <span class="nav-link-text">All Job</span>
+                </a>
                 <div class="panel-toolbar">
                     <button class="btn btn-panel" data-action="panel-fullscreen" data-toggle="tooltip"
                         data-offset="0,10" data-original-title="Fullscreen"></button>
