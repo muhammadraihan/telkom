@@ -14,11 +14,11 @@ class ItemReplaceVendorDetail extends Model
     use LogsActivity;
 
     protected $fillable = [
-        'item_repair_uuid', 'vendor_name', 'module_category_uuid', 'module_name_uuid', 'module_brand_uuid', 'module_type_uuid', 'part_number', 'serial_number', 'serial_number_msc', 'accesories', 'created_by', 'edited_by'
+        'item_repair_uuid', 'vendor_name', 'module_type_uuid', 'part_number', 'serial_number', 'serial_number_msc', 'accessories', 'created_by', 'edited_by'
     ];
 
     protected $casts = [
-        'accesories' => 'array'
+        'accessories' => 'array'
     ];
 
     protected static $logAttributes = ['*'];
