@@ -323,32 +323,10 @@ class RepairJobController extends Controller
                     return $repair_job->repair->ticket->ticket_number;
                 })
                 ->addColumn('repair_status', function ($repair_job) {
-                    switch ($repair_job->repair->repair_status) {
-                        case 0:
-                            return '<span class="badge badge-danger">Non Repair</span>';
-                            break;
-                        case 1;
-                            return '<span class="badge badge-success">Repaired</span>';
-                        default:
-                            return '<span class="badge badge-secondary">Unknown</span>';
-                            break;
-                    }
+                    return Helper::RepairStatus($repair_job->repair->repair_status);
                 })
                 ->editColumn('job_status', function ($repair_job) {
-                    switch ($repair_job->job_status) {
-                        case 0:
-                            return '<span class="badge badge-primary">Dalam proses</span>';
-                            break;
-                        case 1;
-                            return '<span class="badge badge-success">Selesai</span>';
-                            break;
-                        case 2;
-                            return '<span class="badge badge-danger">Ticket cancel</span>';
-                            break;
-                        default:
-                            return '<span class="badge badge-dark">Status Unknown</span>';
-                            break;
-                    }
+                    return Helper::JobStatus($repair_job->job_status);
                 })
                 ->editColumn('time_to_repair', function ($repair_job) {
                     return number_format($repair_job->time_to_repair, 2) . ' ' . 'Hours';
