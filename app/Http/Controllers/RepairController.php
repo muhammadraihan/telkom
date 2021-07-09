@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 
 use Auth;
 use DataTables;
+use Helper;
 use URL;
 
 class RepairController extends Controller
@@ -33,7 +34,7 @@ class RepairController extends Controller
                 'job_status',
                 'urgent_status',
                 'created_at',
-            )->where('ticket_status', 1)->latest()->get();
+            )->where('ticket_status', 1)->get();
 
             return Datatables::of($tickets)
                 ->addIndexColumn()
@@ -41,73 +42,13 @@ class RepairController extends Controller
                     return Carbon::parse($row->created_at)->translatedFormat('l\\, j F Y H:i');
                 })
                 ->editColumn('ticket_status', function ($row) {
-                    switch ($row->ticket_status) {
-                        case 1:
-                            return '<span class="badge badge-primary">Diproses ke bagian repair</span>';
-                            break;
-                        case 2:
-                            return '<span class="badge badge-warning">Diproses ke bagian gudang</span>';
-                            break;
-                        case 3:
-                            return '<span class="badge badge-success">Selesai</span>';
-                            break;
-                        case 4:
-                            return '<span class="badge badge-danger">Cancel</span>';
-                            break;
-                        default:
-                            return '<span class="badge badge-dark">Status Unknown</span>';
-                            break;
-                    }
+                    return Helper::TicketStatus($row->ticket_status);
                 })
                 ->editColumn('job_status', function ($row) {
-                    switch ($row->job_status) {
-                        case 0:
-                            return '<span class="badge badge-secondary">None</span>';
-                            break;
-                        case 1:
-                            return '<span class="badge badge-primary">Dalam penanganan oleh teknisi</span>';
-                            break;
-                        case 2:
-                            return '<span class="badge badge-success">Telah diperbaiki oleh teknisi</span>';
-                            break;
-                        case 3:
-                            return '<span class="badge badge-danger">Tidak dapat diperbaiki teknisi</span>';
-                            break;
-                        case 4:
-                            return '<span class="badge badge-warning">Butuh klaim garansi</span>';
-                            break;
-                        case 5:
-                            return '<span class="badge badge-warning">Butuh penggantian barang</span>';
-                            break;
-                        case 6:
-                            return '<span class="badge badge-info">Dalam perbaikan oleh vendor</span>';
-                            break;
-                        case 7:
-                            return '<span class="badge badge-info">Menunggu penggantian dari vendor</span>';
-                            break;
-                        case 8:
-                            return '<span class="badge badge-success">Telah di kirim ke customer</span>';
-                            break;
-                        case 9:
-                            return '<span class="badge badge-danger">Ticket di cancel</span>';
-                            break;
-                        default:
-                            return '<span class="badge badge-dark">None</span>';
-                            break;
-                    }
+                    return Helper::ItemStatus($row->job_status);
                 })
                 ->editColumn('urgent_status', function ($row) {
-                    switch ($row->urgent_status) {
-                        case 0:
-                            return '<span class="badge badge-success">Not Urgent</span>';
-                            break;
-                        case 1:
-                            return '<span class="badge badge-danger">Urgent</span>';
-                            break;
-                        default:
-                            return '<span class="badge badge-dark">Status Unknown</span>';
-                            break;
-                    }
+                    return Helper::UrgentStatus($row->urgent_status);
                 })
                 ->addColumn('assign', function ($row) {
                     if (!empty($row->RepairItem->JobOrder->assign_to)) {
@@ -227,73 +168,13 @@ class RepairController extends Controller
                     return Carbon::parse($row->repair->ticket->created_at)->translatedFormat('l\\, j F Y H:i');
                 })
                 ->addColumn('ticket_status', function ($row) {
-                    switch ($row->repair->ticket->ticket_status) {
-                        case 1:
-                            return '<span class="badge badge-primary">Diproses ke bagian repair</span>';
-                            break;
-                        case 2:
-                            return '<span class="badge badge-warning">Diproses ke bagian gudang</span>';
-                            break;
-                        case 3:
-                            return '<span class="badge badge-success">Selesai</span>';
-                            break;
-                        case 4:
-                            return '<span class="badge badge-danger">Cancel</span>';
-                            break;
-                        default:
-                            return '<span class="badge badge-dark">Status Unknown</span>';
-                            break;
-                    }
+                    return Helper::TicketStatus($row->repair->ticket->ticket_status);
                 })
                 ->addColumn('job_status', function ($row) {
-                    switch ($row->repair->ticket->job_status) {
-                        case 0:
-                            return '<span class="badge badge-secondary">None</span>';
-                            break;
-                        case 1:
-                            return '<span class="badge badge-primary">Dalam penanganan oleh teknisi</span>';
-                            break;
-                        case 2:
-                            return '<span class="badge badge-success">Telah diperbaiki oleh teknisi</span>';
-                            break;
-                        case 3:
-                            return '<span class="badge badge-danger">Tidak dapat diperbaiki teknisi</span>';
-                            break;
-                        case 4:
-                            return '<span class="badge badge-warning">Butuh klaim garansi</span>';
-                            break;
-                        case 5:
-                            return '<span class="badge badge-warning">Butuh penggantian barang</span>';
-                            break;
-                        case 6:
-                            return '<span class="badge badge-info">Dalam perbaikan oleh vendor</span>';
-                            break;
-                        case 7:
-                            return '<span class="badge badge-info">Menunggu penggantian dari vendor</span>';
-                            break;
-                        case 8:
-                            return '<span class="badge badge-success">Telah di kirim ke customer</span>';
-                            break;
-                        case 9:
-                            return '<span class="badge badge-danger">Ticket di cancel</span>';
-                            break;
-                        default:
-                            return '<span class="badge badge-dark">None</span>';
-                            break;
-                    }
+                    return Helper::ItemStatus($row->repair->ticket->job_status);
                 })
                 ->addColumn('urgent_status', function ($row) {
-                    switch ($row->repair->ticket->urgent_status) {
-                        case 0:
-                            return '<span class="badge badge-success">Not Urgent</span>';
-                            break;
-                        case 1:
-                            return '<span class="badge badge-danger">Urgent</span>';
-                            break;
-                        default:
-                            return '<span class="badge badge-dark">Status Unknown</span>';
-                            break;
-                    }
+                    return Helper::UrgentStatus($row->repair->ticket->urgent_status);
                 })
                 ->addColumn('assign', function ($row) {
                     if (!empty($row->assign_to)) {
@@ -339,32 +220,10 @@ class RepairController extends Controller
                     return $repair_job->repair->ticket->ticket_number;
                 })
                 ->addColumn('repair_status', function ($repair_job) {
-                    switch ($repair_job->repair->repair_status) {
-                        case 0:
-                            return '<span class="badge badge-danger">Non Repair</span>';
-                            break;
-                        case 1;
-                            return '<span class="badge badge-success">Repaired</span>';
-                        default:
-                            return '<span class="badge badge-secondary">Unknown</span>';
-                            break;
-                    }
+                    return Helper::RepairStatus($repair_job->repair->repair_status);
                 })
                 ->editColumn('job_status', function ($repair_job) {
-                    switch ($repair_job->job_status) {
-                        case 0:
-                            return '<span class="badge badge-primary">Dalam proses</span>';
-                            break;
-                        case 1;
-                            return '<span class="badge badge-success">Selesai</span>';
-                            break;
-                        case 2;
-                            return '<span class="badge badge-danger">Ticket cancel</span>';
-                            break;
-                        default:
-                            return '<span class="badge badge-dark">Status Unknown</span>';
-                            break;
-                    }
+                    return Helper::JobStatus($repair_job->job_status);
                 })
                 ->editColumn('time_to_repair', function ($repair_job) {
                     return number_format($repair_job->time_to_repair, 2) . ' ' . 'Hours';
