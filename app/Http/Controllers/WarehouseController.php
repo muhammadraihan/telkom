@@ -3,8 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Accessory;
-use App\Models\ItemReplaceStockDetail;
-use App\Models\ItemReplaceVendorDetail;
+use App\Models\ItemReplaceDetail;
 use App\Models\ModuleStock;
 use App\Models\RepairItem;
 use App\Models\Ticketing;
@@ -106,7 +105,7 @@ class WarehouseController extends Controller
         $repair_item = RepairItem::where('uuid', $warehouse_job->repair_item_uuid)->first();
 
         // item repaired by tech and ready to send
-        if ($request->item_status == 8) {
+        if ($request->item_status == 9) {
             $rules = [
                 'warehouse_notes' => 'required',
                 'resi_image' => 'required|mimes:img,png,jpg,jpeg|max:2048'
@@ -176,6 +175,7 @@ class WarehouseController extends Controller
                     'serial_number' => 'required',
                     'serial_number_msc' => 'required',
                     'accessories' => 'required|array|min:1',
+                    'warehouse_notes' => 'required',
                 ];
 
                 $messages = [
@@ -186,7 +186,8 @@ class WarehouseController extends Controller
                 DB::beginTransaction();
                 try {
                     // save module replace data first
-                    $module_replace = new ItemReplaceStockDetail();
+                    $module_replace = new ItemReplaceDetail();
+                    $module_replace->replace_status = $request->replace_status;
                     $module_replace->item_repair_uuid = $repair_item->uuid;
                     $module_replace->module_type_uuid =  $request->module_type;
                     $module_replace->part_number = $request->part_number;
@@ -206,13 +207,13 @@ class WarehouseController extends Controller
                     $repair_item->edited_by = Auth::user()->uuid;
                     $repair_item->save();
                     // update warehouse job order
-                    $warehouse_job->item_status = 6; // replace module from stock
+                    $warehouse_job->item_status = 6; // replace module
                     $warehouse_job->notes = $request->warehouse_notes;
                     $warehouse_job->edited_by = Auth::user()->uuid;
                     $warehouse_job->save();
                     // update ticket
                     $ticket = Ticketing::where('uuid', $repair_item->ticket->uuid)->first();
-                    $ticket->job_status = 6; // replace module from stock
+                    $ticket->job_status = 6; // replace module
                     $ticket->edited_by = Auth::user()->uuid;
                     $ticket->save();
                 } catch (Exception $e) {
@@ -228,6 +229,13 @@ class WarehouseController extends Controller
             }
             // waiting for claim from vendor
             if ($request->replace_status == 2) {
+                $rules = [
+                    'warehouse_notes' => 'required',
+                ];
+                $messages = [
+                    '*.required' => 'Field tidak boleh kosong !',
+                ];
+                $this->validate($request, $rules, $messages);
                 DB::beginTransaction();
                 try {
                     // update warehouse job order
@@ -261,8 +269,8 @@ class WarehouseController extends Controller
                 'serial_number' => 'required',
                 'serial_number_msc' => 'required',
                 'accessories' => 'required|array|min:1',
+                'warehouse_notes' => 'required',
             ];
-
             $messages = [
                 'accessories.required' => 'Pilih minimal 1',
                 '*.required' => 'Field tidak boleh kosong',
@@ -271,8 +279,9 @@ class WarehouseController extends Controller
             DB::beginTransaction();
             try {
                 // save module replace data first
-                $module_replace = new ItemReplaceVendorDetail();
+                $module_replace = new ItemReplaceDetail();
                 $module_replace->item_repair_uuid = $repair_item->uuid;
+                $module_replace->replace_status = $request->replace_status;
                 $module_replace->vendor_name = $request->vendor_name;
                 $module_replace->module_type_uuid =  $request->module_type;
                 $module_replace->part_number = $request->part_number;
@@ -287,13 +296,13 @@ class WarehouseController extends Controller
                 $repair_item->edited_by = Auth::user()->uuid;
                 $repair_item->save();
                 // update warehouse job order
-                $warehouse_job->item_status = 6; // replace module from stock
+                $warehouse_job->item_status = 6; // replace module
                 $warehouse_job->notes = $request->warehouse_notes;
                 $warehouse_job->edited_by = Auth::user()->uuid;
                 $warehouse_job->save();
                 // update ticket
                 $ticket = Ticketing::where('uuid', $repair_item->ticket->uuid)->first();
-                $ticket->job_status = 6; // replace module from stock
+                $ticket->job_status = 6; // replace module
                 $ticket->edited_by = Auth::user()->uuid;
                 $ticket->save();
             } catch (Exception $e) {
@@ -307,13 +316,174 @@ class WarehouseController extends Controller
             toastr()->success('Ticket No.' . $repair_item->ticket->ticket_number . ' Telah di progress', 'Success');
             return redirect()->route('warehouse.index');
         }
+
+        // Progress to vendor if repaired failed
+        if ($request->item_status == 7) {
+            $rules = [
+                'warehouse_notes' => 'required',
+            ];
+            $messages = [
+                '*.required' => 'Field tidak boleh kosong !',
+            ];
+            $this->validate($request, $rules, $messages);
+            DB::beginTransaction();
+            try {
+                // update warehouse job order
+                $warehouse_job->item_status = 7; // progress to vendor
+                $warehouse_job->notes = $request->warehouse_notes;
+                $warehouse_job->edited_by = Auth::user()->uuid;
+                $warehouse_job->save();
+                // update ticket
+                $ticket = Ticketing::where('uuid', $repair_item->ticket->uuid)->first();
+                $ticket->job_status = 7; // progress to vendor
+                $ticket->edited_by = Auth::user()->uuid;
+                $ticket->save();
+            } catch (Exception $e) {
+                // catch error and rollback database update
+                DB::rollback();
+                toastr()->error('Gagal menyimpan data, silahkan coba lagi', 'Error');
+                return redirect()->back()->withInput();
+            }
+            // now is save to commit update and redirect to index
+            DB::commit();
+            toastr()->success('Ticket No.' . $repair_item->ticket->ticket_number . ' Telah di progress', 'Success');
+            return redirect()->route('warehouse.index');
+        }
+        // progress by vendor is done
+        if ($request->item_status == 8) {
+            $rules = [
+                'vendor_status' => 'required',
+                'warehouse_notes' => 'required',
+            ];
+            $messages = [
+                '*.required' => 'Field tidak boleh kosong !',
+            ];
+            $this->validate($request, $rules, $messages);
+            // repair by vendor
+            if ($request->vendor_status == 1) {
+                DB::beginTransaction();
+                try {
+                    // update warehouse job order
+                    $warehouse_job->item_status = 8; // progress to vendor is done
+                    $warehouse_job->notes = $request->warehouse_notes;
+                    $warehouse_job->edited_by = Auth::user()->uuid;
+                    $warehouse_job->save();
+                    // update repair item info
+                    $repair_item->repair_status = 2; // repair from vendor
+                    $repair_item->edited_by = Auth::user()->uuid;
+                    $repair_item->save();
+                    // update ticket
+                    $ticket = Ticketing::where('uuid', $repair_item->ticket->uuid)->first();
+                    $ticket->job_status = 8; // progress to vendor is done
+                    $ticket->edited_by = Auth::user()->uuid;
+                    $ticket->save();
+                } catch (Exception $e) {
+                    // catch error and rollback database update
+                    DB::rollback();
+                    toastr()->error('Gagal menyimpan data, silahkan coba lagi', 'Error');
+                    return redirect()->back()->withInput();
+                }
+                // now is save to commit update and redirect to index
+                DB::commit();
+                toastr()->success('Ticket No.' . $repair_item->ticket->ticket_number . ' Telah di progress', 'Success');
+                return redirect()->route('warehouse.index');
+            }
+            if ($request->vendor_status == 2) {
+                $rules = [
+                    'module_type' => 'required',
+                    'vendor_name' => 'required',
+                    'part_number' => 'required',
+                    'serial_number' => 'required',
+                    'serial_number_msc' => 'required',
+                    'accessories' => 'required|array|min:1',
+                    'warehouse_notes' => 'required',
+                ];
+                $messages = [
+                    'accessories.required' => 'Pilih minimal 1',
+                    '*.required' => 'Field tidak boleh kosong',
+                ];
+                $this->validate($request, $rules, $messages);
+                DB::beginTransaction();
+                try {
+                    // save module replace data first
+                    $module_replace = new ItemReplaceDetail();
+                    $module_replace->item_repair_uuid = $repair_item->uuid;
+                    $module_replace->replace_status = 2; // replace by vendor
+                    $module_replace->vendor_name = $request->vendor_name;
+                    $module_replace->module_type_uuid =  $request->module_type;
+                    $module_replace->part_number = $request->part_number;
+                    $module_replace->serial_number = $request->serial_number;
+                    $module_replace->serial_number_msc = $request->serial_number_msc;
+                    $module_replace->accessories = $request['accessories'];
+                    $module_replace->created_by = Auth::user()->uuid;
+                    $module_replace->save();
+                    // update repair item info
+                    $repair_item->replace_status = 2; // replace from vendor
+                    $repair_item->item_replace_uuid = $module_replace->uuid;
+                    $repair_item->edited_by = Auth::user()->uuid;
+                    $repair_item->save();
+                    // update warehouse job order
+                    $warehouse_job->item_status = 6; // replace module
+                    $warehouse_job->notes = $request->warehouse_notes;
+                    $warehouse_job->edited_by = Auth::user()->uuid;
+                    $warehouse_job->save();
+                    // update ticket
+                    $ticket = Ticketing::where('uuid', $repair_item->ticket->uuid)->first();
+                    $ticket->job_status = 6; // replace module
+                    $ticket->edited_by = Auth::user()->uuid;
+                    $ticket->save();
+                } catch (Exception $e) {
+                    // catch error and rollback database update
+                    DB::rollback();
+                    toastr()->error('Gagal menyimpan data, silahkan coba lagi', 'Error');
+                    return redirect()->back()->withInput();
+                }
+                // now is save to commit update and redirect to index
+                DB::commit();
+                toastr()->success('Ticket No.' . $repair_item->ticket->ticket_number . ' Telah di progress', 'Success');
+                return redirect()->route('warehouse.index');
+            }
+        }
     }
 
-    public function GetModuleStock()
+    public function history()
     {
         if (request()->ajax()) {
-            $module_stock = ModuleStock::where('module_type_uuid', request('module_type_uuid'))->where('available', '>', 0)->first();
-            return response()->json($module_stock);
+            $job_orders = WarehouseJobOrder::select('uuid', 'repair_item_uuid', 'item_status', 'job_status', 'created_at', 'updated_at')->where('job_status', 1)->get();
+
+            return Datatables::of($job_orders)
+                ->addIndexColumn()
+                ->addColumn('ticket_number', function ($job_order) {
+                    return  $job_order->repair->ticket->ticket_number;
+                })
+                ->addColumn('ticket_date', function ($job_order) {
+                    return  Carbon::parse($job_order->repair->ticket->created_at)->translatedFormat('l\\, j M Y H:i');
+                })
+                ->addColumn('job_status', function ($job_order) {
+                    return Helper::JobStatus($job_order->job_status);
+                })
+                ->editColumn('item_status', function ($job_order) {
+                    return Helper::ItemStatus($job_order->item_status);
+                })
+                ->editColumn('created_at', function ($job_order) {
+                    return  Carbon::parse($job_order->created_at)->translatedFormat('l\\, j M Y H:i');
+                })
+                ->editColumn('updated_at', function ($job_order) {
+                    return  Carbon::parse($job_order->created_at)->translatedFormat('l\\, j M Y H:i');
+                })
+                ->addColumn('action', function ($job_order) {
+                    return '<a class="btn btn-info btn-sm btn-icon waves-effect waves-themed" data-toggle="modal" id="detail-button" data-target="#detail-modal" data-attr="' . URL::route('warehouse.detail', $job_order->uuid) . '" title="Detail Module" href=""><i class="fal fa-search-plus"></i></a>';
+                })
+                ->removeColumn('uuid')
+                ->rawColumns(['action', 'job_status', 'item_status', 'urgent_status'])
+                ->make();
         }
+        return view('warehouse.history');
+    }
+    public function detail($uuid)
+    {
+        $detail_item = WarehouseJobOrder::uuid($uuid);
+        // dd($detail_item);
+        return view('warehouse.detail', compact('detail_item'));
     }
 }
