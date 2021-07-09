@@ -116,4 +116,165 @@ class Helper
       return $time_to_repair;
     }
   }
+
+  /**
+   * Helper method to generate
+   * Item status
+   * @param int $item_status
+   * @return void
+   */
+  public static function ItemStatus($item_status)
+  {
+    switch ($item_status) {
+      case 0:
+        return '<span class="badge badge-secondary">None</span>';
+        break;
+      case 1:
+        return '<span class="badge badge-primary">Dalam penanganan oleh teknisi</span>';
+        break;
+      case 2:
+        return '<span class="badge badge-success">Telah diperbaiki oleh teknisi</span>';
+        break;
+      case 3:
+        return '<span class="badge badge-danger">Tidak dapat diperbaiki teknisi</span>';
+        break;
+      case 4:
+        return '<span class="badge badge-warning">Butuh klaim garansi</span>';
+        break;
+      case 5:
+        return '<span class="badge badge-warning">Proses klaim garansi</span>';
+        break;
+      case 6:
+        return '<span class="badge badge-info">Selesai penggantian module</span>';
+        break;
+      case 7:
+        return '<span class="badge badge-info">Dalam perbaikan oleh vendor</span>';
+        break;
+      case 8:
+        return '<span class="badge badge-info">Menunggu penggantian dari vendor</span>';
+        break;
+      case 9:
+        return '<span class="badge badge-success">Telah di kirim ke customer</span>';
+        break;
+      case 10:
+        return '<span class="badge badge-danger">Ticket di cancel</span>';
+        break;
+      default:
+        return '<span class="badge badge-dark">None</span>';
+        break;
+    }
+  }
+
+  /**
+   * Helper Method to generate
+   * Urgent status
+   * @param int $urgent_status
+   * @return void
+   */
+  public static function UrgentStatus($urgent_status)
+  {
+    switch ($urgent_status) {
+      case 0:
+        return '<span class="badge badge-success">Not Urgent</span>';
+        break;
+      case 1:
+        return '<span class="badge badge-danger">Urgent</span>';
+        break;
+      default:
+        return '<span class="badge badge-dark">Status Unknown</span>';
+        break;
+    }
+  }
+
+  /**
+   * Helper method to generate
+   * Ticket status
+   * @param int $ticket_status
+   * @return void
+   */
+  public static function TicketStatus($ticket_status)
+  {
+    switch ($ticket_status) {
+      case 1:
+        return '<span class="badge badge-primary">Diproses ke bagian repair</span>';
+        break;
+      case 2:
+        return '<span class="badge badge-warning">Diproses ke bagian gudang</span>';
+        break;
+      case 3:
+        return '<span class="badge badge-success">Selesai</span>';
+        break;
+      case 4:
+        return '<span class="badge badge-danger">Cancel</span>';
+        break;
+      default:
+        return '<span class="badge badge-dark">Status Unknown</span>';
+        break;
+    }
+  }
+
+  /**
+   * Helper method to generate
+   * Repair Status
+   * @param int $repair_status
+   * @return void
+   */
+  public static function RepairStatus($repair_status)
+  {
+    switch ($repair_status) {
+      case 0:
+        return '<span class="badge badge-danger">Non Repair</span>';
+        break;
+      case 1;
+        return '<span class="badge badge-success">Repaired</span>';
+      default:
+        return '<span class="badge badge-secondary">Unknown</span>';
+        break;
+    }
+  }
+
+  /**
+   * Helper method to generate
+   * Job status
+   * @param int $repair_job_status
+   * @return void
+   */
+  public static function JobStatus($repair_job_status)
+  {
+    switch ($repair_job_status) {
+      case 0:
+        return '<span class="badge badge-primary">Dalam proses</span>';
+        break;
+      case 1;
+        return '<span class="badge badge-success">Selesai</span>';
+        break;
+      case 2;
+        return '<span class="badge badge-danger">Ticket cancel</span>';
+        break;
+      default:
+        return '<span class="badge badge-dark">Status Unknown</span>';
+        break;
+    }
+  }
+
+  /**
+   * Helper method for generate
+   * Replace Status
+   * @param int $replace_status
+   * @return void
+   */
+  public static function ReplaceStatus($replace_status)
+  {
+    switch ($replace_status) {
+      case 1:
+        return '<span class="badge badge-primary">From Stock</span>';
+        break;
+      case 2:
+        return '<span class="badge badge-secondary">From Vendor</span>';
+        break;
+      default:
+        return '<span class="badge badge-primary">Unknown</span>';
+        break;
+    }
+  }
 }
