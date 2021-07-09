@@ -86,12 +86,12 @@
                         </div>
                         <div class="form-group col-md-4 mb-3">
                             {{ Form::label('warranty_status','Warranty Status :',['class' => 'form-label'])}}
-                            @switch($detail_item->repair->ticket->warranty_status)
+                            @switch($detail_item->repair->warranty_status)
                             @case(0)
                             <span class="badge badge-danger">Not Warranty</span>
                             @break
                             @case(1)
-                            <span class="badge badge-info">Warrant</span>
+                            <span class="badge badge-info">Warranty</span>
                             @break
                             @default
                             <span class="badge badge-secondary">Unknown</span>
@@ -108,6 +108,7 @@
             <div class="panel-container show">
                 <div class="panel-content">
                     <div class="form-row">
+                        @isset($detail_item->repair->repair_status)
                         <div class="form-group col-md-6 mb-3">
                             {{ Form::label('repair_status','Repair Status :',['class' => 'form-label'])}}
                             @switch($detail_item->repair->repair_status)
@@ -121,6 +122,7 @@
                             <span class="badge badge-secondary">Unknown</span>
                             @endswitch
                         </div>
+                        @endisset
                         <div class="form-group col-md-6 mb-3">
                             {{ Form::label('item_status','Module Status :',['class' => 'form-label'])}}
                             @switch($detail_item->item_status)
@@ -160,18 +162,22 @@
                         </div>
                     </div>
                     <div class="form-row">
+                        @isset($detail_item->repair->complain)
                         <div class="form-group col-md-6 mb-3">
                             {{ Form::label('complain','Complain:',['class' => 'form-label'])}}
                             <div class="text-justify">
                                 {{$detail_item->repair->complain}}
                             </div>
                         </div>
+                        @endisset
+                        @isset($detail_item->repair->JobOrder->repair_notes)
                         <div class="form-group col-md-6 mb-3">
                             {{ Form::label('repair_notes','Repair Notes:',['class' => 'form-label'])}}
                             <div class="text-justify">
                                 {{$detail_item->repair->JobOrder->repair_notes}}
                             </div>
                         </div>
+                        @endisset
                     </div>
                 </div>
             </div>
