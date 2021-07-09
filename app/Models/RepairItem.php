@@ -79,4 +79,9 @@ class RepairItem extends Model
     {
         return $this->hasOne(RepairJobOrder::class, 'repair_item_uuid', 'uuid');
     }
+
+    public function ModuleReplace()
+    {
+        return $this->belongsTo(ItemReplaceDetail::class, 'item_replace_uuid', 'uuid');
+    }
 }
