@@ -26,7 +26,7 @@ class ModuleNameFactory extends Factory
         // created by
         $user = User::where('name', '=', 'superadmin')->first()->uuid;
         // category
-        $category = ModuleCategory::select('uuid')->get()->random();
+        $category = ModuleCategory::select('uuid')->inRandomOrder()->first();
         return [
             'name' => $this->faker->lexify('Name ????'),
             'module_category_uuid' => $category->uuid,
