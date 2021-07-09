@@ -30,11 +30,11 @@
                     {!! Form::open(['route' => ['warehouse.update',$job_order->uuid],'method' =>
                     'PUT','class' =>
                     'needs-validation','enctype' => 'multipart/form-data','novalidate']) !!}
-                    @if ($job_order->item_status == 2 || $job_order->item_status == 6)
+                    @if ($job_order->item_status == 2 || $job_order->item_status == 6 || $job_order->item_status == 8)
                     <div class="form-group col-md-4 mb-3">
                         {{ Form::label('item_status','Progress Action',['class' => 'required form-label'])}}
                         <select name="item_status" class="custom-select select2">
-                            <option value=8>Dikirim ke customer</option>
+                            <option value=9>Dikirim ke customer</option>
                         </select>
                     </div>
                     <div class="form-group col-md-4 mb-3">
@@ -213,6 +213,99 @@
                         </div>
                     </div>
                     @endif
+                    @if ($job_order->item_status == 3)
+                    <div class="form-group col-md-4 mb-3">
+                        {{ Form::label('item_status','Progress Action',['class' => 'required form-label'])}}
+                        <select name="item_status" class="custom-select select2">
+                            <option value=7>Progress ke vendor</option>
+                        </select>
+                    </div>
+                    @endif
+                    @if ($job_order->item_status == 7)
+                    <div class="form-row">
+                        <div class="form-group col-md-4 mb-3">
+                            {{ Form::label('item_status','Progress Action',['class' => 'required form-label'])}}
+                            <select name="item_status" class="custom-select select2">
+                                <option value=8>Selesai progress dari vendor</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-4 mb-3">
+                            {!! Form::label('vendor_status', 'Replace From', ['class' => 'required form-label']) !!}
+                            {!! Form::select('vendor_status', [1 => 'Repair',2 =>'Replace'], '', ['id' =>
+                            'vendor_status','class' => 'custom-select select2 '.($errors->has('vendor_status')
+                            ?
+                            'is-invalid':''), 'required'
+                            => '', 'placeholder' => 'Select progress status ...']) !!}
+                            @if ($errors->has('vendor_status'))
+                            <div class="invalid-feedback">{{ $errors->first('vendor_status') }}</div>
+                            @endif
+                        </div>
+                    </div>
+                    <div id="replace-form" style="display:none">
+                        <div class="form-group col-md-4 mb-3">
+                            {{ Form::label('vendor_name','Vendor Name',['class' => 'required form-label'])}}
+                            {{ Form::text('vendor_name', '',['placeholder' => 'Vendor Name','class' => 'form-control '.($errors->has('vendor_name') ? 'is-invalid':''),'required', 'autocomplete' => 'off'])}}
+                            @if ($errors->has('vendor_name'))
+                            <div class="invalid-feedback">{{ $errors->first('vendor_name') }}</div>
+                            @endif
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-4 mb-3">
+                                {{ Form::label('module_type','Module Type',['class' => 'required form-label'])}}
+                                <select id="module_type" class="custom-select select2 module_type @if ($errors->has('module_type'))
+                                    is-invalid
+                                @endif" name="module_type">
+                                    <option value="" disabled selected>Select module type ...</option>
+                                    @foreach ($module_stock as $item)
+                                    <option value="{{$item->module_type_uuid}}">Module Type: {{$item->type->name}}
+                                    </option>
+                                    @endforeach
+                                </select>
+                                @if ($errors->has('module_type'))
+                                <div class="invalid-feedback">{{ $errors->first('module_type') }}</div>
+                                @endif
+                            </div>
+                            <div class="form-group col-md-2 mb-3">
+                                {{ Form::label('part_number','Part Number',['class' => 'required form-label'])}}
+                                {{ Form::text('part_number', '',['placeholder' => 'Part Number','class' => 'form-control '.($errors->has('part_number') ? 'is-invalid':''),'required', 'autocomplete' => 'off'])}}
+                                @if ($errors->has('part_number'))
+                                <div class="invalid-feedback">{{ $errors->first('part_number') }}</div>
+                                @endif
+                            </div>
+                            <div class="form-group col-md-2 mb-3">
+                                {{ Form::label('serial_number','Serial Number',['class' => 'required form-label'])}}
+                                {{ Form::text('serial_number', '',['placeholder' => 'Serial Number','class' => 'form-control '.($errors->has('serial_number') ? 'is-invalid':''),'required', 'autocomplete' => 'off'])}}
+                                @if ($errors->has('serial_number'))
+                                <div class="invalid-feedback">{{ $errors->first('serial_number') }}</div>
+                                @endif
+                            </div>
+                            <div class="form-group col-md-3 mb-3">
+                                {{ Form::label('serial_number_msc','Serial Number MSC',['class' => 'required form-label'])}}
+                                {{ Form::text('serial_number_msc', '',['placeholder' => 'Serial Number MSC','class' => 'form-control '.($errors->has('serial_number_msc') ? 'is-invalid':''),'required', 'autocomplete' => 'off'])}}
+                                @if ($errors->has('serial_number_msc'))
+                                <div class="invalid-feedback">{{ $errors->first('serial_number_msc') }}</div>
+                                @endif
+                            </div>
+                            <div class="form-group col-md-12 mb-3">
+                                {{ Form::label('accessories','Accessories',['class' => 'form-label required'])}}
+                                <div class="frame-wrap">
+                                    @foreach($accessories as $item)
+                                    <div class="custom-control custom-checkbox custom-control-inline">
+                                        <input type="checkbox" class="custom-control-input @if ($errors->has('accessories'))
+                                        is-invalid
+                                    @endif" id="{{$item->name}}" name="accessories[]" value="{{$item->name}}">
+                                        <label class="custom-control-label"
+                                            for="{{$item->name}}">{{$item->name}}</label>
+                                    </div>
+                                    @endforeach
+                                    @if ($errors->has('accessories'))
+                                    <div class="text-danger">{{ $errors->first('accessories') }}</div>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @endif
                     <div class="form-row">
                         <div class="form-group col-md-4 mb-3">
                             {{ Form::label('warehouse_notes','Warehouse Notes',['class' => 'required form-label'])}}
@@ -245,7 +338,6 @@
             }
             reader.readAsDataURL(this.files[0]); 
         });
-
         $('#replace_status').change(function() {
             var status = $(this).val();
             if(status == 1){
@@ -254,9 +346,18 @@
                 $('#stock-form').hide();
             }
         });
+        $('#vendor_status').change(function() {
+            var status = $(this).val();
+            if(status == 2){
+                $('#replace-form').show();
+            } else {
+                $('#replace-form').hide();
+            }
+        });
     });
     @if (count($errors) > 0)
     $('#replace_status').val(null);
+    $('#vendor_status').val(null);
     @endif
 </script>
 @endsection
