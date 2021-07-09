@@ -26,6 +26,7 @@ class CreateRepairItemsTable extends Migration
             $table->integer('warranty_status')->nullable()->comment("0=Non warranty, 1=Warranty");
             $table->integer('repair_status')->nullable()->comment("0=Tidak bisa diperbaiki, 1=Bisa diperbaiki");
             $table->integer('replace_status')->nullable()->comment("1=Stock, 2=Vendor");
+            $table->string('item_replace_uuid')->nullable();
             $table->string('created_by')->nullable();
             $table->string('edited_by')->nullable();
             $table->timestamps();
