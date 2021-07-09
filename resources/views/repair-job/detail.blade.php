@@ -15,7 +15,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-4 mb-3">
                             {{ Form::label('repair_status','Repair Status :',['class' => 'form-label'])}}
-                            {!! Helper::RepairStatus($repair_job->repair->repair_status) !!}
+                            {!! Helper::RepairJobItemStatus($repair_job->item_status) !!}
                         </div>
                         <div class="form-group col-md-4 mb-3">
                             {{ Form::label('job_status','Job Status :',['class' => 'form-label'])}}
@@ -113,7 +113,6 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-row"></div>
                 </div>
             </div>
         </div>
