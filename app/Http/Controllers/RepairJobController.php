@@ -323,7 +323,7 @@ class RepairJobController extends Controller
                     return $repair_job->repair->ticket->ticket_number;
                 })
                 ->addColumn('repair_status', function ($repair_job) {
-                    return Helper::RepairStatus($repair_job->repair->repair_status);
+                    return Helper::RepairJobItemStatus($repair_job->item_status);
                 })
                 ->editColumn('job_status', function ($repair_job) {
                     return Helper::JobStatus($repair_job->job_status);
