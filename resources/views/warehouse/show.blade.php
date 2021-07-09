@@ -86,16 +86,7 @@
                         </div>
                         <div class="form-group col-md-4 mb-3">
                             {{ Form::label('warranty_status','Warranty Status :',['class' => 'form-label'])}}
-                            @switch($detail_item->repair->warranty_status)
-                            @case(0)
-                            <span class="badge badge-danger">Not Warranty</span>
-                            @break
-                            @case(1)
-                            <span class="badge badge-info">Warranty</span>
-                            @break
-                            @default
-                            <span class="badge badge-secondary">Unknown</span>
-                            @endswitch
+                            {!! Helper::WarrantyStatus($detail_item->repair->warranty_status)!!}
                         </div>
                     </div>
                 </div>
@@ -111,54 +102,12 @@
                         @isset($detail_item->repair->repair_status)
                         <div class="form-group col-md-6 mb-3">
                             {{ Form::label('repair_status','Repair Status :',['class' => 'form-label'])}}
-                            @switch($detail_item->repair->repair_status)
-                            @case(0)
-                            <span class="badge badge-danger">Non Repair</span>
-                            @break
-                            @case(1)
-                            <span class="badge badge-success">Repaired</span>
-                            @break
-                            @default
-                            <span class="badge badge-secondary">Unknown</span>
-                            @endswitch
+                            {!!Helper::RepairStatus($detail_item->repair->repair_status)!!}
                         </div>
                         @endisset
                         <div class="form-group col-md-6 mb-3">
                             {{ Form::label('item_status','Module Status :',['class' => 'form-label'])}}
-                            @switch($detail_item->item_status)
-                            @case(0)
-                            <span class="badge badge-secondary">None</span>
-                            @break
-                            @case(1)
-                            <span class="badge badge-primary">Dalam penanganan oleh teknisi</span>
-                            @break
-                            @case(2)
-                            <span class="badge badge-success">Telah diperbaiki oleh teknisi</span>
-                            @break
-                            @case(3)
-                            <span class="badge badge-danger">Tidak dapat diperbaiki teknisi</span>
-                            @break
-                            @case(4)
-                            <span class="badge badge-warning">Butuh klaim garansi</span>
-                            @break
-                            @case(5)
-                            <span class="badge badge-warning">Butuh penggantian barang</span>
-                            @break
-                            @case(6)
-                            <span class="badge badge-info">Dalam perbaikan oleh vendor</span>
-                            @break
-                            @case(7)
-                            <span class="badge badge-info">Menunggu penggantian dari vendor</span>
-                            @break
-                            @case(8)
-                            <span class="badge badge-success">Telah di kirim ke customer</span>
-                            @break
-                            @case(9)
-                            <span class="badge badge-danger">Ticket di cancel</span>
-                            @break
-                            @default
-                            <span class="badge badge-dark">Status Unknown</span>
-                            @endswitch
+                            {!! Helper::ItemStatus($detail_item->item_status) !!}
                         </div>
                     </div>
                     <div class="form-row">
