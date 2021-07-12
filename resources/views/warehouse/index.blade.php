@@ -24,7 +24,7 @@
                 </h2>
                 <a class="nav-link active" href="{{route('warehouse.history')}}"><i class="fal fa-list">
                     </i>
-                    <span class="nav-link-text">All Job</span>
+                    <span class="nav-link-text">History</span>
                 </a>
                 <div class="panel-toolbar">
                     <button class="btn btn-panel" data-action="panel-fullscreen" data-toggle="tooltip"

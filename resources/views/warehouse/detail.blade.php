@@ -35,34 +35,41 @@
             </div>
             <div class="panel-container show">
                 <div class="panel-content">
-                    @isset($detail_item->repair->replace_status)
                     <div class="form-row">
                         <div class="form-group col-md-3 mb-3">
-                            {{ Form::label('status','Status :',['class' => 'form-label'])}}
+                            {{ Form::label('status','Job Status :',['class' => 'form-label'])}}
+                            <span class="badge badge-success">{!! Helper::JobStatus($detail_item->job_status)!!}</span>
+                        </div>
+                    </div>
+                    @if ($detail_item->repair->status == 3 ||
+                    $detail_item->repair->status == 4)
+                    <div class="form-row">
+                        <div class="form-group col-md-3 mb-3">
+                            {{ Form::label('status','Item Status :',['class' => 'form-label'])}}
                             <span class="badge badge-info">Replace</span>
                         </div>
                         <div class="form-group col-md-3 mb-3">
-                            {{ Form::label('replace_status','Replace:',['class' => 'form-label'])}}
-                            {!! Helper::ReplaceStatus($detail_item->repair->replace_status)!!}
+                            {{ Form::label('replace_status','From:',['class' => 'form-label'])}}
+                            {!! Helper::RepairItemStatus($detail_item->repair->status)!!}
                         </div>
                     </div>
-                    @endisset
-                    @if (isset($detail_item->repair->repair_status) && $detail_item->repair->repair_status !== 0)
+                    @endif
+                    @if ($detail_item->repair->status == 1 || $detail_item->repair->status == 2)
                     <div class="form-row">
                         <div class="form-group col-md-3 mb-3">
-                            {{ Form::label('status','Status :',['class' => 'form-label'])}}
+                            {{ Form::label('status','Item Status :',['class' => 'form-label'])}}
                             <span class="badge badge-info">Repair</span>
                         </div>
                         <div class="form-group col-md-3 mb-3">
-                            {{ Form::label('repair_status','Repair:',['class' => 'form-label'])}}
-                            {!! Helper::RepairStatus($detail_item->repair->repair_status)!!}
+                            {{ Form::label('repair_status','By:',['class' => 'form-label'])}}
+                            {!! Helper::RepairItemStatus($detail_item->repair->status)!!}
                         </div>
                     </div>
                     @endif
                 </div>
             </div>
         </div>
-        @isset($detail_item->repair->replace_status)
+        @if ($detail_item->repair->status == 3 || $detail_item->repair->status == 4)
         <div id="panel-3" class="panel">
             <div class="panel-hdr">
                 <h2>Module Detail</h2>
@@ -91,7 +98,7 @@
                     </div>
                 </div>
                 <div class="panel-hdr">
-                    <h2>Old</h2>
+                    <h2>Complain</h2>
                 </div>
                 <div class="panel-content">
                     <div class="form-row">
@@ -162,7 +169,7 @@
                             </div>
                             @endisset
                         </div>
-                        @if ($detail_item->repair->replace_status == 2)
+                        @if ($detail_item->repair->status == 4)
                         <div class="form-group col-md-4 mb-3">
                             {{ Form::label('vendor_name','Vendor :',['class' => 'form-label'])}}
                             {{$detail_item->repair->ModuleReplace->vendor_name}}
@@ -172,8 +179,9 @@
                 </div>
             </div>
         </div>
-        @endisset
-        @if (isset($detail_item->repair->repair_status) && $detail_item->repair->repair_status !== 0)
+        @endif
+        @if (isset($detail_item->repair->status) && $detail_item->repair->status == 1 || $detail_item->repair->status ==
+        2)
         <div id="panel-4" class="panel">
             <div class="panel-hdr">
                 <h2>Module Repair Detail</h2>
@@ -207,7 +215,7 @@
                                 {{$detail_item->repair->complain}}
                             </div>
                         </div>
-                        @if ($detail_item->repair_status == 1)
+                        @if ($detail_item->repair->status == 1)
                         <div class="form-group col-md-6 mb-3">
                             {{ Form::label('repair_notes','Repair Notes:',['class' => 'form-label'])}}
                             <div class="text-justify">
@@ -215,9 +223,35 @@
                             </div>
                         </div>
                         @endif
+                        @if ($detail_item->repair->status == 2)
+                        <div class="form-group col-md-6 mb-3">
+                            {{ Form::label('repair_notes','Repair Notes:',['class' => 'form-label'])}}
+                            <div class="text-justify">
+                                {{$detail_item->repair->JobOrder->repair_notes}}
+                            </div>
+                        </div>
+                        <div class="form-group col-md-4 mb-3">
+                            {{ Form::label('vendor_name','Vendor :',['class' => 'form-label'])}}
+                            {{$detail_item->repair->ModuleRepair->vendor_name}}
+                        </div>
+                        @endif
                     </div>
                 </div>
             </div>
         </div>
         @endif
+        @if ($detail_item->item_status == 9)
+        <div id="panel-5" class="panel">
+            <div class="panel-hdr">
+                <h2>Resi</h2>
+            </div>
+            <div class="panel-content">
+                <div class="form-group col-md-6 mb-3">
+                    <img id="image-preview" src="{{asset('img/resi'.'/'.$detail_item->resi_image)}}"
+                        class="shadow-2 img-thumbnail" alt="">
+                </div>
+            </div>
+        </div>
+        @endif
     </div>
+</div>
