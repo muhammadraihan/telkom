@@ -14,7 +14,7 @@ class WarehouseJobOrder extends Model
     use LogsActivity;
 
     protected $fillable = [
-        'repair_item_uuid', 'item_status', 'job_status', 'item_replace_uuid',  'notes', 'resi_image', 'created_by', 'edited_by'
+        'repair_item_uuid', 'urgent_status', 'item_status', 'job_status', 'stock_input', 'item_replace_uuid',  'notes', 'resi_image', 'created_by', 'edited_by'
     ];
 
     protected static $logAttributes = ['*'];
