@@ -43,6 +43,19 @@ Route::group(['prefix' => 'backoffice', 'middleware' => ['auth']], function () {
     // warehouse
     Route::get('warehouse/history', 'WarehouseController@history')->name('warehouse.history');
     Route::get('warehouse/history/detail/{warehouse}', 'WarehouseController@detail')->name('warehouse.detail');
+
+    // user Profile
+    Route::get('profile', 'UserController@profile')->name('profile');
+    Route::patch('profile/{user}/update', 'UserController@ProfileUpdate')->name('profile.update');
+    Route::patch('profile/{user}/password', 'UserController@ChangePassword')->name('profile.password');
+
+    // ticket
+    Route::get('ticketing/history', 'TicketingController@history')->name('ticketing.history');
+    // report
+    Route::get('report/repair-module', 'ReportController@RepairModule')->name('report.repair-module');
+    // report export
+    Route::get('report/repair-module/download', 'ReportController@RepairModuleExport')->name('download.repair-module');
+
     // resource
     Route::resource('accessory', 'AccessoryController');
     Route::resource('brand', 'ModuleBrandController');
@@ -60,9 +73,4 @@ Route::group(['prefix' => 'backoffice', 'middleware' => ['auth']], function () {
     Route::resource('unit', 'UnitController');
     Route::resource('warehouse', 'WarehouseController');
     Route::resource('witel', 'WitelController');
-
-    // user Profile
-    Route::get('profile', 'UserController@profile')->name('profile');
-    Route::patch('profile/{user}/update', 'UserController@ProfileUpdate')->name('profile.update');
-    Route::patch('profile/{user}/password', 'UserController@ChangePassword')->name('profile.password');
 });
