@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Accessory;
 use App\Models\ModuleCategory;
 use App\Models\RepairItem;
+use App\Models\RepairJobOrder;
 use App\Models\Ticketing;
 use App\Models\WarehouseJobOrder;
 use App\Models\Witel;
@@ -35,12 +36,12 @@ class TicketingController extends Controller
                 'uuid_unit',
                 'ticket_number',
                 'ticket_status',
-                'job_status',
+                'item_status',
                 'urgent_status',
                 'note',
                 'created_by',
                 'created_at',
-            )->latest()->get();
+            )->where('ticket_status', '!=', 3)->get();
 
             return Datatables::of($tickets)
                 ->addIndexColumn()
@@ -59,8 +60,8 @@ class TicketingController extends Controller
                 ->editColumn('ticket_status', function ($row) {
                     return Helper::TicketStatus($row->ticket_status);
                 })
-                ->editColumn('job_status', function ($row) {
-                    return Helper::ItemStatus($row->job_status);
+                ->editColumn('item_status', function ($row) {
+                    return Helper::ItemStatus($row->item_status);
                 })
                 ->editColumn('urgent_status', function ($row) {
                     return Helper::UrgentStatus($row->urgent_status);
@@ -71,7 +72,7 @@ class TicketingController extends Controller
                 })
                 ->removeColumn('id')
                 ->removeColumn('uuid')
-                ->rawColumns(['action', 'ticket_status', 'job_status', 'urgent_status'])
+                ->rawColumns(['action', 'ticket_status', 'item_status', 'urgent_status'])
                 ->make();
         }
         return view('ticketing.index');
@@ -119,10 +120,12 @@ class TicketingController extends Controller
 
         $this->validate($request, $rules, $messages);
 
-        // get ticket number
-        $generated_ticket_number = Helper::generateTicketNumber();
         DB::beginTransaction();
         try {
+
+            // get ticket number
+            $generated_ticket_number = Helper::generateTicketNumber();
+
             // saving ticket
             $ticketing = new Ticketing();
             $ticketing->uuid_unit = $request->unit;
@@ -137,23 +140,10 @@ class TicketingController extends Controller
             $repair_item->serial_number_msc = $request->serial_number_msc;
             $repair_item->accessories = $request['accessories'];
 
-            /**
-             * if item is non warranty send job order to tech for repair
-             * if item is warranty send job order to gudang for replace
-             */
-            if ($request->warranty_status == 0) {
-                $ticketing->ticket_status = 1; // send to repair
-                $ticketing->job_status = 0; // open status
-                $ticketing->save();
-
-                $repair_item->warranty_status = $request->warranty_status;
-                $repair_item->ticket_uuid = $ticketing->uuid;
-                $repair_item->created_by = Auth::user()->uuid;
-                $repair_item->save();
-            }
+            // if item is warranty send job order to gudang for replace
             if ($request->warranty_status == 1) {
                 $ticketing->ticket_status = 2; // send to warehouse
-                $ticketing->job_status = 4; // need warranty claim
+                $ticketing->item_status = 4; // need warranty claim
                 $ticketing->save();
 
                 $repair_item->warranty_status = $request->warranty_status;
@@ -163,15 +153,63 @@ class TicketingController extends Controller
 
                 $warehouse = new WarehouseJobOrder();
                 $warehouse->repair_item_uuid = $repair_item->uuid;
+                $warehouse->urgent_status = $request->urgent_status;
                 $warehouse->item_status = 4; // need warranty claim
                 $warehouse->job_status = 0; // open warehouse job order
+                $warehouse->stock_input = 0;
+                $warehouse->created_by = Auth::user()->uuid;
+                $warehouse->save();
+            }
+            //if item is non warranty send job order to tech for repair
+            if ($request->warranty_status == 0 && $request->urgent_status == 0) {
+                $ticketing->ticket_status = 1; // send to repair
+                $ticketing->item_status = 0; // open status
+                $ticketing->save();
+
+                $repair_item->warranty_status = $request->warranty_status;
+                $repair_item->ticket_uuid = $ticketing->uuid;
+                $repair_item->created_by = Auth::user()->uuid;
+                $repair_item->save();
+
+                $repair = new RepairJobOrder();
+                $repair->repair_item_uuid = $repair_item->uuid;
+                $repair->urgent_status = $request->urgent_status;
+                $repair->job_status = 0; // open job repair
+                $repair->created_by = Auth::user()->uuid;
+                $repair->save();
+            }
+            // if item is non warranty and status is urgent send to gudang for immediate replace
+            // and send to repair.
+            if ($request->warranty_status == 0 && $request->urgent_status == 1) {
+                $ticketing->ticket_status = 2; // send to gudang for immediately replace
+                $ticketing->item_status = 0; // open status
+                $ticketing->save();
+
+                $repair_item->warranty_status = $request->warranty_status;
+                $repair_item->ticket_uuid = $ticketing->uuid;
+                $repair_item->created_by = Auth::user()->uuid;
+                $repair_item->save();
+
+                $repair = new RepairJobOrder();
+                $repair->repair_item_uuid = $repair_item->uuid;
+                $repair->urgent_status = $request->urgent_status;
+                $repair->job_status = 0; // open job repair
+                $repair->created_by = Auth::user()->uuid;
+                $repair->save();
+
+                $warehouse = new WarehouseJobOrder();
+                $warehouse->repair_item_uuid = $repair_item->uuid;
+                $warehouse->urgent_status = $request->urgent_status;
+                $warehouse->item_status = 10; // need replace immediately
+                $warehouse->job_status = 0; // open warehouse job order
+                $warehouse->stock_input = 0;
                 $warehouse->created_by = Auth::user()->uuid;
                 $warehouse->save();
             }
         } catch (Exception $e) {
             // catch error and rollback database update
             DB::rollback();
-            toastr()->error('Gagal menyimpan data, silahkan coba lagi', 'Error');
+            toastr()->error($e->getMessage(), 'Error');
             return redirect()->back()->withInput();
         }
         // now is save to commit update and redirect to index
@@ -254,14 +292,55 @@ class TicketingController extends Controller
         return redirect()->route('ticketing.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+
+    public function history()
     {
-        //
+        if (request()->ajax()) {
+            $tickets = Ticketing::select(
+                'id',
+                'uuid',
+                'uuid_unit',
+                'ticket_number',
+                'ticket_status',
+                'item_status',
+                'urgent_status',
+                'note',
+                'created_by',
+                'created_at',
+            )->get();
+
+            return Datatables::of($tickets)
+                ->addIndexColumn()
+                ->addColumn('witel', function ($row) {
+                    return $row->unit->witel->name;
+                })
+                ->editColumn('uuid_unit', function ($row) {
+                    return $row->unit->name;
+                })
+                ->editColumn('created_by', function ($row) {
+                    return $row->userCreate->name;
+                })
+                ->editColumn('created_at', function ($row) {
+                    return Carbon::parse($row->created_at)->translatedFormat('l\\, j F Y H:i');
+                })
+                ->editColumn('ticket_status', function ($row) {
+                    return Helper::TicketStatus($row->ticket_status);
+                })
+                ->editColumn('item_status', function ($row) {
+                    return Helper::ItemStatus($row->item_status);
+                })
+                ->editColumn('urgent_status', function ($row) {
+                    return Helper::UrgentStatus($row->urgent_status);
+                })
+                ->addColumn('action', function ($row) {
+                    return '<a class="btn btn-info btn-sm btn-icon waves-effect waves-themed" data-toggle="modal" id="detail-button" data-target="#detail-modal" data-attr="' . URL::route('ticketing.show', $row->uuid) . '" title="Detail Module" href=""><i class="fal fa-search-plus"></i></a>
+                    <a class="btn btn-success btn-sm btn-icon waves-effect waves-themed" href="' . route('ticketing.edit', $row->uuid) . '" title="Edit Tiket"><i class="fal fa-edit"></i></a>';
+                })
+                ->removeColumn('id')
+                ->removeColumn('uuid')
+                ->rawColumns(['action', 'ticket_status', 'item_status', 'urgent_status'])
+                ->make();
+        }
+        return view('ticketing.history');
     }
 }
