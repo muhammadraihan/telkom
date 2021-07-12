@@ -1,6 +1,6 @@
 @extends('layouts.page')
 
-@section('title', 'Technician Job Order Management')
+@section('title', 'Warehouse Management')
 
 @section('css')
 <link rel="stylesheet" media="screen, print" href="{{asset('css/datagrid/datatables/datatables.bundle.css')}}">
@@ -9,9 +9,9 @@
 @section('content')
 <div class="subheader">
     <h1 class="subheader-title">
-        <i class='subheader-icon fal fa-wrench'></i> Module: <span class='fw-300'>Repair Job Order</span>
+        <i class='subheader-icon fal fa-warehouse-alt'></i> Module: <span class='fw-300'>Warehouse History</span>
         <small>
-            Module for manage repair Job Order.
+            Module for all warehouse history.
         </small>
     </h1>
 </div>
@@ -20,15 +20,13 @@
         <div id="panel-1" class="panel">
             <div class="panel-hdr">
                 <h2>
-                    Repair Job Order <span class="fw-300"><i>List</i></span>
+                    Warehouse<span class="fw-300"><i>History</i></span>
                 </h2>
+                <a class="nav-link active" href="{{route('warehouse.index')}}"><i class="fal fa-arrow-alt-left">
+                    </i>
+                    <span class="nav-link-text">back</span>
+                </a>
                 <div class="panel-toolbar">
-                    @role('repair')
-                    <a class="nav-link active" href="{{route('repair-job.history')}}"><i class="fal fa-list-alt">
-                        </i>
-                        <span class="nav-link-text">All Progress</span>
-                    </a>
-                    @endrole
                     <button class="btn btn-panel" data-action="panel-fullscreen" data-toggle="tooltip"
                         data-offset="0,10" data-original-title="Fullscreen"></button>
                 </div>
@@ -40,8 +38,12 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Ticket</th>
-                                <th>Assigned Date</th>
+                                <th>Ticket Number</th>
+                                <th>Ticket Date</th>
+                                <th>Status</th>
+                                <th>Module Status</th>
+                                <th>Job Date</th>
+                                <th>Job Finished</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -57,7 +59,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">
-                    MODULE DETAIL
+                    DETAIL
                 </h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true"><i class="fal fa-times"></i></span>
@@ -79,31 +81,34 @@
 <script>
     $(document).ready(function(){
         $('#datatable').DataTable({
-            "processing": true,
-            "serverSide": true,
-            "responsive": true,
-            "order": [[ 0, "asc" ]],
-            "ajax": {
-                url:'{{route('repair-job.index')}}',
-                type : "GET",
-                dataType: 'json',
-                error: function(data) {
-                    console.log(data);
-                }
-            },
-            "columns": [
-                {data: 'rownum',searchable: false},
-                {data: 'ticket_number'},
-                {data: 'assign_at'},
-                {data: 'action', name: 'action', orderable: false, searchable: false},
+                "processing": true,
+                "serverSide": true,
+                "responsive": true,
+                "order": [[ 0, "asc" ]],
+                "ajax":{
+                    url:'{{route('warehouse.history')}}',
+                    type : "GET",
+                    dataType: 'json',
+                    error: function(data){
+                        console.log(data);
+                        }
+                },
+                "columns": [
+                    {data: 'DT_RowIndex',searchable:false},
+                    {data: 'ticket_number'},
+                    {data: 'ticket_date'},
+                    {data: 'job_status'},
+                    {data: 'item_status'},
+                    {data: 'created_at'},
+                    {data: 'updated_at'},
+                    {data: 'action', name: 'action', orderable: false, searchable: false, width:'5%'},
             ]
         });
         $('#datatable').on('click', '#detail-button[data-attr]', function (e) {
             e.preventDefault();
             var href = $(this).attr('data-attr');
             $.ajax({
-                url: href,
-                beforeSend: function() {
+                url: href,beforeSend: function() {
                     $('#loader').show();
                 },
                 // return the result

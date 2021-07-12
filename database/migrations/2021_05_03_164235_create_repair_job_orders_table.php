@@ -17,6 +17,7 @@ class CreateRepairJobOrdersTable extends Migration
             $table->id();
             $table->string('uuid')->unique();
             $table->string('repair_item_uuid')->nullable();
+            $table->integer('urgent_status')->nullable()->comment('0=non urgent, 1=urgent');
             $table->integer('item_status')->nullable()->comment("0=Tidak dapat diperbaiki, 1=Telah diperbaiki oleh teknisi,2=Ticket cancel");
             $table->integer('job_status')->nullable()->comment("0=Open, 1=Close, 2=Cancel");
             $table->text('repair_notes')->nullable();
@@ -24,6 +25,7 @@ class CreateRepairJobOrdersTable extends Migration
             $table->double('repair_cost')->nullable();
             $table->double('time_to_repair', 8, 2)->nullable();
             $table->string('assign_to')->nullable();
+            $table->timestamp('assign_at')->nullable();
             $table->string('created_by')->nullable();
             $table->string('edited_by')->nullable();
             $table->timestamps();

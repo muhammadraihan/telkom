@@ -30,9 +30,9 @@ Route::group(['prefix' => 'backoffice', 'middleware' => ['auth']], function () {
     // repair
     Route::get('repair/assign/history', 'RepairController@AssignHistory')->name('repair.assign-history');
     Route::get('repair/job/history', 'RepairController@RepairHistory')->name('repair.job-history');
-    Route::get('repair/history/detail/{repair}', 'RepairController@detail')->name('repair.job-detail');
-    Route::get('repair-job/detail/{repair_job}', 'RepairJobController@detail')->name('repair-job.detail');
+    Route::get('repair/history/detail/{repair}', 'RepairController@RepairDetail')->name('repair.job-detail');
     Route::get('repair-job/history', 'RepairJobController@history')->name('repair-job.history');
+    Route::get('repair-job/history/detail/{repair_job}', 'RepairJobController@detail')->name('repair-job.detail');
 
     // reference
     Route::get('getUnit', 'UnitController@GetUnitByWitel')->name('getUnit');
@@ -40,27 +40,37 @@ Route::group(['prefix' => 'backoffice', 'middleware' => ['auth']], function () {
     Route::get('getModuleBrand', 'ModuleBrandController@GetModuleBrandByName')->name('getModuleBrand');
     Route::get('getModuleType', 'ModuleTypeController@GetModuleTypeByBrand')->name('getModuleType');
 
-    // resource
-    Route::resource('accessory', 'AccessoryController');
-    Route::resource('brand', 'ModuleBrandController');
-    Route::resource('category', 'ModuleCategoryController');
-    Route::resource('gudang', 'GudangController');
-    Route::resource('itemreplace', 'ItemReplaceController');
-    Route::resource('material', 'MaterialController');
-    Route::resource('name', 'ModuleNameController');
-    Route::resource('permissions', 'PermissionController');
-    Route::resource('repair', 'RepairController');
-    Route::resource('roles', 'RoleController');
-    Route::resource('stock', 'ModuleStockController');
-    Route::resource('ticketing', 'TicketingController');
-    Route::resource('repair-job', 'RepairJobController');
-    Route::resource('type', 'ModuleTypeController');
-    Route::resource('users', 'UserController');
-    Route::resource('unit', 'UnitController');
-    Route::resource('witel', 'WitelController');
+    // warehouse
+    Route::get('warehouse/history', 'WarehouseController@history')->name('warehouse.history');
+    Route::get('warehouse/history/detail/{warehouse}', 'WarehouseController@detail')->name('warehouse.detail');
 
     // user Profile
     Route::get('profile', 'UserController@profile')->name('profile');
     Route::patch('profile/{user}/update', 'UserController@ProfileUpdate')->name('profile.update');
     Route::patch('profile/{user}/password', 'UserController@ChangePassword')->name('profile.password');
+
+    // ticket
+    Route::get('ticketing/history', 'TicketingController@history')->name('ticketing.history');
+    // report
+    Route::get('report/repair-module', 'ReportController@RepairModule')->name('report.repair-module');
+    // report export
+    Route::get('report/repair-module/download', 'ReportController@RepairModuleExport')->name('download.repair-module');
+
+    // resource
+    Route::resource('accessory', 'AccessoryController');
+    Route::resource('brand', 'ModuleBrandController');
+    Route::resource('category', 'ModuleCategoryController');
+    Route::resource('material', 'MaterialController');
+    Route::resource('name', 'ModuleNameController');
+    Route::resource('permissions', 'PermissionController');
+    Route::resource('repair', 'RepairController');
+    Route::resource('repair-job', 'RepairJobController');
+    Route::resource('roles', 'RoleController');
+    Route::resource('stock', 'ModuleStockController');
+    Route::resource('ticketing', 'TicketingController');
+    Route::resource('type', 'ModuleTypeController');
+    Route::resource('users', 'UserController');
+    Route::resource('unit', 'UnitController');
+    Route::resource('warehouse', 'WarehouseController');
+    Route::resource('witel', 'WitelController');
 });

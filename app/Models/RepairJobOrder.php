@@ -14,7 +14,7 @@ class RepairJobOrder extends Model
     use LogsActivity;
 
     protected $fillable = [
-        'repair_item_uuid', 'item_status', 'job_status', 'repair_notes', 'component_used', 'repair_cost', 'time_to_repair', 'assign_to', 'created_by', 'edited_by'
+        'repair_item_uuid', 'urgent_status', 'item_status', 'job_status', 'repair_notes', 'component_used', 'repair_cost', 'time_to_repair', 'assign_to', 'created_by', 'edited_by'
     ];
 
     protected $casts = [

@@ -12,78 +12,66 @@
             </div>
             <div class="panel-container show">
                 <div class="panel-content">
-                    <div class="col-xs-12 col-sm-12 col-md-12">
-                        <div class="d-flex mb-2">
-                            <strong>Category :</strong><span class="fw-400"><i>
-                                    {{ $repair_job->repair->ModuleType->brand->moduleName->category->name }}</i></span>
+                    <div class="form-row">
+                        <div class="form-group col-md-4 mb-3">
+                            {{ Form::label('module_category','Categoy :',['class' => 'form-label'])}}
+                            {{ $repair_job->repair->ModuleType->brand->moduleName->category->name }}
+                        </div>
+                        <div class="form-group col-md-6 mb-3">
+                            {{ Form::label('module_name','Name :',['class' => 'form-label'])}}
+                            {{ $repair_job->repair->ModuleType->brand->moduleName->name }}
                         </div>
                     </div>
-                    <div class="col-xs-12 col-sm-12 col-md-12">
-                        <div class="d-flex mb-2">
-                            <strong>Name :</strong><span class="fw-400"><i>
-                                    {{ $repair_job->repair->ModuleType->brand->moduleName->name }}</i></span>
+                    <div class="form-row">
+                        <div class="form-group col-md-4 mb-3">
+                            {{ Form::label('module_brand','Brand :',['class' => 'form-label'])}}
+                            {{ $repair_job->repair->ModuleType->brand->name }}
+                        </div>
+                        <div class="form-group col-md-6 mb-3">
+                            {{ Form::label('module_type','Type :',['class' => 'form-label'])}}
+                            {{ $repair_job->repair->ModuleType->name }}
                         </div>
                     </div>
-                    <div class="col-xs-12 col-sm-12 col-md-12">
-                        <div class="d-flex mb-2">
-                            <strong>Name :</strong><span class="fw-400"><i>
-                                    {{ $repair_job->repair->ModuleType->brand->name }}</i></span>
+                    <div class="form-row">
+                        <div class="form-group col-md-4 mb-3">
+                            {{ Form::label('part_number','Part Number :',['class' => 'form-label'])}}
+                            {{ $repair_job->repair->part_number }}
+                        </div>
+                        <div class="form-group col-md-4 mb-3">
+                            {{ Form::label('serial_number','Serial Number :',['class' => 'form-label'])}}
+                            {{ $repair_job->repair->serial_number }}
+                        </div>
+                        <div class="form-group col-md-4 mb-3">
+                            {{ Form::label('msc_number','MSC Number :',['class' => 'form-label'])}}
+                            {{ $repair_job->repair->serial_number_msc }}
                         </div>
                     </div>
-                    <div class="col-xs-12 col-sm-12 col-md-12">
-                        <div class="d-flex mb-2">
-                            <strong>Type :</strong><span class="fw-400"><i>
-                                    {{ $repair_job->repair->ModuleType->name }}</i></span>
+                    <div class="form-row">
+                        <div class="form-group col-md-4 mb-3">
+                            {{ Form::label('accessories','Accesories :',['class' => 'form-label'])}}
+                            @isset($repair_job->repair->accessories)
+                            <div>
+                                <ul class="">
+                                    @foreach ($repair_job->repair->accessories as $item)
+                                    <li class="">
+                                        <span>{{$item}}</span>
+                                    </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                            @endisset
+                        </div>
+                        <div class="form-group col-md-4 mb-3">
+                            {{ Form::label('warranty_status','Warranty Status :',['class' => 'form-label'])}}
+                            {!! Helper::WarrantyStatus($repair_job->repair->warranty_status)!!}
                         </div>
                     </div>
-                    <div class="col-xs-12 col-sm-12 col-md-12">
-                        <div class="d-flex mb-2">
-                            <strong>Part Number :</strong><span class="fw-400"><i>
-                                    {{ $repair_job->repair->part_number }}</i></span>
-                        </div>
-                    </div>
-                    <div class="col-xs-12 col-sm-12 col-md-12">
-                        <div class="d-flex mb-2">
-                            <strong>Serial Number :</strong><span class="fw-400"><i>
-                                    {{ $repair_job->repair->serial_number }}</i></span>
-                        </div>
-                    </div>
-                    <div class="col-xs-12 col-sm-12 col-md-12">
-                        <div class="d-flex mb-2">
-                            <strong>Serial MSC :</strong><span class="fw-400"><i>
-                                    {{ $repair_job->repair->serial_number_msc }}</i></span>
-                        </div>
-                    </div>
-                    <div class="col-xs-12 col-sm-12 col-md-12">
-                        <div class="d-flex mb-2">
-                            <strong>Warranty Status :</strong><span class="fw-400"><i>
-                                    @if ($repair_job->repair->warranty_status == 0)
-                                    Warranty
-                                    @else
-                                    Non Warranty
-                                    @endif</i></span>
-                        </div>
-                    </div>
-                    <div class="col-xs-12 col-sm-12 col-md-12">
-                        <div class="d-flex mb-2">
-                            <strong>Accessories :</strong><span class="fw-400"><i>
-                        </div>
-                        <div>
-                            <ul class="">
-                                @isset($repair_job->repair->accessories)
-                                @foreach ($repair_job->repair->accessories as $item)
-                                <li class="">
-                                    <span>{{$item}}</span>
-                                </li>
-                                @endforeach
-                                @endisset
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-xs-12 col-sm-12 col-md-12">
-                        <div class="d-flex mb-2">
-                            <strong>Complain :</strong><span class="fw-400"><i>
-                                    {{ $repair_job->repair->complain }}</i></span>
+                    <div class="form-row">
+                        <div class="form-group col-md-6 mb-3">
+                            {{ Form::label('complain','Complain:',['class' => 'form-label'])}}
+                            <div class="text-justify">
+                                {{$repair_job->repair->complain}}
+                            </div>
                         </div>
                     </div>
                 </div>

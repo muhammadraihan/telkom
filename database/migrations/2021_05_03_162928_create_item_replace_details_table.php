@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateItemReplaceVendorDetailsTable extends Migration
+class CreateItemReplaceDetailsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,12 @@ class CreateItemReplaceVendorDetailsTable extends Migration
      */
     public function up()
     {
-        Schema::create('item_replace_vendor_details', function (Blueprint $table) {
+        Schema::create('item_replace_details', function (Blueprint $table) {
             $table->id();
             $table->string('uuid')->unique();
-            $table->string('item_repair_uuid')->nullable();
+            $table->integer('replace_status')->nullable()->comment("3=Stock, 4=Vendor");
             $table->string('vendor_name')->nullable();
-            $table->string('module_category_uuid')->nullable();
-            $table->string('module_name_uuid')->nullable();
-            $table->string('module_brand_uuid')->nullable();
+            $table->string('item_repair_uuid')->nullable();
             $table->string('module_type_uuid')->nullable();
             $table->string('part_number')->nullable();
             $table->string('serial_number')->nullable();
@@ -39,6 +37,6 @@ class CreateItemReplaceVendorDetailsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('item_replace_vendor_details');
+        Schema::dropIfExists('item_replace_details');
     }
 }
