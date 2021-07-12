@@ -9,9 +9,9 @@
 @section('content')
 <div class="subheader">
     <h1 class="subheader-title">
-        <i class='subheader-icon fal fa-users'></i> Module: <span class='fw-300'>Ticketing</span>
+        <i class='subheader-icon fal fa-ticket'></i> Module: <span class='fw-300'>Complain Ticket</span>
         <small>
-            Module for manage Ticketing.
+            Module for manage complain ticket
         </small>
     </h1>
 </div>
@@ -20,12 +20,16 @@
         <div id="panel-1" class="panel">
             <div class="panel-hdr">
                 <h2>
-                    Ticketing <span class="fw-300"><i>List</i></span>
+                    Active Ticket <span class="fw-300"><i>List</i></span>
                 </h2>
                 <div class="panel-toolbar">
                     <a class="nav-link active" href="{{route('ticketing.create')}}"><i class="fal fa-plus-circle">
                         </i>
-                        <span class="nav-link-text">Add New</span>
+                        <span class="nav-link-text">Add New Ticket</span>
+                    </a>
+                    <a class="nav-link active" href="{{route('ticketing.history')}}"><i class="fal fa-list">
+                        </i>
+                        <span class="nav-link-text">Ticket History</span>
                     </a>
                     <button class="btn btn-panel" data-action="panel-fullscreen" data-toggle="tooltip"
                         data-offset="0,10" data-original-title="Fullscreen"></button>
@@ -42,7 +46,7 @@
                                 <th>Unit</th>
                                 <th>Ticket Number</th>
                                 <th>Ticket Status</th>
-                                <th>Job Status</th>
+                                <th>Item Status</th>
                                 <th>Urgent Status</th>
                                 <th>Ticket Date</th>
                                 <th>Ticket Issuer</th>
@@ -58,11 +62,11 @@
 </div>
 <!-- item detail modal start -->
 <div class="modal fade" id="detail-modal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">
-                    Detail Item
+                    MODULE DETAIL
                 </h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true"><i class="fal fa-times"></i></span>
@@ -102,7 +106,7 @@
             {data: 'uuid_unit'},
             {data: 'ticket_number'},
             {data: 'ticket_status'},
-            {data: 'job_status'},
+            {data: 'item_status'},
             {data: 'urgent_status'},
             {data: 'created_at'},
             {data: 'created_by'},

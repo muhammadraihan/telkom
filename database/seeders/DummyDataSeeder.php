@@ -65,5 +65,53 @@ class DummyDataSeeder extends Seeder
             $this->command->getOutput()->progressFinish();
             $this->command->info('Repair dummy data inserted to database');
         }
+
+        // seed supervisi dummy data
+        $warehouse = [
+            ['name' => 'supervisi', 'email' => 'supervisi@app.com', 'password' => Hash::make('password')],
+        ];
+        if ($this->command->confirm('Seed supervisi dummy data? [y|N]', true)) {
+            $this->command->getOutput()->createProgressBar(count($warehouse));
+            $this->command->getOutput()->progressStart();
+            foreach ($warehouse as $super) {
+                $user = User::create($super);
+                $user->assignRole('supervisi');
+                $this->command->getOutput()->progressAdvance();
+            }
+            $this->command->getOutput()->progressFinish();
+            $this->command->info('Supervisi dummy data inserted to database');
+        }
+
+        // seed warehouse dummy data
+        $warehouse = [
+            ['name' => 'warehouse', 'email' => 'warehouse@app.com', 'password' => Hash::make('password')],
+        ];
+        if ($this->command->confirm('Seed warehouse dummy data? [y|N]', true)) {
+            $this->command->getOutput()->createProgressBar(count($warehouse));
+            $this->command->getOutput()->progressStart();
+            foreach ($warehouse as $ware) {
+                $user = User::create($ware);
+                $user->assignRole('warehouse');
+                $this->command->getOutput()->progressAdvance();
+            }
+            $this->command->getOutput()->progressFinish();
+            $this->command->info('Warehouse dummy data inserted to database');
+        }
+
+        // seed warehouse dummy data
+        $customer = [
+            ['name' => 'customer care', 'email' => 'customer-care@app.com', 'password' => Hash::make('password')],
+        ];
+        if ($this->command->confirm('Seed customer care dummy data? [y|N]', true)) {
+            $this->command->getOutput()->createProgressBar(count($customer));
+            $this->command->getOutput()->progressStart();
+            foreach ($customer as $custom) {
+                $user = User::create($custom);
+                $user->assignRole('customer-care');
+                $this->command->getOutput()->progressAdvance();
+            }
+            $this->command->getOutput()->progressFinish();
+            $this->command->info('Customer care dummy data inserted to database');
+        }
     }
 }

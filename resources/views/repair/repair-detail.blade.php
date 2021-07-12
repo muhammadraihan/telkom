@@ -15,51 +15,15 @@
                     <div class="form-row">
                         <div class="form-group col-md-4 mb-3">
                             {{ Form::label('repair_status','Repair Status :',['class' => 'form-label'])}}
-                            @switch($repair_job->repair->repair_status)
-                            @case(0)
-                            <span class="badge badge-danger">Non Repair</span>
-                            @break
-                            @case(1)
-                            <span class="badge badge-success">Repaired</span>
-                            @break
-                            @default
-                            <span class="badge badge-secondary">Unknown</span>
-                            @endswitch
+                            {!!Helper::RepairJobItemStatus($repair_job->item_status)!!}
                         </div>
                         <div class="form-group col-md-4 mb-3">
                             {{ Form::label('job_status','Job Status :',['class' => 'form-label'])}}
-                            @switch($repair_job->job_status)
-                            @case(0)
-                            <span class="badge badge-primary">Dalam proses</span>
-                            @break
-                            @case(1)
-                            <span class="badge badge-success">Selesai</span>
-                            @break
-                            @case(2)
-                            <span class="badge badge-danger">Ticket cancel</span>
-                            @break
-                            @default
-                            <span class="badge badge-dark">Status Unknown</span>
-                            @endswitch
+                            {!! Helper::JobStatus($repair_job->job_status)!!}
                         </div>
                         <div class="form-group col-md-4 mb-3">
                             {{ Form::label('ticket_status','Ticket Status :',['class' => 'form-label'])}}
-                            @switch($repair_job->repair->ticket->ticket_status)
-                            @case(1)
-                            <span class="badge badge-primary">Diproses ke bagian repair</span>
-                            @break
-                            @case(2)
-                            <span class="badge badge-warning">Diproses ke bagian gudang</span>
-                            @break
-                            @case(3)
-                            <span class="badge badge-success">Selesai</span>
-                            @break
-                            @case(4)
-                            <span class="badge badge-danger">Cancel</span>
-                            @break
-                            @default
-                            <span class="badge badge-dark">Status Unknown</span>
-                            @endswitch
+                            {!! Helper::TicketStatus($repair_job->repair->ticket->ticket_status)!!}
                         </div>
                     </div>
                     <div class="form-row">

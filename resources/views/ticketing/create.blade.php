@@ -188,7 +188,7 @@
                 data: {witel_uuid:witel_uuid},
                 success: function(e) {
                     $("#unit").empty();
-                    $("#unit").append('<option value="">Pilih Module Unit</option>');
+                    $("#unit").append('<option value="">Pilih Unit</option>');
                     $.each(e, function(key, value) {
                         $("#unit").append('<option value="'+ key +'">'+ value +'</option>');
                     });

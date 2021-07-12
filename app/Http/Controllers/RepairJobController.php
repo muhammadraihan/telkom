@@ -11,6 +11,7 @@ use App\Models\RepairJobOrder;
 use App\Models\WarehouseJobOrder;
 use Carbon\Carbon;
 use Auth;
+use Carbon\CarbonInterval;
 use DataTables;
 use DB;
 use Exception;
@@ -31,13 +32,13 @@ class RepairJobController extends Controller
             $roles = $user->getRoleNames();
             if ($roles[0] == 'repair') {
                 DB::statement(DB::raw('set @rownum=0'));
-                $data = RepairJobOrder::select([DB::raw('@rownum  := @rownum  + 1 AS rownum'), 'id', 'uuid', 'repair_item_uuid', 'created_at'])->where('assign_to', $user->uuid)->where('job_status', 0);
+                $data = RepairJobOrder::select([DB::raw('@rownum  := @rownum  + 1 AS rownum'), 'id', 'uuid', 'repair_item_uuid', 'assign_at'])->where('assign_to', $user->uuid)->where('job_status', 0);
                 return Datatables::of($data)
                     ->addColumn('ticket_number', function ($row) {
                         return $row->repair->ticket->ticket_number;
                     })
-                    ->editColumn('created_at', function ($row) {
-                        return Carbon::parse($row->created_at)->translatedFormat('l\\, j F Y h:i:s');
+                    ->editColumn('assign_at', function ($row) {
+                        return Carbon::parse($row->assign_at)->translatedFormat('l\\, j F Y H:i');
                     })
                     ->addColumn('action', function ($row) {
                         return '<a class="btn btn-info btn-sm btn-icon waves-effect waves-themed" data-toggle="modal" id="detail-button" data-target="#detail-modal" data-attr="' . URL::route('repair-job.show', $row->uuid) . '" title="Detail Barang" href=""><i class="fal fa-search-plus"></i></a>
@@ -50,13 +51,13 @@ class RepairJobController extends Controller
                     ->make();
             }
             DB::statement(DB::raw('set @rownum=0'));
-            $data = RepairJobOrder::select([DB::raw('@rownum  := @rownum  + 1 AS rownum'), 'id', 'uuid', 'repair_item_uuid', 'created_at'])->where('job_status', 0);
+            $data = RepairJobOrder::select([DB::raw('@rownum  := @rownum  + 1 AS rownum'), 'id', 'uuid', 'repair_item_uuid', 'assign_at'])->where('job_status', 0);
             return Datatables::of($data)
                 ->addColumn('ticket_number', function ($row) {
                     return $row->repair->ticket->ticket_number;
                 })
-                ->editColumn('created_at', function ($row) {
-                    return Carbon::parse($row->created_at)->translatedFormat('l\\, j F Y h:i:s');
+                ->editColumn('assign_at', function ($row) {
+                    return Carbon::parse($row->assign_at)->translatedFormat('l\\, j F Y H:i');
                 })
                 ->addColumn('action', function ($row) {
                     return '<a class="btn btn-info btn-sm btn-icon waves-effect waves-themed" data-toggle="modal" id="detail-button" data-target="#detail-modal" data-attr="' . URL::route('repair-job.show', $row->uuid) . '" title="Detail Barang" href=""><i class="fal fa-search-plus"></i></a>
@@ -105,6 +106,7 @@ class RepairJobController extends Controller
      */
     public function update(Request $request, $uuid)
     {
+        // dd($request->all());
         $rules = [
             'repair_status' => 'required',
             'complain' => 'required',
@@ -117,9 +119,11 @@ class RepairJobController extends Controller
 
         // update repair job first
         $repair_job = RepairJobOrder::uuid($uuid);
-        $job_created = Carbon::parse($repair_job->created_at)->toDateTimeString();
+        $job_created = Carbon::parse($repair_job->assign_at)->toDateTimeString();
         $job_finish = Carbon::parse()->toDateTimeString();
         $time_to_repair = Helper::CountRepairTime($job_created, $job_finish);
+
+        // dd($job_created, $job_finish, $time_to_repair);
 
         // item can repair
         if ($request->repair_status == 1) {
@@ -188,25 +192,37 @@ class RepairJobController extends Controller
                     // update repair item status 
                     $repair_item = RepairItem::where('uuid', $repair_job->repair_item_uuid)->first();
                     $repair_item->complain = $request->complain;
-                    $repair_item->repair_status = 1; // item can repair
+                    $repair_item->status = 1; // repair by tech
+                    $repair_item->edited_by = Auth::user()->uuid;
                     $repair_item->save();
                     // create job order for warehouse
                     $warehouse_job = new WarehouseJobOrder();
                     $warehouse_job->repair_item_uuid = $repair_item->uuid;
+                    $warehouse_job->urgent_status = $repair_job->urgent_status;
                     $warehouse_job->item_status = 2; // repaired by tech
                     $warehouse_job->job_status = 0; // open job order for warehouse
+                    /**
+                     * Detect urgent status first
+                     * For warehouse decide item sent to customer or input to stock
+                     */
+                    if ($repair_job->urgent_status == 1) {
+                        $warehouse_job->stock_input = 1;
+                    }
+                    $warehouse_job->stock_input == 0;
                     $warehouse_job->created_by = Auth::user()->uuid;
                     $warehouse_job->save();
-                    // update ticketing
-                    $ticket = Ticketing::where('uuid', $repair_item->ticket_uuid)->first();
-                    $ticket->ticket_status = 2; // send to warehouse
-                    $ticket->job_status = 2; // repaired by tech
-                    $ticket->edited_by = Auth::user()->uuid;
-                    $ticket->save();
+                    // update ticketing if urgent status 0
+                    if ($repair_job->urgent_status == 0) {
+                        $ticket = Ticketing::where('uuid', $repair_item->ticket_uuid)->first();
+                        $ticket->ticket_status = 2; // send to warehouse
+                        $ticket->item_status = 2; // repaired by tech
+                        $ticket->edited_by = Auth::user()->uuid;
+                        $ticket->save();
+                    }
                 } catch (Exception $e) {
                     // catch error and rollback database update
                     DB::rollback();
-                    toastr()->error('Gagal menyimpan data, silahkan coba lagi', 'Error');
+                    toastr()->error($e->getMessage(), 'Error');
                     return redirect()->back()->withInput();
                 }
                 // now is save to commit update and redirect to index
@@ -228,25 +244,40 @@ class RepairJobController extends Controller
                     // update repair item status 
                     $repair_item = RepairItem::where('uuid', $repair_job->repair_item_uuid)->first();
                     $repair_item->complain = $request->complain;
-                    $repair_item->repair_status = 1; // item can repair
+                    // if not urgent update item status
+                    if ($repair_job->urgent_status == 0) {
+                        $repair_item->status = 1; // repair by tech
+                    }
+                    $repair_item->edited_by = Auth::user()->uuid;
                     $repair_item->save();
                     // create job order for warehouse
                     $warehouse_job = new WarehouseJobOrder();
                     $warehouse_job->repair_item_uuid = $repair_item->uuid;
+                    $warehouse_job->urgent_status = $repair_job->urgent_status;
                     $warehouse_job->item_status = 2; // repaired by tech
                     $warehouse_job->job_status = 0; // open job order for warehouse
+                    /**
+                     * Detect urgent status
+                     * For warehouse decide item sent to customer or input to stock
+                     */
+                    if ($repair_job->urgent_status == 1) {
+                        $warehouse_job->stock_input = 1;
+                    }
+                    $warehouse_job->stock_input == 0;
                     $warehouse_job->created_by = Auth::user()->uuid;
                     $warehouse_job->save();
-                    // update ticketing
-                    $ticket = Ticketing::where('uuid', $repair_item->ticket_uuid)->first();
-                    $ticket->ticket_status = 2; // send to warehouse
-                    $ticket->job_status = 2;
-                    $ticket->edited_by = Auth::user()->uuid;
-                    $ticket->save();
+                    // update ticketing if urgent status 0
+                    if ($repair_job->urgent_status == 0) {
+                        $ticket = Ticketing::where('uuid', $repair_item->ticket_uuid)->first();
+                        $ticket->ticket_status = 2; // send to warehouse
+                        $ticket->item_status = 2; // repair by tech
+                        $ticket->edited_by = Auth::user()->uuid;
+                        $ticket->save();
+                    }
                 } catch (Exception $e) {
                     // catch error and rollback database update
                     DB::rollback();
-                    toastr()->error('Gagal menyimpan data, silahkan coba lagi', 'Error');
+                    toastr()->error($e->getMessage(), 'Error');
                     return redirect()->back()->withInput();
                 }
                 // now is save to commit update and redirect to index
@@ -269,25 +300,31 @@ class RepairJobController extends Controller
                 // update repair item status 
                 $repair_item = RepairItem::where('uuid', $repair_job->repair_item_uuid)->first();
                 $repair_item->complain = $request->complain;
-                $repair_item->repair_status = 0; // item can't repair
+                if ($repair_job->urgent_status == 0) {
+                    $repair_item->status = 0; // item can't repair
+                }
+                $repair_item->edited_by = Auth::user()->uuid;
                 $repair_item->save();
                 // create job order for warehouse
                 $warehouse_job = new WarehouseJobOrder();
                 $warehouse_job->repair_item_uuid = $repair_item->uuid;
+                $warehouse_job->urgent_status = $repair_job->urgent_status;
                 $warehouse_job->item_status = 3; // can't repaired by tech
                 $warehouse_job->job_status = 0; // open job order for warehouse
                 $warehouse_job->created_by = Auth::user()->uuid;
                 $warehouse_job->save();
-                // update ticketing
-                $ticket = Ticketing::where('uuid', $repair_item->ticket_uuid)->first();
-                $ticket->ticket_status = 2; // send to warehouse
-                $ticket->job_status = 3; // can't repaired by tech
-                $ticket->edited_by = Auth::user()->uuid;
-                $ticket->save();
+                // update ticketing if urgent status 0
+                if ($repair_job->urgent_status == 0) {
+                    $ticket = Ticketing::where('uuid', $repair_item->ticket_uuid)->first();
+                    $ticket->ticket_status = 2; // send to warehouse
+                    $ticket->item_status = 3; // can't repaired by tech
+                    $ticket->edited_by = Auth::user()->uuid;
+                    $ticket->save();
+                }
             } catch (Exception $e) {
                 // catch error and rollback database update
                 DB::rollback();
-                toastr()->error('Gagal menyimpan data, silahkan coba lagi', 'Error');
+                toastr()->error($e->getMessage(), 'Error');
                 return redirect()->back()->withInput();
             }
             // now is save to commit update and redirect to index
@@ -309,6 +346,7 @@ class RepairJobController extends Controller
                 'id',
                 'uuid',
                 'repair_item_uuid',
+                'item_status',
                 'job_status',
                 'time_to_repair',
                 'created_at',
@@ -320,41 +358,20 @@ class RepairJobController extends Controller
                     return $repair_job->repair->ticket->ticket_number;
                 })
                 ->addColumn('repair_status', function ($repair_job) {
-                    switch ($repair_job->repair->repair_status) {
-                        case 0:
-                            return '<span class="badge badge-danger">Non Repair</span>';
-                            break;
-                        case 1;
-                            return '<span class="badge badge-success">Repaired</span>';
-                        default:
-                            return '<span class="badge badge-secondary">Unknown</span>';
-                            break;
-                    }
+                    return Helper::RepairJobItemStatus($repair_job->item_status);
                 })
                 ->editColumn('job_status', function ($repair_job) {
-                    switch ($repair_job->job_status) {
-                        case 0:
-                            return '<span class="badge badge-primary">Dalam proses</span>';
-                            break;
-                        case 1;
-                            return '<span class="badge badge-success">Selesai</span>';
-                            break;
-                        case 2;
-                            return '<span class="badge badge-danger">Ticket cancel</span>';
-                            break;
-                        default:
-                            return '<span class="badge badge-dark">Status Unknown</span>';
-                            break;
-                    }
+                    return Helper::JobStatus($repair_job->job_status);
                 })
                 ->editColumn('time_to_repair', function ($repair_job) {
-                    return number_format($repair_job->time_to_repair, 2) . ' ' . 'Hours';
+                    return floor($repair_job->time_to_repair / 60) .
+                        ' ' . 'Hours' . ' ' . ($repair_job->time_to_repair % 60) . ' ' . 'Minutes';
                 })
                 ->editColumn('created_at', function ($repair_job) {
-                    return Carbon::parse($repair_job->created_at)->translatedFormat('j M Y h:i:s');
+                    return Carbon::parse($repair_job->created_at)->translatedFormat('j M Y H:i');
                 })
                 ->editColumn('updated_at', function ($repair_job) {
-                    return Carbon::parse($repair_job->updated_at)->translatedFormat('j M Y h:i:s');
+                    return Carbon::parse($repair_job->updated_at)->translatedFormat('j M Y H:i');
                 })
                 ->addColumn('action', function ($repair_job) {
                     return '<a class="btn btn-info btn-sm btn-icon waves-effect waves-themed" data-toggle="modal" id="detail-button" data-target="#detail-modal" data-attr="' . URL::route('repair-job.detail', $repair_job->uuid) . '" title="Detail Task" href=""><i class="fal fa-search-plus"></i></a>';

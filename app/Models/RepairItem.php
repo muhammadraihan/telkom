@@ -14,7 +14,7 @@ class RepairItem extends Model
     use LogsActivity;
 
     protected $fillable = [
-        'ticket_uuid', 'module_type_uuid', 'part_number', 'serial_number', 'serial_number_msc', 'accessories', 'complain', 'warranty_status', 'repair_status', 'replace_status', 'created_by', 'edited_by'
+        'ticket_uuid', 'module_type_uuid', 'part_number', 'serial_number', 'serial_number_msc', 'accessories', 'complain', 'warranty_status', 'status', 'created_by', 'edited_by'
     ];
 
     protected $casts = [
@@ -78,5 +78,20 @@ class RepairItem extends Model
     public function JobOrder()
     {
         return $this->hasOne(RepairJobOrder::class, 'repair_item_uuid', 'uuid');
+    }
+
+    public function WarehouseOrder()
+    {
+        return $this->hasOne(WarehouseJobOrder::class, 'repair_item_uuid', 'uuid');
+    }
+
+    public function ModuleReplace()
+    {
+        return $this->hasOne(ItemReplaceDetail::class, 'item_repair_uuid', 'uuid');
+    }
+
+    public function ModuleRepair()
+    {
+        return $this->hasOne(RepairJobVendor::class, 'repair_item_uuid', 'uuid');
     }
 }

@@ -90,15 +90,15 @@ class Helper
 
     if ($same_day == true) {
       // count time to repair
-      $time_to_repair =  Carbon::parse($job_created)->floatDiffInHours($job_finish);
+      $time_to_repair =  Carbon::parse($job_created)->diffInMinutes($job_finish);
       return $time_to_repair;
     } elseif ($working_days >= 1) {
       // convert job in time format
       $job_time_start = Carbon::parse($job_created)->toTimeString();
       $job_time_finish = Carbon::parse($job_finish)->toTimeString();
       // count difference hours if job finished next day to past the midnight gap 
-      $actual_job_start = Carbon::parse($work_hour_end)->floatDiffInHours($job_time_start);
-      $actual_job_finish = Carbon::parse($work_hour_start)->floatDiffInHours($job_time_finish);
+      $actual_job_start = Carbon::parse($work_hour_end)->diffInMinutes($job_time_start);
+      $actual_job_finish = Carbon::parse($work_hour_start)->diffInMinutes($job_time_finish);
       // count addition working hours
       $addition_working_hours = $working_days * $working_hours;
       // count time to repair
@@ -109,11 +109,189 @@ class Helper
       $job_time_start = Carbon::parse($job_created)->toTimeString();
       $job_time_finish = Carbon::parse($job_finish)->toTimeString();
       // count difference hours if job finished next day to past the midnight gap 
-      $actual_job_start = Carbon::parse($work_hour_end)->floatDiffInHours($job_time_start);
-      $actual_job_finish = Carbon::parse($work_hour_start)->floatDiffInHours($job_time_finish);
+      $actual_job_start = Carbon::parse($work_hour_end)->diffInMinutes($job_time_start);
+      $actual_job_finish = Carbon::parse($work_hour_start)->diffInMinutes($job_time_finish);
       // count time to repair
       $time_to_repair =  $actual_job_start + $actual_job_finish;
       return $time_to_repair;
+    }
+  }
+
+  /**
+   * Helper method to generate
+   * Item status
+   * @param int $item_status
+   * @return void
+   */
+  public static function ItemStatus($item_status)
+  {
+    switch ($item_status) {
+      case 0:
+        return '<span class="badge badge-secondary">Dalam antrian perbaikan</span>';
+        break;
+      case 1:
+        return '<span class="badge badge-primary">Dalam penanganan oleh teknisi</span>';
+        break;
+      case 2:
+        return '<span class="badge badge-success">Telah diperbaiki oleh teknisi</span>';
+        break;
+      case 3:
+        return '<span class="badge badge-danger">Tidak dapat diperbaiki teknisi</span>';
+        break;
+      case 4:
+        return '<span class="badge badge-warning">Butuh klaim garansi</span>';
+        break;
+      case 5:
+        return '<span class="badge badge-warning">Proses klaim garansi</span>';
+        break;
+      case 6:
+        return '<span class="badge badge-info">Selesai penggantian module</span>';
+        break;
+      case 7:
+        return '<span class="badge badge-info">Dalam penanganan oleh vendor</span>';
+        break;
+      case 8:
+        return '<span class="badge badge-info">Selesai penanganan dari vendor</span>';
+        break;
+      case 9:
+        return '<span class="badge badge-success">Telah di kirim ke customer</span>';
+        break;
+      case 10:
+        return '<span class="badge badge-danger">Butuh penggantian segera</span>';
+        break;
+      case 11:
+        return '<span class="badge badge-primary">Module di input ke stock</span>';
+        break;
+      case 12:
+        return '<span class="badge badge-danger">Ticket di cancel</span>';
+        break;
+      default:
+        return '<span class="badge badge-dark">None</span>';
+        break;
+    }
+  }
+
+  /**
+   * Helper Method to generate
+   * Urgent status
+   * @param int $urgent_status
+   * @return void
+   */
+  public static function UrgentStatus($urgent_status)
+  {
+    switch ($urgent_status) {
+      case 0:
+        return '<span class="badge badge-success">Not Urgent</span>';
+        break;
+      case 1:
+        return '<span class="badge badge-danger">Urgent</span>';
+        break;
+      default:
+        return '<span class="badge badge-dark">Status Unknown</span>';
+        break;
+    }
+  }
+
+  /**
+   * Helper method to generate
+   * Ticket status
+   * @param int $ticket_status
+   * @return void
+   */
+  public static function TicketStatus($ticket_status)
+  {
+    switch ($ticket_status) {
+      case 1:
+        return '<span class="badge badge-primary">Diproses ke bagian repair</span>';
+        break;
+      case 2:
+        return '<span class="badge badge-warning">Diproses ke bagian gudang</span>';
+        break;
+      case 3:
+        return '<span class="badge badge-success">Selesai</span>';
+        break;
+      case 4:
+        return '<span class="badge badge-danger">Cancel</span>';
+        break;
+      default:
+        return '<span class="badge badge-dark">Status Unknown</span>';
+        break;
+    }
+  }
+
+  /**
+   * Helper method to generate
+   * Repair Status
+   * @param int $repair_status
+   * @return void
+   */
+  public static function RepairItemStatus($repair_status)
+  {
+    switch ($repair_status) {
+      case 1:
+        return '<span class="badge badge-success">Repaired By Tech</span>';
+        break;
+      case 2;
+        return '<span class="badge badge-success">Repaired By Vendor</span>';
+      case 3;
+        return '<span class="badge badge-info">Replace From Stock</span>';
+      case 4;
+        return '<span class="badge badge-info">Replace From Vendor</span>';
+      default:
+        return '<span class="badge badge-secondary">Unknown</span>';
+        break;
+    }
+  }
+
+  public static function RepairJobItemStatus($repair_item_status)
+  {
+    switch ($repair_item_status) {
+      case 0:
+        return '<span class="badge badge-danger">Non Repair</span>';
+        break;
+      case 1;
+        return '<span class="badge badge-success">Repaired</span>';
+      default:
+        return '<span class="badge badge-secondary">Unknown</span>';
+        break;
+    }
+  }
+
+  /**
+   * Helper method to generate
+   * Job status
+   * @param int $repair_job_status
+   * @return void
+   */
+  public static function JobStatus($repair_job_status)
+  {
+    switch ($repair_job_status) {
+      case 0:
+        return '<span class="badge badge-primary">Dalam proses</span>';
+        break;
+      case 1;
+        return '<span class="badge badge-success">Selesai</span>';
+        break;
+      case 2;
+        return '<span class="badge badge-danger">Ticket cancel</span>';
+        break;
+      default:
+        return '<span class="badge badge-dark">Status Unknown</span>';
+        break;
+    }
+  }
+
+  public static function WarrantyStatus($warranty_status)
+  {
+    switch ($warranty_status) {
+      case 0:
+        return '<span class="badge badge-danger">Not Warranty</span>';
+        break;
+      case 1:
+        return '<span class="badge badge-info">Warranty</span>';
+      default:
+        return '<span class="badge badge-secondary">Unknown</span>';
+        break;
     }
   }
 }
