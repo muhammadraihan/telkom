@@ -41,7 +41,7 @@
                             <tr>
                                 <th>No</th>
                                 <th>Ticket</th>
-                                <th>Task Date</th>
+                                <th>Assigned Date</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -94,7 +94,7 @@
             "columns": [
                 {data: 'rownum',searchable: false},
                 {data: 'ticket_number'},
-                {data: 'created_at'},
+                {data: 'assign_at'},
                 {data: 'action', name: 'action', orderable: false, searchable: false},
             ]
         });
