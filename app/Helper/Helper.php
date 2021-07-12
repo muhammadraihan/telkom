@@ -90,15 +90,15 @@ class Helper
 
     if ($same_day == true) {
       // count time to repair
-      $time_to_repair =  Carbon::parse($job_created)->floatDiffInHours($job_finish);
+      $time_to_repair =  Carbon::parse($job_created)->diffInMinutes($job_finish);
       return $time_to_repair;
     } elseif ($working_days >= 1) {
       // convert job in time format
       $job_time_start = Carbon::parse($job_created)->toTimeString();
       $job_time_finish = Carbon::parse($job_finish)->toTimeString();
       // count difference hours if job finished next day to past the midnight gap 
-      $actual_job_start = Carbon::parse($work_hour_end)->floatDiffInHours($job_time_start);
-      $actual_job_finish = Carbon::parse($work_hour_start)->floatDiffInHours($job_time_finish);
+      $actual_job_start = Carbon::parse($work_hour_end)->diffInMinutes($job_time_start);
+      $actual_job_finish = Carbon::parse($work_hour_start)->diffInMinutes($job_time_finish);
       // count addition working hours
       $addition_working_hours = $working_days * $working_hours;
       // count time to repair
@@ -109,8 +109,8 @@ class Helper
       $job_time_start = Carbon::parse($job_created)->toTimeString();
       $job_time_finish = Carbon::parse($job_finish)->toTimeString();
       // count difference hours if job finished next day to past the midnight gap 
-      $actual_job_start = Carbon::parse($work_hour_end)->floatDiffInHours($job_time_start);
-      $actual_job_finish = Carbon::parse($work_hour_start)->floatDiffInHours($job_time_finish);
+      $actual_job_start = Carbon::parse($work_hour_end)->diffInMinutes($job_time_start);
+      $actual_job_finish = Carbon::parse($work_hour_start)->diffInMinutes($job_time_finish);
       // count time to repair
       $time_to_repair =  $actual_job_start + $actual_job_finish;
       return $time_to_repair;
@@ -127,7 +127,7 @@ class Helper
   {
     switch ($item_status) {
       case 0:
-        return '<span class="badge badge-secondary">None</span>';
+        return '<span class="badge badge-secondary">Dalam antrian perbaikan</span>';
         break;
       case 1:
         return '<span class="badge badge-primary">Dalam penanganan oleh teknisi</span>';
@@ -157,6 +157,12 @@ class Helper
         return '<span class="badge badge-success">Telah di kirim ke customer</span>';
         break;
       case 10:
+        return '<span class="badge badge-danger">Butuh penggantian segera</span>';
+        break;
+      case 11:
+        return '<span class="badge badge-primary">Module di input ke stock</span>';
+        break;
+      case 12:
         return '<span class="badge badge-danger">Ticket di cancel</span>';
         break;
       default:
@@ -219,16 +225,18 @@ class Helper
    * @param int $repair_status
    * @return void
    */
-  public static function RepairStatus($repair_status)
+  public static function RepairItemStatus($repair_status)
   {
     switch ($repair_status) {
-      case 0:
-        return '<span class="badge badge-danger">Non Repair</span>';
-        break;
-      case 1;
+      case 1:
         return '<span class="badge badge-success">Repaired By Tech</span>';
+        break;
       case 2;
-        return '<span class="badge badge-info">Repaired By Vendor</span>';
+        return '<span class="badge badge-success">Repaired By Vendor</span>';
+      case 3;
+        return '<span class="badge badge-info">Replace From Stock</span>';
+      case 4;
+        return '<span class="badge badge-info">Replace From Vendor</span>';
       default:
         return '<span class="badge badge-secondary">Unknown</span>';
         break;
@@ -269,27 +277,6 @@ class Helper
         break;
       default:
         return '<span class="badge badge-dark">Status Unknown</span>';
-        break;
-    }
-  }
-
-  /**
-   * Helper method for generate
-   * Replace Status
-   * @param int $replace_status
-   * @return void
-   */
-  public static function ReplaceStatus($replace_status)
-  {
-    switch ($replace_status) {
-      case 1:
-        return '<span class="badge badge-primary">From Stock</span>';
-        break;
-      case 2:
-        return '<span class="badge badge-secondary">From Vendor</span>';
-        break;
-      default:
-        return '<span class="badge badge-primary">Unknown</span>';
         break;
     }
   }
