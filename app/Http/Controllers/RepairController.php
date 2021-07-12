@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Material;
-use App\Models\RepairItem;
 use App\Models\RepairJobOrder;
 use App\Models\Ticketing;
 use App\Models\User;
@@ -12,6 +11,8 @@ use Illuminate\Http\Request;
 
 use Auth;
 use DataTables;
+use DB;
+use Exception;
 use Helper;
 use URL;
 
@@ -25,46 +26,37 @@ class RepairController extends Controller
     public function index()
     {
         if (request()->ajax()) {
-            $tickets = Ticketing::select(
-                'id',
-                'uuid',
-                'uuid_unit',
-                'ticket_number',
-                'ticket_status',
-                'job_status',
-                'urgent_status',
-                'created_at',
-            )->where('ticket_status', 1)->get();
+            $repairs = RepairJobOrder::select('uuid', 'repair_item_uuid', 'item_status', 'job_status', 'assign_to', 'assign_at')->where('job_status', 0)->get();
 
-            return Datatables::of($tickets)
+            return Datatables::of($repairs)
                 ->addIndexColumn()
                 ->editColumn('created_at', function ($row) {
-                    return Carbon::parse($row->created_at)->translatedFormat('l\\, j F Y H:i');
+                    return Carbon::parse($row->repair->ticket->created_at)->translatedFormat('l\\, j F Y H:i');
                 })
-                ->editColumn('ticket_status', function ($row) {
-                    return Helper::TicketStatus($row->ticket_status);
+                ->editColumn('ticket_number', function ($row) {
+                    return $row->repair->ticket->ticket_number;
                 })
                 ->editColumn('job_status', function ($row) {
-                    return Helper::ItemStatus($row->job_status);
+                    return Helper::JobStatus($row->job_status);
                 })
                 ->editColumn('urgent_status', function ($row) {
-                    return Helper::UrgentStatus($row->urgent_status);
+                    return Helper::UrgentStatus($row->repair->ticket->urgent_status);
                 })
-                ->addColumn('assign', function ($row) {
-                    if (!empty($row->RepairItem->JobOrder->assign_to)) {
-                        return $row->RepairItem->JobOrder->UserAssign->name;
+                ->addColumn('assign_to', function ($row) {
+                    if (!empty($row->assign_to)) {
+                        return $row->UserAssign->name;
                     }
                     return '<span class="badge badge-secondary">None</span>';
                 })
                 ->addColumn('assign_date', function ($row) {
-                    if (!empty($row->RepairItem->JobOrder->assign_to)) {
-                        return Carbon::parse($row->RepairItem->JobOrder->created_at)->translatedFormat('l\\, j F Y H:i');
+                    if (!empty($row->assign_to)) {
+                        return Carbon::parse($row->assign_at)->translatedFormat('l\\, j F Y H:i');
                     }
                     return '<span class="badge badge-secondary">None</span>';
                 })
                 ->addColumn('action', function ($row) {
                     // assign button only show where none tech were assign
-                    if (!empty($row->RepairItem->JobOrder->assign_to)) {
+                    if (!empty($row->assign_to)) {
                         return '<a class="btn btn-info btn-sm btn-icon waves-effect waves-themed" data-toggle="modal" id="detail-button" data-target="#detail-modal" data-attr="' . URL::route('repair.show', $row->uuid) . '" title="Detail Module" href=""><i class="fal fa-search-plus"></i></a>';
                     }
                     return '<a class="btn btn-info btn-sm btn-icon waves-effect waves-themed" data-toggle="modal" id="detail-button" data-target="#detail-modal" data-attr="' . URL::route('repair.show', $row->uuid) . '" title="Detail Module" href=""><i class="fal fa-search-plus"></i></a>
@@ -72,7 +64,7 @@ class RepairController extends Controller
                 })
                 ->removeColumn('id')
                 ->removeColumn('uuid')
-                ->rawColumns(['action', 'ticket_status', 'job_status', 'urgent_status', 'assign', 'assign_date'])
+                ->rawColumns(['action', 'ticket_number', 'job_status', 'urgent_status', 'assign_to', 'assign_date'])
                 ->make();
         }
         return view('repair.index');
@@ -86,8 +78,8 @@ class RepairController extends Controller
      */
     public function show($uuid)
     {
-        $repair_item = RepairItem::where('ticket_uuid', $uuid)->first();
-        return view('repair.show', compact('repair_item'));
+        $repair_job = RepairJobOrder::uuid($uuid);
+        return view('repair.show', compact('repair_job'));
     }
 
     /**
@@ -98,9 +90,9 @@ class RepairController extends Controller
      */
     public function edit($uuid)
     {
-        $repair_item = RepairItem::where('ticket_uuid', $uuid)->first();
+        $repair_job = RepairJobOrder::uuid($uuid);
         $techs = User::role('repair')->pluck('name', 'uuid');
-        return view('repair.assign', compact('repair_item', 'techs'));
+        return view('repair.assign', compact('repair_job', 'techs'));
     }
 
     /**
@@ -112,7 +104,6 @@ class RepairController extends Controller
      */
     public function update(Request $request, $uuid)
     {
-        // dd($request->all(), $uuid);
         $rules = [
             'tech' => 'required',
         ];
@@ -121,24 +112,32 @@ class RepairController extends Controller
         ];
         $this->validate($request, $rules, $messages);
         // get detail repair item
-        $repair_item = RepairItem::uuid($uuid);
+        $repair_job_order = RepairJobOrder::uuid($uuid);
         // get detail teknisi
         $technician = User::uuid($request->tech);
+        DB::beginTransaction();
+        try {
+            // save repair job order
+            $repair_job_order->assign_to = $request->tech;
+            $repair_job_order->assign_at = Carbon::parse()->toDateTimeString();
+            $repair_job_order->edited_by = Auth::user()->uuid;
+            $repair_job_order->save();
 
-        // save repair job order
-        $repair_order = new RepairJobOrder();
-        $repair_order->repair_item_uuid = $uuid;
-        $repair_order->assign_to = $request->tech;
-        $repair_order->job_status = 0; // job status is open
-        $repair_order->created_by = Auth::user()->uuid;
-        $repair_order->save();
-
-        // update ticket status
-        $ticket = Ticketing::uuid($repair_item->ticket_uuid);
-        $ticket->job_status = 1; // job status in tech progress
-        $ticket->edited_by = Auth::user()->uuid;
-        $ticket->save();
-
+            if ($repair_job_order->urgent->status == 0) {
+                // update ticket status
+                $ticket = Ticketing::uuid($repair_job_order->repair->ticket->uuid);
+                $ticket->item_status = 1; // job status in tech progress
+                $ticket->edited_by = Auth::user()->uuid;
+                $ticket->save();
+            }
+        } catch (Exception $e) {
+            // catch error and rollback database update
+            DB::rollback();
+            toastr()->error($e->getMessage(), 'Error');
+            return redirect()->back()->withInput();
+        }
+        // now is save to commit update and redirect to index
+        DB::commit();
         toastr()->success('Ticket No.' . $ticket->ticket_number . ' di assign ke ' . $technician->name, 'Success');
         return redirect()->route('repair.index');
     }
@@ -151,46 +150,45 @@ class RepairController extends Controller
     public function AssignHistory()
     {
         if (request()->ajax()) {
-            $repairs = RepairJobOrder::select(
-                'id',
-                'uuid',
-                'repair_item_uuid',
-                'assign_to',
-                'created_at'
-            )->latest()->get();
+            $repairs = RepairJobOrder::select('uuid', 'repair_item_uuid', 'item_status', 'job_status', 'assign_to', 'assign_at')->whereNotNull('assign_to')->get();
 
             return Datatables::of($repairs)
                 ->addIndexColumn()
-                ->addColumn('ticket_number', function ($row) {
-                    return $row->repair->ticket->ticket_number;
-                })
-                ->addColumn('ticket_date', function ($row) {
+                ->editColumn('created_at', function ($row) {
                     return Carbon::parse($row->repair->ticket->created_at)->translatedFormat('l\\, j F Y H:i');
                 })
-                ->addColumn('ticket_status', function ($row) {
-                    return Helper::TicketStatus($row->repair->ticket->ticket_status);
+                ->editColumn('ticket_number', function ($row) {
+                    return $row->repair->ticket->ticket_number;
                 })
-                ->addColumn('job_status', function ($row) {
-                    return Helper::ItemStatus($row->repair->ticket->job_status);
+                ->editColumn('job_status', function ($row) {
+                    return Helper::JobStatus($row->job_status);
                 })
-                ->addColumn('urgent_status', function ($row) {
+                ->editColumn('urgent_status', function ($row) {
                     return Helper::UrgentStatus($row->repair->ticket->urgent_status);
                 })
-                ->addColumn('assign', function ($row) {
+                ->addColumn('assign_to', function ($row) {
                     if (!empty($row->assign_to)) {
                         return $row->UserAssign->name;
                     }
                     return '<span class="badge badge-secondary">None</span>';
                 })
-                ->editColumn('created_at', function ($row) {
-                    return Carbon::parse($row->created_at)->translatedFormat('l\\, j F Y H:i');
+                ->addColumn('assign_date', function ($row) {
+                    if (!empty($row->assign_to)) {
+                        return Carbon::parse($row->assign_at)->translatedFormat('l\\, j F Y H:i');
+                    }
+                    return '<span class="badge badge-secondary">None</span>';
                 })
                 ->addColumn('action', function ($row) {
-                    return '<a class="btn btn-info btn-sm btn-icon waves-effect waves-themed" data-toggle="modal" id="detail-button" data-target="#detail-modal" data-attr="' . URL::route('repair.show', $row->repair->ticket_uuid) . '" title="Detail Module" href=""><i class="fal fa-search-plus"></i></a>';
+                    // assign button only show where none tech were assign
+                    if (!empty($row->assign_to)) {
+                        return '<a class="btn btn-info btn-sm btn-icon waves-effect waves-themed" data-toggle="modal" id="detail-button" data-target="#detail-modal" data-attr="' . URL::route('repair.show', $row->uuid) . '" title="Detail Module" href=""><i class="fal fa-search-plus"></i></a>';
+                    }
+                    return '<a class="btn btn-info btn-sm btn-icon waves-effect waves-themed" data-toggle="modal" id="detail-button" data-target="#detail-modal" data-attr="' . URL::route('repair.show', $row->uuid) . '" title="Detail Module" href=""><i class="fal fa-search-plus"></i></a>
+                    <a class="btn btn-success btn-sm btn-icon waves-effect waves-themed" href="' . route('repair.edit', $row->uuid) . '" title="Progress Tiket Ke Teknisi"><i class="fal fa-wrench"></i></a>';
                 })
                 ->removeColumn('id')
                 ->removeColumn('uuid')
-                ->rawColumns(['action', 'ticket_status', 'job_status', 'urgent_status', 'assign', 'assign_date'])
+                ->rawColumns(['action', 'ticket_number', 'job_status', 'urgent_status', 'assign_to', 'assign_date'])
                 ->make();
         }
         return view('repair.assign-history');
@@ -227,7 +225,8 @@ class RepairController extends Controller
                     return Helper::JobStatus($repair_job->job_status);
                 })
                 ->editColumn('time_to_repair', function ($repair_job) {
-                    return number_format($repair_job->time_to_repair, 2) . ' ' . 'Hours';
+                    return floor($repair_job->time_to_repair / 60) .
+                        ' ' . 'Hours' . ' ' . ($repair_job->time_to_repair % 60) . ' ' . 'Minutes';
                 })
                 ->editColumn('assign_to', function ($repair_job) {
                     return $repair_job->UserAssign->name;
