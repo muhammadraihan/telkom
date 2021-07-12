@@ -20,16 +20,12 @@
         <div id="panel-1" class="panel">
             <div class="panel-hdr">
                 <h2>
-                    Active Ticket <span class="fw-300"><i>List</i></span>
+                    Ticket <span class="fw-300"><i>List</i></span>
                 </h2>
                 <div class="panel-toolbar">
-                    <a class="nav-link active" href="{{route('ticketing.create')}}"><i class="fal fa-plus-circle">
+                    <a class="nav-link active" href="{{route('ticketing.index')}}"><i class="fal fa-arrow-alt-left">
                         </i>
-                        <span class="nav-link-text">Add New Ticket</span>
-                    </a>
-                    <a class="nav-link active" href="{{route('ticketing.history')}}"><i class="fal fa-list">
-                        </i>
-                        <span class="nav-link-text">Ticket History</span>
+                        <span class="nav-link-text">Back</span>
                     </a>
                     <button class="btn btn-panel" data-action="panel-fullscreen" data-toggle="tooltip"
                         data-offset="0,10" data-original-title="Fullscreen"></button>
@@ -93,7 +89,7 @@
             responsive: true,
             "order": [[ 0, "asc" ]],
             "ajax":{
-                url:'{{route('ticketing.index')}}',
+                url:'{{route('ticketing.history')}}',
                 type : "GET",
                 dataType: 'json',
                 error: function(data){
