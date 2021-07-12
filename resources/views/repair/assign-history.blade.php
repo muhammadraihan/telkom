@@ -41,7 +41,6 @@
                                 <th>Ticket Number</th>
                                 <th>Ticket Date</th>
                                 <th>Urgent Status</th>
-                                <th>Ticket Status</th>
                                 <th>Job Status</th>
                                 <th>Assign To</th>
                                 <th>Assign Date</th>
@@ -56,7 +55,7 @@
 </div>
 <!-- item detail modal start -->
 <div class="modal fade" id="detail-modal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">
@@ -94,35 +93,17 @@
                     console.log(data);
                     }
             },
-            "columns": [
-            {data: 'DT_RowIndex',searchable:false},
-            {data: 'ticket_number'},
-            {data: 'ticket_date'},
-            {data: 'urgent_status'},
-            {data: 'ticket_status'},
-            {data: 'job_status'},
-            {data: 'assign'},
-            {data: 'created_at'},
-            {data: 'action', width: '10%', orderable: false, searchable: false},
-        ]
-    });
-    // Delete Data
-    $('#datatable').on('click', '.delete-btn[data-url]', function (e) {
-            e.preventDefault();
-            var id = $(this).attr('data-id');
-            var url = $(this).attr('data-url');
-            var token = $(this).attr('data-token');
-            $(".delete-form").attr("action",url);
-            $('body').find('.delete-form').append('<input name="_token" type="hidden" value="'+ token +'">');
-            $('body').find('.delete-form').append('<input name="_method" type="hidden" value="DELETE">');
-            $('body').find('.delete-form').append('<input name="id" type="hidden" value="'+ id +'">');
+                "columns": [
+                {data: 'DT_RowIndex',searchable:false},
+                {data: 'ticket_number'},
+                {data: 'created_at'},
+                {data: 'urgent_status'},
+                {data: 'job_status'},
+                {data: 'assign_to'},
+                {data: 'assign_date'},
+                {data: 'action', width: '10%', orderable: false, searchable: false},
+            ]
         });
-
-        // Clear Data When Modal Close
-        $('.remove-data-from-delete-form').on('click',function() {
-            $('body').find('.delete-form').find("input").remove();
-        });
-
         $('#datatable').on('click', '#detail-button[data-attr]', function (e) {
             e.preventDefault();
             var href = $(this).attr('data-attr');

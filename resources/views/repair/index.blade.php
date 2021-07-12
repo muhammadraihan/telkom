@@ -20,7 +20,7 @@
         <div id="panel-1" class="panel">
             <div class="panel-hdr">
                 <h2>
-                    Ticket <span class="fw-300"><i>List</i></span>
+                    Repair Job <span class="fw-300"><i>List</i></span>
                 </h2>
                 <div class="panel-toolbar">
                     <a class="nav-link active" href="{{route('repair.assign-history')}}"><i class="fal fa-list">
@@ -45,7 +45,6 @@
                                 <th>Ticket Number</th>
                                 <th>Ticket Date</th>
                                 <th>Urgent Status</th>
-                                <th>Ticket Status</th>
                                 <th>Job Status</th>
                                 <th>Assign To</th>
                                 <th>Assign Date</th>
@@ -98,33 +97,16 @@
                     console.log(data);
                     }
             },
-            "columns": [
-            {data: 'DT_RowIndex',searchable:false},
-            {data: 'ticket_number'},
-            {data: 'created_at'},
-            {data: 'urgent_status'},
-            {data: 'ticket_status'},
-            {data: 'job_status'},
-            {data: 'assign'},
-            {data: 'assign_date'},
-            {data: 'action', width: '10%', orderable: false, searchable: false},
-        ]
-    });
-    // Delete Data
-    $('#datatable').on('click', '.delete-btn[data-url]', function (e) {
-            e.preventDefault();
-            var id = $(this).attr('data-id');
-            var url = $(this).attr('data-url');
-            var token = $(this).attr('data-token');
-            $(".delete-form").attr("action",url);
-            $('body').find('.delete-form').append('<input name="_token" type="hidden" value="'+ token +'">');
-            $('body').find('.delete-form').append('<input name="_method" type="hidden" value="DELETE">');
-            $('body').find('.delete-form').append('<input name="id" type="hidden" value="'+ id +'">');
-        });
-
-        // Clear Data When Modal Close
-        $('.remove-data-from-delete-form').on('click',function() {
-            $('body').find('.delete-form').find("input").remove();
+                "columns": [
+                {data: 'DT_RowIndex',searchable:false},
+                {data: 'ticket_number'},
+                {data: 'created_at'},
+                {data: 'urgent_status'},
+                {data: 'job_status'},
+                {data: 'assign_to'},
+                {data: 'assign_date'},
+                {data: 'action', width: '10%', orderable: false, searchable: false},
+            ]
         });
 
         $('#datatable').on('click', '#detail-button[data-attr]', function (e) {
