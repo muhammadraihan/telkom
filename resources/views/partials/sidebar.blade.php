@@ -26,7 +26,7 @@
                     <span class="nav-link-text">Dashboard</span>
                 </a>
             </li>
-            @hasanyrole('superadmin')
+            @hasanyrole('superadmin|admin')
             <li class="">
                 <a href="#" title="Customer" data-filter-tags="customer settings">
                     <i class="fal fa-user-alt"></i>
@@ -48,57 +48,7 @@
                 </ul>
             </li>
             @endhasanyrole
-            @hasanyrole('superadmin')
-            <li class="">
-                <a href="#" title="Module and Material" data-filter-tags="module material">
-                    <i class="fal fa-inventory"></i>
-                    <span class="nav-link-text" data-i18n="nav.module_material">Module & Material</span>
-                </a>
-                <ul>
-                    <li>
-                        <a href="{{route('category.index')}}" title="Category Managements"
-                            data-filter-tags="category managements">
-                            <i class="fal fa-suitcase"></i>
-                            <span class="nav-link-text" data-i18n="nav.users_managements"> Module Category</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{route('name.index')}}" title="Module Name Managements"
-                            data-filter-tags="name managements">
-                            <i class="fal fa-suitcase"></i>
-                            <span class="nav-link-text" data-i18n="nav.users_managements">Module Name</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{route('brand.index')}}" title="Module Brand Managements"
-                            data-filter-tags="brand managements">
-                            <i class="fal fa-suitcase"></i>
-                            <span class="nav-link-text" data-i18n="nav.users_managements">Module Brand</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{route('type.index')}}" title="Module Type Managements"
-                            data-filter-tags="type managements">
-                            <i class="fal fa-suitcase"></i>
-                            <span class="nav-link-text" data-i18n="nav.users_managements">Module Type</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{route('stock.index')}}" title="Module Stock Managements"
-                            data-filter-tags="stock managements">
-                            <i class="fal fa-suitcase"></i>
-                            <span class="nav-link-text" data-i18n="nav.users_managements">Module Stock</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{route('material.index')}}" title="Material Managements"
-                            data-filter-tags="material managements">
-                            <i class="fal fa-suitcase"></i>
-                            <span class="nav-link-text" data-i18n="nav.users_managements">Material</span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
+            @hasanyrole('superadmin|admin')
             <li class="">
                 <a href="#" title="Reference Data" data-filter-tags="reference data">
                     <i class="fal fa-book"></i>
@@ -110,6 +60,35 @@
                             data-filter-tags="accessory managements">
                             <i class="fal fa-clipboard-check"></i>
                             <span class="nav-link-text" data-i18n="nav.accessory_data">Accessory</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{route('category.index')}}" title="Category Managements"
+                            data-filter-tags="category managements">
+                            <i class="fal fa-box"></i>
+                            <span class="nav-link-text" data-i18n="nav.users_managements"> Module
+                                Category</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{route('name.index')}}" title="Module Name Managements"
+                            data-filter-tags="name managements">
+                            <i class="fal fa-box"></i>
+                            <span class="nav-link-text" data-i18n="nav.users_managements">Module Name</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{route('brand.index')}}" title="Module Brand Managements"
+                            data-filter-tags="brand managements">
+                            <i class="fal fa-box"></i>
+                            <span class="nav-link-text" data-i18n="nav.users_managements">Module Brand</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{route('type.index')}}" title="Module Type Managements"
+                            data-filter-tags="type managements">
+                            <i class="fal fa-box"></i>
+                            <span class="nav-link-text" data-i18n="nav.users_managements">Module Type</span>
                         </a>
                     </li>
                 </ul>
@@ -139,6 +118,96 @@
                         </a>
                     </li>
                     @endhasanyrole
+                </ul>
+            </li>
+            @endhasanyrole
+            @hasanyrole('superadmin|admin')
+            <li>
+                <a href="#" title="Reporting" data-filter-tags="report">
+                    <i class="fal fa-clipboard-list"></i>
+                    <span class="nav-link-text" data-i18n="nav.report">Reporting</span>
+                </a>
+                <ul>
+                    @hasanyrole('superadmin|admin')
+                    <li>
+                        <a href="{{route('report.repair-module')}}" title="Module" data-filter-tags="">
+                            <i class="fal fa-file-excel"></i>
+                            <span class="nav-link-text" data-i18n="nav.repair_management">Repair Module By Tech</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" title="Module" data-filter-tags="">
+                            <i class="fal fa-file-excel"></i>
+                            <span class="nav-link-text" data-i18n="nav.repair_management">Repair Module By Vendor</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" title="Module" data-filter-tags="">
+                            <i class="fal fa-file-excel"></i>
+                            <span class="nav-link-text" data-i18n="nav.repair_management">Module Replace</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" title="Module" data-filter-tags="">
+                            <i class="fal fa-file-excel"></i>
+                            <span class="nav-link-text" data-i18n="nav.repair_management">All Module Handle</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="" title="Module" data-filter-tags="">
+                            <i class="fal fa-file-excel"></i>
+                            <span class="nav-link-text" data-i18n="nav.repair_management">Total Module Per Witel</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="" title="Module" data-filter-tags="">
+                            <i class="fal fa-file-excel"></i>
+                            <span class="nav-link-text" data-i18n="nav.repair_management">Total Module By Witel</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="" title="Module Repair" data-filter-tags="repair management">
+                            <i class="fal fa-file-excel"></i>
+                            <span class="nav-link-text" data-i18n="nav.repair_management">Total Module Handle</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="" title="Module Repair" data-filter-tags="repair management">
+                            <i class="fal fa-file-excel"></i>
+                            <span class="nav-link-text" data-i18n="nav.repair_management">Total Module Percentage</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="" title="Witel" data-filter-tags="">
+                            <i class="fal fa-file-excel"></i>
+                            <span class="nav-link-text" data-i18n="nav.repair_management">Total Repair</span>
+                        </a>
+                    </li>
+                    @endhasanyrole
+                </ul>
+            </li>
+            @endhasanyrole
+            @hasanyrole('superadmin|admin')
+            <li class="">
+                <a href="#" title="Module & Material Stock" data-filter-tags="stock">
+                    <i class="fal fa-inventory"></i>
+                    <span class="nav-link-text" data-i18n="nav.module_material">Stock</span>
+                </a>
+                <ul>
+                    <li>
+                        <a href="{{route('material.index')}}" title="Material Managements"
+                            data-filter-tags="material managements">
+                            <i class="fal fa-microchip"></i>
+                            <span class="nav-link-text" data-i18n="nav.users_managements">Material</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{route('stock.index')}}" title="Module Stock Managements"
+                            data-filter-tags="stock managements">
+                            <i class="fal fa-hdd"></i>
+                            <span class="nav-link-text" data-i18n="nav.users_managements">Module</span>
+                        </a>
+                    </li>
                 </ul>
             </li>
             @endhasanyrole
