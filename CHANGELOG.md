@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.0-alpha.2](https://git.wbaindonesia.com/wbaindonesia/telkom-service-mgmt-system/compare/v1.3.0-alpha.1...v1.3.0-alpha.2) (2021-07-12)
+
+
+### Features
+
+* Add warehouse job detail history ([c82b97a](https://git.wbaindonesia.com/wbaindonesia/telkom-service-mgmt-system/commit/c82b97a7994dd3db962042227e3fcd1c066a6bbe))
+* Add warehouse job history ([72642b0](https://git.wbaindonesia.com/wbaindonesia/telkom-service-mgmt-system/commit/72642b0623a105690dcfee671e8dd4199861dc2d))
+* New ui for module detail ([00530b1](https://git.wbaindonesia.com/wbaindonesia/telkom-service-mgmt-system/commit/00530b1c03ff3703831c38130d4d491a309f4680))
+* Warehouse job can run progess by module status ([85fc12f](https://git.wbaindonesia.com/wbaindonesia/telkom-service-mgmt-system/commit/85fc12f8794d64065b6989f6b98623441fb2d26b))
+
+
+### Bug Fixes
+
+* Add simultant data processing while status urgent ([3bafbf9](https://git.wbaindonesia.com/wbaindonesia/telkom-service-mgmt-system/commit/3bafbf947ac68ba5ead44eaafab6dfb983abbd9c))
+* Fix to minutes for repair time calculation ([2450ea6](https://git.wbaindonesia.com/wbaindonesia/telkom-service-mgmt-system/commit/2450ea69b3e2d057346c407a47177e3efd6fa130))
+* Prevent repair job updating ticket status in urgent ([4907d56](https://git.wbaindonesia.com/wbaindonesia/telkom-service-mgmt-system/commit/4907d560954fbfe27c960d926f6acb7ed8170107))
+
 ## [1.3.0-alpha.1](https://git.wbaindonesia.com/wbaindonesia/telkom-service-mgmt-system/compare/v1.3.0-alpha.0...v1.3.0-alpha.1) (2021-07-07)
 
 
