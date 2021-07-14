@@ -374,19 +374,19 @@ class WarehouseController extends Controller
                     $warehouse_job->notes = $request->warehouse_notes;
                     $warehouse_job->edited_by = Auth::user()->uuid;
                     $warehouse_job->save();
-                    // update ticket if not urgent
+                    // insert repair by vendor detail
+                    $repair_vendor = new RepairJobVendor();
+                    $repair_vendor->vendor_name = $request->vendor_name;
+                    $repair_vendor->repair_item_uuid = $repair_item->uuid;
+                    $repair_vendor->repair_notes = $request->repair_notes;
+                    $repair_vendor->created_by = Auth::user()->uuid;
+                    $repair_vendor->save();
                     if ($warehouse_job->urgent_status == 0) {
-                        // insert repair by vendor detail
-                        $repair_vendor = new RepairJobVendor();
-                        $repair_vendor->vendor_name = $request->vendor_name;
-                        $repair_vendor->repair_item_uuid = $repair_item->uuid;
-                        $repair_vendor->repair_notes = $request->repair_notes;
-                        $repair_vendor->created_by = Auth::user()->uuid;
-                        $repair_vendor->save();
                         // update repair item info
                         $repair_item->status = 2; // repair from vendor
                         $repair_item->edited_by = Auth::user()->uuid;
                         $repair_item->save();
+                        // update ticket if not urgent
                         $ticket = Ticketing::where('uuid', $repair_item->ticket->uuid)->first();
                         $ticket->item_status = 8; // progress to vendor is done
                         $ticket->edited_by = Auth::user()->uuid;
