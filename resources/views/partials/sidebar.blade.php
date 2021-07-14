@@ -130,7 +130,7 @@
                 <ul>
                     @hasanyrole('superadmin|admin')
                     <li>
-                        <a href="{{route('report.repair-module')}}" title="Module" data-filter-tags="">
+                        <a href="{{route('report.repair-module-tech')}}" title="Module" data-filter-tags="">
                             <i class="fal fa-file-excel"></i>
                             <span class="nav-link-text" data-i18n="nav.repair_management">Repair Module By Tech</span>
                         </a>
