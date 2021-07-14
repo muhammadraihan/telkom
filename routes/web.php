@@ -52,9 +52,10 @@ Route::group(['prefix' => 'backoffice', 'middleware' => ['auth']], function () {
     // ticket
     Route::get('ticketing/history', 'TicketingController@history')->name('ticketing.history');
     // report
-    Route::get('report/repair-module', 'ReportController@RepairModule')->name('report.repair-module');
+    Route::get('report/repair-module/tech', 'ReportController@RepairModuleTech')->name('report.repair-module-tech');
+
     // report export
-    Route::get('report/repair-module/download', 'ReportController@RepairModuleExport')->name('download.repair-module');
+    Route::get('report/repair-module/tech/download', 'ReportController@RepairModuleTechExport')->name('download.repair-module-tech');
 
     // resource
     Route::resource('accessory', 'AccessoryController');
