@@ -2,19 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\RepairModuleExport;
+use App\Exports\RepairModuleTechExport;
 use Illuminate\Http\Request;
-use Maatwebsite\Excel\Facades\Excel;
 
 class ReportController extends Controller
 {
-    public function RepairModule()
+    public function RepairModuleTech()
     {
-        return view('reports.repair-module-export');
+        return view('reports.repair-module-tech-export');
     }
 
-    public function RepairModuleExport()
+    public function RepairModuleTechExport(Request $request)
     {
-        return Excel::download(new RepairModuleExport, 'repair-module.xlsx');
+        return (new RepairModuleTechExport)
+            ->forYear(isset($request->year))
+            ->forMonth(isset($request->month))
+            ->download('repair-module-by-tech.xlsx');
     }
 }
