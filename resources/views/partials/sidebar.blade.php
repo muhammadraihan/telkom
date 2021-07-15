@@ -148,7 +148,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#" title="Module" data-filter-tags="">
+                        <a href="{{route('report.module-handle')}}" title="Module Handle" data-filter-tags="">
                             <i class="fal fa-file-excel"></i>
                             <span class="nav-link-text" data-i18n="nav.repair_management">All Module Handle</span>
                         </a>
