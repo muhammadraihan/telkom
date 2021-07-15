@@ -12,6 +12,7 @@ use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 
 class RepairModuleTechExport implements FromQuery, WithMapping, WithHeadings, ShouldAutoSize
+
 {
 
     use Exportable;
@@ -34,6 +35,7 @@ class RepairModuleTechExport implements FromQuery, WithMapping, WithHeadings, Sh
     {
         $year = $this->year;
         $month = $this->month;
+
         DB::statement(DB::raw('set @rownum=0'));
         $statement = RepairJobOrder::select([DB::raw('@rownum  := @rownum  + 1 AS rownum'), 'repair_item_uuid', 'item_status', 'job_status', 'assign_at', 'repair_cost', 'time_to_repair', 'repair_notes'])
             ->when($year, function ($query, $year) {
