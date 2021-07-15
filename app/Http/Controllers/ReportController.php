@@ -6,7 +6,9 @@ use App\Exports\ModuleHandleExport;
 use App\Exports\RepairModuleReplaceExport;
 use App\Exports\RepairModuleTechExport;
 use App\Exports\RepairModuleVendorExport;
+use App\Exports\TotalModuleByWitel;
 use App\Exports\TotalModulePerWitel;
+use App\Models\Witel;
 use Illuminate\Http\Request;
 
 class ReportController extends Controller
@@ -70,10 +72,25 @@ class ReportController extends Controller
 
     public function TotalModulePerWitelExport(Request $request)
     {
-        // dd($request->all());
         return (new TotalModulePerWitel)
             ->forYear(isset($request->year))
             ->forMonth(isset($request->month))
             ->download('total-module-per-witel.xlsx');
+    }
+
+    public function TotalModuleByWitel()
+    {
+        $witel = Witel::all()->pluck('name', 'uuid');
+        return view('reports.total-module-by-witel', compact('witel'));
+    }
+
+    public function TotalModuleByWitelExport(Request $request)
+    {
+        // dd($request->all());
+        return (new TotalModuleByWitel)
+            ->forWitel($request->witel_uuid)
+            ->forYear(isset($request->year))
+            ->forMonth(isset($request->month))
+            ->download('total-module-by-witel.xlsx');
     }
 }
