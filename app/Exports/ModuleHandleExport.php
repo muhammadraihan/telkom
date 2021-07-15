@@ -42,7 +42,7 @@ class ModuleHandleExport implements FromQuery, WithMapping, WithHeadings, Should
         DB::statement(DB::raw('set @rownum=0'));
         $statement = RepairItem::select([
             DB::raw('@rownum  := @rownum  + 1 AS rownum'), 'module_type_uuid', 'part_number', 'serial_number', 'serial_number_msc', 'accessories', 'complain', 'warranty_status', 'status', 'created_at',
-            DB::raw('(CASE WHEN status = 1 THEN "DIPERBAIKI TEKNISI" WHEN status = 2 THEN "DIPERBAIKI VENDOR" WHEN status = 3 THEN "DIGANTI DARI STOCK" ELSE"DIGANTI DARI VENDOR" END) AS item_status')
+            DB::raw('(CASE WHEN status = 1 THEN "DIPERBAIKI TEKNISI" WHEN status = 2 THEN "DIPERBAIKI VENDOR" WHEN status = 3 THEN "DIGANTI DARI STOCK" ELSE "DIGANTI DARI VENDOR" END) AS item_status')
         ])
             ->when($year, function ($query, $year) {
                 return $query->whereYear('created_at', $year);
