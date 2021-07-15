@@ -57,12 +57,14 @@ Route::group(['prefix' => 'backoffice', 'middleware' => ['auth']], function () {
     Route::get('report/repair-module/vendor', 'ReportController@RepairModuleVendor')->name('report.repair-module-vendor');
     Route::get('report/replace-module', 'ReportController@ReplaceModule')->name('report.replace-module');
     Route::get('report/all-module', 'ReportController@ModuleHandle')->name('report.module-handle');
+    Route::get('report/total-module/witel', 'ReportController@TotalModulePerWitel')->name('report.total-module-per-witel');
 
     // report export
     Route::get('report/repair-module/tech/download', 'ReportController@RepairModuleTechExport')->name('download.repair-module-tech');
     Route::get('report/repair-module/vendor/download', 'ReportController@RepairModuleVendorExport')->name('download.repair-module-vendor');
     Route::get('report/replace-module/download', 'ReportController@ReplaceModuleExport')->name('download.replace-module');
     Route::get('report/module-handle/download', 'ReportController@ModuleHandleExport')->name('download.module-handle');
+    Route::get('report/total-module/witel/download', 'ReportController@TotalModulePerWitelExport')->name('download.total-module-per-witel');
 
     // resource
     Route::resource('accessory', 'AccessoryController');
