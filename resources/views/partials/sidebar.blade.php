@@ -142,7 +142,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#" title="Module" data-filter-tags="">
+                        <a href="{{route('report.replace-module')}}" title="Module Replace" data-filter-tags="">
                             <i class="fal fa-file-excel"></i>
                             <span class="nav-link-text" data-i18n="nav.repair_management">Module Replace</span>
                         </a>
