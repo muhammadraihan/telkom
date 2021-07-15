@@ -130,13 +130,15 @@
                 <ul>
                     @hasanyrole('superadmin|admin')
                     <li>
-                        <a href="{{route('report.repair-module-tech')}}" title="Module" data-filter-tags="">
+                        <a href="{{route('report.repair-module-tech')}}" title="Repair Module By Tech"
+                            data-filter-tags="">
                             <i class="fal fa-file-excel"></i>
                             <span class="nav-link-text" data-i18n="nav.repair_management">Repair Module By Tech</span>
                         </a>
                     </li>
                     <li>
-                        <a href="{{route('report.repair-module-vendor')}}" title="Module" data-filter-tags="">
+                        <a href="{{route('report.repair-module-vendor')}}" title="Repair Module By Vendor"
+                            data-filter-tags="">
                             <i class="fal fa-file-excel"></i>
                             <span class="nav-link-text" data-i18n="nav.repair_management">Repair Module By Vendor</span>
                         </a>
@@ -154,7 +156,8 @@
                         </a>
                     </li>
                     <li>
-                        <a href="" title="Module" data-filter-tags="">
+                        <a href="{{route('report.total-module-per-witel')}}" title="Total Module Per Witel"
+                            data-filter-tags="">
                             <i class="fal fa-file-excel"></i>
                             <span class="nav-link-text" data-i18n="nav.repair_management">Total Module Per Witel</span>
                         </a>
