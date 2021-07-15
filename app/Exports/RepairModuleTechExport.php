@@ -12,7 +12,6 @@ use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 
 class RepairModuleTechExport implements FromQuery, WithMapping, WithHeadings, ShouldAutoSize
-
 {
 
     use Exportable;
