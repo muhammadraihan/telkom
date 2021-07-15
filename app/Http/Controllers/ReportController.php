@@ -6,6 +6,7 @@ use App\Exports\ModuleHandleExport;
 use App\Exports\RepairModuleReplaceExport;
 use App\Exports\RepairModuleTechExport;
 use App\Exports\RepairModuleVendorExport;
+use App\Exports\TotalModulePerWitel;
 use Illuminate\Http\Request;
 
 class ReportController extends Controller
@@ -60,5 +61,19 @@ class ReportController extends Controller
             ->forYear(isset($request->year))
             ->forMonth(isset($request->month))
             ->download('module-handle.xlsx');
+    }
+
+    public function TotalModulePerWitel()
+    {
+        return view('reports.total-module-per-witel');
+    }
+
+    public function TotalModulePerWitelExport(Request $request)
+    {
+        // dd($request->all());
+        return (new TotalModulePerWitel)
+            ->forYear(isset($request->year))
+            ->forMonth(isset($request->month))
+            ->download('total-module-per-witel.xlsx');
     }
 }
