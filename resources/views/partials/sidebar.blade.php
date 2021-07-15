@@ -136,7 +136,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#" title="Module" data-filter-tags="">
+                        <a href="{{route('report.repair-module-vendor')}}" title="Module" data-filter-tags="">
                             <i class="fal fa-file-excel"></i>
                             <span class="nav-link-text" data-i18n="nav.repair_management">Repair Module By Vendor</span>
                         </a>
