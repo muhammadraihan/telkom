@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ModuleHandleExport;
 use App\Exports\RepairModuleReplaceExport;
 use App\Exports\RepairModuleTechExport;
 use App\Exports\RepairModuleVendorExport;
@@ -46,5 +47,18 @@ class ReportController extends Controller
             ->forYear(isset($request->year))
             ->forMonth(isset($request->month))
             ->download('replace-module.xlsx');
+    }
+
+    public function ModuleHandle()
+    {
+        return view('reports.module-handle-export');
+    }
+
+    public function ModuleHandleExport(Request $request)
+    {
+        return (new ModuleHandleExport)
+            ->forYear(isset($request->year))
+            ->forMonth(isset($request->month))
+            ->download('module-handle.xlsx');
     }
 }
