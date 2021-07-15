@@ -163,7 +163,8 @@
                         </a>
                     </li>
                     <li>
-                        <a href="" title="Module" data-filter-tags="">
+                        <a href="{{route('report.total-module-by-witel')}}" title="Total Module By Witel"
+                            data-filter-tags="">
                             <i class="fal fa-file-excel"></i>
                             <span class="nav-link-text" data-i18n="nav.repair_management">Total Module By Witel</span>
                         </a>
