@@ -436,7 +436,7 @@ class WarehouseController extends Controller
                         // save module replace data
                         $module_replace = new ItemReplaceDetail();
                         $module_replace->item_repair_uuid = $repair_item->uuid;
-                        $module_replace->replace_status = 2; // replace by vendor
+                        $module_replace->replace_status = 4; // replace by vendor
                         $module_replace->vendor_name = $request->vendor_name;
                         $module_replace->module_type_uuid =  $request->module_type;
                         $module_replace->part_number = $request->part_number;
@@ -447,7 +447,7 @@ class WarehouseController extends Controller
                         $module_replace->save();
 
                         // update repair item info
-                        $repair_item->status = 2; // replace from vendor
+                        $repair_item->status = 4; // replace from vendor
                         $repair_item->edited_by = Auth::user()->uuid;
                         $repair_item->save();
                         $ticket = Ticketing::where('uuid', $repair_item->ticket->uuid)->first();
