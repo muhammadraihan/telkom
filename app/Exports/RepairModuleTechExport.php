@@ -10,8 +10,10 @@ use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\WithStyles;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class RepairModuleTechExport implements FromQuery, WithMapping, WithHeadings, ShouldAutoSize
+class RepairModuleTechExport implements FromQuery, WithMapping, WithHeadings, ShouldAutoSize, WithStyles
 {
 
     use Exportable;
@@ -41,7 +43,7 @@ class RepairModuleTechExport implements FromQuery, WithMapping, WithHeadings, Sh
                 return $query->whereYear('assign_at', $year);
             })
             ->when($month, function ($query, $month) {
-                return $query->whereYear('assign_at', $month);
+                return $query->whereMonth('assign_at', $month);
             });
         return $statement;
     }
@@ -87,6 +89,14 @@ class RepairModuleTechExport implements FromQuery, WithMapping, WithHeadings, Sh
             'BIAYA PERBAIKAN',
             'LAMA PEKERJAAN',
             'KETERANGAN',
+        ];
+    }
+
+    public function styles(Worksheet $sheet)
+    {
+        return [
+            // Style the first row as bold text.
+            1    => ['font' => ['bold' => true]],
         ];
     }
 }

@@ -10,8 +10,10 @@ use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\WithStyles;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class RepairModuleVendorExport implements FromQuery, WithMapping, WithHeadings, ShouldAutoSize
+class RepairModuleVendorExport implements FromQuery, WithMapping, WithHeadings, ShouldAutoSize, WithStyles
 
 {
     use Exportable;
@@ -45,7 +47,7 @@ class RepairModuleVendorExport implements FromQuery, WithMapping, WithHeadings, 
                 return $query->whereYear('created_at', $year);
             })
             ->when($month, function ($query, $month) {
-                return $query->whereYear('created_at', $month);
+                return $query->whereMonth('created_at', $month);
             });
 
         return $statement;
@@ -86,6 +88,14 @@ class RepairModuleVendorExport implements FromQuery, WithMapping, WithHeadings, 
             'VENDOR',
             'TANGGAL KEMBALI',
             'KETERANGAN',
+        ];
+    }
+
+    public function styles(Worksheet $sheet)
+    {
+        return [
+            // Style the first row as bold text.
+            1    => ['font' => ['bold' => true]],
         ];
     }
 }

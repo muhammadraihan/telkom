@@ -3,10 +3,7 @@
 namespace App\Exports;
 
 use App\Models\RepairItem;
-use App\Models\Unit;
 use App\Models\Witel;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\WithHeadings;
@@ -34,9 +31,6 @@ class TotalModulePerWitel implements FromArray, WithMapping, WithHeadings, Shoul
         return $this;
     }
 
-    /**
-     * @return \Illuminate\Database\Query\Builder
-     */
     public function array(): array
     {
         $year = $this->year;
@@ -53,7 +47,7 @@ class TotalModulePerWitel implements FromArray, WithMapping, WithHeadings, Shoul
                     return $query->whereYear('created_at', $year);
                 })
                 ->when($month, function ($query, $month) {
-                    return $query->whereYear('created_at', $month);
+                    return $query->whereMonth('created_at', $month);
                 });
 
             $result[$i]['no'] = $i + 1;
