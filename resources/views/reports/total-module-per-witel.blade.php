@@ -3,7 +3,6 @@
 @section('title', 'Export')
 
 @section('css')
-<link rel="stylesheet" media="screen, print" href="{{asset('css/datagrid/datatables/datatables.bundle.css')}}">
 <link rel="stylesheet" media="screen, print"
     href="{{asset('css/formplugins/bootstrap-datepicker/bootstrap-datepicker.css')}}">
 @endsection
@@ -11,7 +10,7 @@
 @section('content')
 <div class="subheader">
     <h1 class="subheader-title">
-        <i class='subheader-icon fal fa-users'></i> Export: <span class='fw-300'>Total Module Per Witel</span>
+        <i class='subheader-icon fal fa-file-excel'></i> Export: <span class='fw-300'>Total Module Per Witel</span>
         <small>
             Module for export total module per witel data.
         </small>

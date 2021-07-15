@@ -3,7 +3,6 @@
 @section('title', 'Export')
 
 @section('css')
-<link rel="stylesheet" media="screen, print" href="{{asset('css/datagrid/datatables/datatables.bundle.css')}}">
 <link rel="stylesheet" media="screen, print"
     href="{{asset('css/formplugins/bootstrap-datepicker/bootstrap-datepicker.css')}}">
 @endsection
@@ -11,7 +10,7 @@
 @section('content')
 <div class="subheader">
     <h1 class="subheader-title">
-        <i class='subheader-icon fal fa-users'></i> Export: <span class='fw-300'>Module Replace</span>
+        <i class='subheader-icon fal fa-file-excel'></i> Export: <span class='fw-300'>Module Replace</span>
         <small>
             Module for export replace module data.
         </small>
@@ -52,6 +51,10 @@
                                     <span class="input-group-text fs-xl">
                                         <i class="fal fa-calendar"></i>
                                     </span>
+                                </div>
+                                <div class="text-danger">
+                                    <p>Jika menggunakan filter bulan, harap juga memilih tahun agar hasil
+                                        laporan lebih spesifik.</p>
                                 </div>
                             </div>
                         </div>
