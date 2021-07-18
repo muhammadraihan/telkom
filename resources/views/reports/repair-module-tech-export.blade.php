@@ -25,7 +25,7 @@
                 </h2>
             </div>
             <div class="panel-container show">
-                {!! Form::open(['route' => 'download.repair-module-tech','method'=>'GET']) !!}
+                {!! Form::open(['route' => 'download.repair-module-tech','method'=>'POST']) !!}
                 <div class="panel-content">
                     <div class="form-row">
                         <div class="form-group col-md-4 mb-3">
