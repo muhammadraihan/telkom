@@ -130,6 +130,18 @@
                 <ul>
                     @hasanyrole('superadmin|admin')
                     <li>
+                        <a href="{{route('report.module-handle')}}" title="Module Handle" data-filter-tags="">
+                            <i class="fal fa-file-excel"></i>
+                            <span class="nav-link-text" data-i18n="nav.repair_management">All Module Handle</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{route('report.replace-module')}}" title="Module Replace" data-filter-tags="">
+                            <i class="fal fa-file-excel"></i>
+                            <span class="nav-link-text" data-i18n="nav.repair_management">Module Replace</span>
+                        </a>
+                    </li>
+                    <li>
                         <a href="{{route('report.repair-module-tech')}}" title="Repair Module By Tech"
                             data-filter-tags="">
                             <i class="fal fa-file-excel"></i>
@@ -141,18 +153,6 @@
                             data-filter-tags="">
                             <i class="fal fa-file-excel"></i>
                             <span class="nav-link-text" data-i18n="nav.repair_management">Repair Module By Vendor</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{route('report.replace-module')}}" title="Module Replace" data-filter-tags="">
-                            <i class="fal fa-file-excel"></i>
-                            <span class="nav-link-text" data-i18n="nav.repair_management">Module Replace</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{route('report.module-handle')}}" title="Module Handle" data-filter-tags="">
-                            <i class="fal fa-file-excel"></i>
-                            <span class="nav-link-text" data-i18n="nav.repair_management">All Module Handle</span>
                         </a>
                     </li>
                     <li>
@@ -187,8 +187,21 @@
                         <a href="{{route('report.total-module-repair-comparison')}}"
                             title="Total Module Repair Comparison" data-filter-tags="Total Module Repair Comparison">
                             <i class="fal fa-file-excel"></i>
-                            <span class="nav-link-text" data-i18n="nav.repair_management">Total Module Repair
-                                Comparison</span>
+                            <span class="nav-link-text" data-i18n="nav.repair_management">Total Module Repair</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{route('report.inventory-module')}}" title="Inventory Module Stock"
+                            data-filter-tags="Inventory Module Stock">
+                            <i class="fal fa-file-excel"></i>
+                            <span class="nav-link-text" data-i18n="nav.repair_management">Inventory Module Stock</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="" title="" data-filter-tags="Inventory Material Stock">
+                            <i class="fal fa-file-excel"></i>
+                            <span class="nav-link-text" data-i18n="nav.repair_management">Inventory Material
+                                Stock</span>
                         </a>
                     </li>
                     @endhasanyrole
@@ -199,7 +212,7 @@
             <li class="">
                 <a href="#" title="Module & Material Stock" data-filter-tags="stock">
                     <i class="fal fa-inventory"></i>
-                    <span class="nav-link-text" data-i18n="nav.module_material">Stock</span>
+                    <span class="nav-link-text" data-i18n="nav.module_material">Stock Inventory</span>
                 </a>
                 <ul>
                     <li>
@@ -232,7 +245,7 @@
             <li>
                 <a href="{{route('warehouse.index')}}" title="Warehouse" data-filter-tags="Warehouse">
                     <i class="fal fa-warehouse"></i>
-                    <span class="nav-link-text" data-i18n="nav.warehouse">Warehouse</span>
+                    <span class="nav-link-text" data-i18n="nav.warehouse">Warehouse Department</span>
                 </a>
             </li>
             @endhasanyrole
