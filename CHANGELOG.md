@@ -2,6 +2,34 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.0](https://git.wbaindonesia.com/wbaindonesia/telkom-service-mgmt-system/compare/v1.3.0-alpha.2...v1.3.0) (2021-07-18)
+
+
+### Features
+
+* Add all module handle export function ([3085a54](https://git.wbaindonesia.com/wbaindonesia/telkom-service-mgmt-system/commit/3085a544d87d06afda0f4cf22112a27d3660760b))
+* Add all module handle export menu ([7e9be6b](https://git.wbaindonesia.com/wbaindonesia/telkom-service-mgmt-system/commit/7e9be6b3ad94cf00989d8c4d52f108352eef9055))
+* Add all module handle export methods ([522b141](https://git.wbaindonesia.com/wbaindonesia/telkom-service-mgmt-system/commit/522b1410d77a2cb2b562b4aaaa682de6686e595a))
+* Add all module handle export page ([acc0cfa](https://git.wbaindonesia.com/wbaindonesia/telkom-service-mgmt-system/commit/acc0cfa4f8aee85bc66926b4f5c31633b6cd070b))
+* Add all module handle export routes ([fda8836](https://git.wbaindonesia.com/wbaindonesia/telkom-service-mgmt-system/commit/fda8836ab91b04a78efc436acfc9418d4bf85db0))
+* Add module replace report export page ([450b74c](https://git.wbaindonesia.com/wbaindonesia/telkom-service-mgmt-system/commit/450b74cdc8a790ca77eb9921845bc8a84412c3c9))
+* Add total module handle export feature ([a269163](https://git.wbaindonesia.com/wbaindonesia/telkom-service-mgmt-system/commit/a269163adfe73f131e6f57c48df9cf9df9c45c87))
+* Adding material inventory report export feature ([01ec384](https://git.wbaindonesia.com/wbaindonesia/telkom-service-mgmt-system/commit/01ec38446f097c56bfb040ad683852029862594f))
+* Adding module inventory export feature ([da34c70](https://git.wbaindonesia.com/wbaindonesia/telkom-service-mgmt-system/commit/da34c70628f80572d7e1255f791d42a011f5db54))
+* Adding module percentage export feature ([779384b](https://git.wbaindonesia.com/wbaindonesia/telkom-service-mgmt-system/commit/779384b8c34b71f5a3e5e438a70855d6ef16b315))
+* Adding module repair comparison export feature ([6ea76fb](https://git.wbaindonesia.com/wbaindonesia/telkom-service-mgmt-system/commit/6ea76fb7f230d616b1da0bc38f0dff1444ad7551))
+* Adding repair by vendor report page ([bc25624](https://git.wbaindonesia.com/wbaindonesia/telkom-service-mgmt-system/commit/bc256247fc0f3e74ce564207dd71f669af4a5e87))
+* Adding total module by witel export ([fa9830d](https://git.wbaindonesia.com/wbaindonesia/telkom-service-mgmt-system/commit/fa9830df9eee19a3317710c8655323c1116f868a))
+* Adding total module per witel page ([b84d58a](https://git.wbaindonesia.com/wbaindonesia/telkom-service-mgmt-system/commit/b84d58a1dd82d53128d28522f4ca079b43fc3d7c))
+* New export report for repair module by technician ([4872c4e](https://git.wbaindonesia.com/wbaindonesia/telkom-service-mgmt-system/commit/4872c4ed05cfbcd75331a205641bcf3ea0454d23))
+
+
+### Bug Fixes
+
+* Fixing error when data is grouping ([65cec5a](https://git.wbaindonesia.com/wbaindonesia/telkom-service-mgmt-system/commit/65cec5aff5bee73401c2dfab201f24472b30785b))
+* Fixing status replace by vendor ([0383cad](https://git.wbaindonesia.com/wbaindonesia/telkom-service-mgmt-system/commit/0383cad8e01760b8626d1cf2354e6924d64d21e4))
+* Save repair job by vendor that failed when urgent status ([4532475](https://git.wbaindonesia.com/wbaindonesia/telkom-service-mgmt-system/commit/4532475de4f4a2d804eb7baf995d6e5b168e7cd6))
+
 ## [1.3.0-alpha.2](https://git.wbaindonesia.com/wbaindonesia/telkom-service-mgmt-system/compare/v1.3.0-alpha.1...v1.3.0-alpha.2) (2021-07-12)
 
 
