@@ -62,6 +62,7 @@ Route::group(['prefix' => 'backoffice', 'middleware' => ['auth']], function () {
     Route::get('report/total-module-handle', 'ReportController@TotalModuleHandle')->name('report.total-module-handle');
     Route::get('report/total-module-percentage', 'ReportController@TotalModulePercentage')->name('report.total-module-percentage');
     Route::get('report/total-module-repair-comparison', 'ReportController@TotalModuleRepairComparison')->name('report.total-module-repair-comparison');
+    Route::get('report/inventory/module', 'ReportController@ModuleInventory')->name('report.inventory-module');
 
     // report export
     Route::post('report/repair-module/tech/download', 'ReportController@RepairModuleTechExport')->name('download.repair-module-tech');
@@ -73,6 +74,7 @@ Route::group(['prefix' => 'backoffice', 'middleware' => ['auth']], function () {
     Route::post('report/total-module-handle/download', 'ReportController@TotalModuleHandleExport')->name('download.total-module-handle');
     Route::post('report/total-module-percentage/download', 'ReportController@TotalModulePercentageExport')->name('download.total-module-percentage');
     Route::post('report/total-module-repair-comparison/download', 'ReportController@TotalModuleRepairComparisonExport')->name('download.total-module-repair-comparison');
+    Route::post('report/inventory/module/download', 'ReportController@ModuleInventoryExport')->name('download.inventory-module');
 
     // resource
     Route::resource('accessory', 'AccessoryController');
