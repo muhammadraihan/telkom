@@ -3,15 +3,16 @@
 @section('title', 'Export')
 
 @section('css')
-<link rel="stylesheet" media="screen, print" href="{{asset('css/datagrid/datatables/datatables.bundle.css')}}">
+<link rel="stylesheet" media="screen, print"
+    href="{{asset('css/formplugins/bootstrap-datepicker/bootstrap-datepicker.css')}}">
 @endsection
 
 @section('content')
 <div class="subheader">
     <h1 class="subheader-title">
-        <i class='subheader-icon fal fa-users'></i> Export: <span class='fw-300'>Repair Module Data</span>
+        <i class='subheader-icon fal fa-file-excel'></i> Export: <span class='fw-300'>Material Inventory</span>
         <small>
-            Module for export repair module data.
+            Module for export inventory material data.
         </small>
     </h1>
 </div>
@@ -20,11 +21,11 @@
         <div id="panel-1" class="panel">
             <div class="panel-hdr">
                 <h2>
-                    REPAIR MODULE DATA
+                    MATERIAL INVENTORY
                 </h2>
             </div>
             <div class="panel-container show">
-                {!! Form::open(['route' => 'download.repair-module','method'=>'GET']) !!}
+                {!! Form::open(['route' => 'download.inventory-material','method'=>'POST']) !!}
                 <div class="panel-content">
                     <div class="form-row">
                         <div class="form-group col-md-4 mb-3">
@@ -43,9 +44,28 @@
 
 @section('js')
 <script src="{{asset('js/formplugins/select2/select2.bundle.js')}}"></script>
+<script src="{{asset('js/formplugins/bootstrap-datepicker/bootstrap-datepicker.js')}}"></script>
 <script>
     $(document).ready(function(){
         $('.select2').select2();
+        $('#year-picker').datepicker({
+            format: " yyyy", // Notice the Extra space at the beginning
+            viewMode: "years",
+            minViewMode: "years",
+            todayHighlight: true,
+            orientation: "bottom left",
+            autoclose: true,
+            clearBtn: true,
+        });
+        $('#month-picker').datepicker({
+            format: " mm", // Notice the Extra space at the beginning
+            viewMode: "months",
+            minViewMode: "months",
+            todayHighlight: true,
+            orientation: "bottom left",
+            autoclose: true,
+            clearBtn: true,
+        });
     });
 </script>
 @endsection

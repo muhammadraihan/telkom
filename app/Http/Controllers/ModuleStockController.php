@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\ModuleCategory;
 use App\Models\ModuleStock;
-
+use App\Traits\Authorizable;
 use Auth;
 use Carbon\Carbon;
 use DataTables;
@@ -13,6 +13,7 @@ use URL;
 
 class ModuleStockController extends Controller
 {
+    use Authorizable;
     /**
      * Display a listing of the resource.
      *
@@ -93,9 +94,7 @@ class ModuleStockController extends Controller
         $stock->module_type_uuid = $request->module_type;
         $stock->available = $request->available;
         $stock->created_by = Auth::user()->uuid;
-
         $stock->save();
-
 
         toastr()->success('New Stock Added', 'Success');
         return redirect()->route('stock.index');
@@ -153,9 +152,7 @@ class ModuleStockController extends Controller
         $stock->module_type_uuid = $request->module_type;
         $stock->available = $request->available;
         $stock->edited_by = Auth::user()->uuid;
-
         $stock->save();
-
 
         toastr()->success('Stock Edited', 'Success');
         return redirect()->route('stock.index');

@@ -22,6 +22,8 @@ class CreateMaterialsTable extends Migration
             $table->string('volume')->nullable()->comment('exp= buah,kotak');
             $table->bigInteger('available')->nullable();
             $table->double('unit_price', 15, 2)->nullable();
+            $table->string('created_by')->nullable();
+            $table->string('edited_by')->nullable();
             $table->timestamps();
         });
     }

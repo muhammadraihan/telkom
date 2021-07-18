@@ -4,18 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Accessory;
-
+use App\Traits\Authorizable;
 use Auth;
 use DataTables;
-use DB;
-use File;
-use Hash;
-use Image;
-use Response;
 use URL;
 
 class AccessoryController extends Controller
 {
+    use Authorizable;
     /**
      * Display a listing of the resource.
      *
@@ -23,27 +19,25 @@ class AccessoryController extends Controller
      */
     public function index()
     {
-        $accessory = Accessory::all();
         if (request()->ajax()) {
-            $data = Accessory::latest()->get();
-
+            $data = Accessory::all();
             return Datatables::of($data)
-                    ->addIndexColumn()
-                    ->editColumn('created_by',function($row){
-                        return $row->userCreate->name;
-                    })
-                    ->editColumn('edited_by',function($row){
-                        return $row->userEdit->name ?? null;
-                    })
-                    ->addColumn('action', function($row){
-                        return '
-                        <a class="btn btn-success btn-sm btn-icon waves-effect waves-themed" href="'.route('accessory.edit',$row->uuid).'"><i class="fal fa-edit"></i></a>
-                        <a class="btn btn-danger btn-sm btn-icon waves-effect waves-themed delete-btn" data-url="'.URL::route('accessory.destroy',$row->uuid).'" data-id="'.$row->uuid.'" data-token="'.csrf_token().'" data-toggle="modal" data-target="#modal-delete"><i class="fal fa-trash-alt"></i></a>';
-                 })
-            ->removeColumn('id')
-            ->removeColumn('uuid')
-            ->rawColumns(['action'])
-            ->make(true);
+                ->addIndexColumn()
+                ->editColumn('created_by', function ($row) {
+                    return $row->userCreate->name;
+                })
+                ->editColumn('edited_by', function ($row) {
+                    return $row->userEdit->name ?? null;
+                })
+                ->addColumn('action', function ($row) {
+                    return '
+                        <a class="btn btn-success btn-sm btn-icon waves-effect waves-themed" href="' . route('accessory.edit', $row->uuid) . '"><i class="fal fa-edit"></i></a>
+                        <a class="btn btn-danger btn-sm btn-icon waves-effect waves-themed delete-btn" data-url="' . URL::route('accessory.destroy', $row->uuid) . '" data-id="' . $row->uuid . '" data-token="' . csrf_token() . '" data-toggle="modal" data-target="#modal-delete"><i class="fal fa-trash-alt"></i></a>';
+                })
+                ->removeColumn('id')
+                ->removeColumn('uuid')
+                ->rawColumns(['action'])
+                ->make(true);
         }
 
         return view('accessory.index');
@@ -79,13 +73,11 @@ class AccessoryController extends Controller
         $this->validate($request, $rules, $messages);
 
         $accessory = new Accessory();
-        $accessory->name = $request->name;
+        $accessory->name = strtoupper($request->name);
         $accessory->created_by = Auth::user()->uuid;
+        $accessory->save();
 
-        $accessory->save();        
-
-        
-        toastr()->success('New Accessory Added','Success');
+        toastr()->success('New Accessory Added', 'Success');
         return redirect()->route('accessory.index');
     }
 
@@ -133,13 +125,11 @@ class AccessoryController extends Controller
         $this->validate($request, $rules, $messages);
 
         $accessory = Accessory::uuid($id);
-        $accessory->name = $request->name;
+        $accessory->name = strtoupper($request->name);
         $accessory->edited_by = Auth::user()->uuid;
+        $accessory->save();
 
-        $accessory->save();        
-
-        
-        toastr()->success('Accessory Edited','Success');
+        toastr()->success('Accessory Edited', 'Success');
         return redirect()->route('accessory.index');
     }
 
@@ -153,7 +143,8 @@ class AccessoryController extends Controller
     {
         $accessory = Accessory::uuid($id);
         $accessory->delete();
-        toastr()->success('Accessory Deleted','Success');
+
+        toastr()->success('Accessory Deleted', 'Success');
         return redirect()->route('accessory.index');
     }
 }

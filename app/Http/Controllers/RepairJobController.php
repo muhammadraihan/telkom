@@ -5,21 +5,23 @@ namespace App\Http\Controllers;
 use App\Helper\Helper;
 use App\Models\Material;
 use App\Models\RepairItem;
-use Illuminate\Http\Request;
 use App\Models\Ticketing;
 use App\Models\RepairJobOrder;
 use App\Models\WarehouseJobOrder;
+use App\Traits\Authorizable;
 use Carbon\Carbon;
 use Auth;
-use Carbon\CarbonInterval;
 use DataTables;
 use DB;
 use Exception;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Http\Request;
 use URL;
 
 class RepairJobController extends Controller
 {
+    use Authorizable;
+
     /**
      * Display a listing of the resource.
      *
@@ -177,7 +179,7 @@ class RepairJobController extends Controller
                     // update repair job
                     $repair_job->item_status = 1; // repair by tech
                     $repair_job->job_status = 1; // close job
-                    $repair_job->repair_notes = $request->repair_notes;
+                    $repair_job->repair_notes = strtoupper($request->repair_notes);
                     $repair_job->component_used = $material;
                     $repair_job->repair_cost = $total_cost;
                     $repair_job->time_to_repair = $time_to_repair;
@@ -191,7 +193,7 @@ class RepairJobController extends Controller
                     }
                     // update repair item status 
                     $repair_item = RepairItem::where('uuid', $repair_job->repair_item_uuid)->first();
-                    $repair_item->complain = $request->complain;
+                    $repair_item->complain = strtoupper($request->complain);
                     $repair_item->status = 1; // repair by tech
                     $repair_item->edited_by = Auth::user()->uuid;
                     $repair_item->save();
@@ -237,13 +239,13 @@ class RepairJobController extends Controller
                     // update repair job
                     $repair_job->item_status = 1; // repair by tech
                     $repair_job->job_status = 1; // close job
-                    $repair_job->repair_notes = $request->repair_notes;
+                    $repair_job->repair_notes = strtoupper($request->repair_notes);
                     $repair_job->time_to_repair = $time_to_repair;
                     $repair_job->edited_by = Auth::user()->uuid;
                     $repair_job->save();
                     // update repair item status 
                     $repair_item = RepairItem::where('uuid', $repair_job->repair_item_uuid)->first();
-                    $repair_item->complain = $request->complain;
+                    $repair_item->complain = strtoupper($request->complain);
                     // if not urgent update item status
                     if ($repair_job->urgent_status == 0) {
                         $repair_item->status = 1; // repair by tech
@@ -293,13 +295,13 @@ class RepairJobController extends Controller
                 // update repair job
                 $repair_job->item_status = 0; // can't repair by tech
                 $repair_job->job_status = 1; // close job
-                $repair_job->repair_notes = $request->repair_notes;
+                $repair_job->repair_notes = strtoupper($request->repair_notes);
                 $repair_job->time_to_repair = $time_to_repair;
                 $repair_job->edited_by = Auth::user()->uuid;
                 $repair_job->save();
                 // update repair item status 
                 $repair_item = RepairItem::where('uuid', $repair_job->repair_item_uuid)->first();
-                $repair_item->complain = $request->complain;
+                $repair_item->complain = strtoupper($request->complain);
                 if ($repair_job->urgent_status == 0) {
                     $repair_item->status = 0; // item can't repair
                 }

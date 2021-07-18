@@ -3,22 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\ModuleName;
 use App\Models\ModuleCategory;
-use App\Models\ModuleType;
 use App\Models\Material;
-
+use App\Traits\Authorizable;
 use Auth;
 use DataTables;
-use DB;
-use File;
-use Hash;
-use Image;
-use Response;
 use URL;
 
 class MaterialController extends Controller
 {
+    use Authorizable;
+
     /**
      * Display a listing of the resource.
      *
@@ -27,8 +22,7 @@ class MaterialController extends Controller
     public function index()
     {
         if (request()->ajax()) {
-            $data = Material::get();
-
+            $data = Material::all();
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->editColumn('module_name_uuid', function ($row) {
@@ -95,12 +89,12 @@ class MaterialController extends Controller
 
         $material = new Material();
         $material->module_name_uuid = $request->module_name;
-        $material->material_type = $request->material_type;
-        $material->material_description = $request->material_description;
-        $material->volume = $request->volume;
+        $material->material_type = strtoupper($request->material_type);
+        $material->material_description = strtoupper($request->material_description);
+        $material->volume = strtoupper($request->volume);
         $material->available = $request->available;
         $material->unit_price = $formattedprice;
-
+        $material->created_by = Auth::user()->uuid;
         $material->save();
 
 
@@ -163,12 +157,12 @@ class MaterialController extends Controller
 
         $material = Material::uuid($id);
         $material->module_name_uuid = $request->module_name;
-        $material->material_type = $request->material_type;
-        $material->material_description = $request->material_description;
-        $material->volume = $request->volume;
+        $material->material_type = strtoupper($request->material_type);
+        $material->material_description = strtoupper($request->material_description);
+        $material->volume = strtoupper($request->volume);
         $material->available = $request->available;
         $material->unit_price = $formattedprice;
-
+        $material->edited_by = Auth::user()->uuid;
         $material->save();
 
 

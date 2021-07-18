@@ -5,13 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\ModuleName;
 use App\Models\ModuleCategory;
-
+use App\Traits\Authorizable;
 use Auth;
 use DataTables;
 use URL;
 
 class ModuleNameController extends Controller
 {
+    use Authorizable;
+
     /**
      * Display a listing of the resource.
      *
@@ -19,10 +21,8 @@ class ModuleNameController extends Controller
      */
     public function index()
     {
-        $name = ModuleName::all();
         if (request()->ajax()) {
-            $data = ModuleName::get();
-
+            $data = ModuleName::all();
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->editColumn('created_by', function ($row) {
@@ -80,7 +80,7 @@ class ModuleNameController extends Controller
         $this->validate($request, $rules, $messages);
 
         $name = new ModuleName();
-        $name->name = $request->name;
+        $name->name = strtoupper($request->name);
         $name->module_category_uuid = $request->module_category_uuid;
         $name->created_by = Auth::user()->uuid;
 
@@ -137,7 +137,7 @@ class ModuleNameController extends Controller
         $this->validate($request, $rules, $messages);
 
         $name = ModuleName::uuid($id);
-        $name->name = $request->name;
+        $name->name = strtoupper($request->name);
         $name->module_category_uuid = $request->module_category_uuid;
         $name->edited_by = Auth::user()->uuid;
 
