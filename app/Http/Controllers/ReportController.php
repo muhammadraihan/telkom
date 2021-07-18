@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\InventoryModuleStockExport;
 use App\Exports\ModuleHandleExport;
 use App\Exports\RepairModuleReplaceExport;
 use App\Exports\RepairModuleTechExport;
@@ -134,5 +135,15 @@ class ReportController extends Controller
             ->forYear(isset($request->year) ? $request->year : '')
             ->forMonth(isset($request->month) ? $request->month : '')
             ->download('total-module-repair-comparison.xlsx');
+    }
+
+    public function ModuleInventory()
+    {
+        return view('reports.inventory-module-export');
+    }
+
+    public function ModuleInventoryExport(Request $request)
+    {
+        return (new InventoryModuleStockExport)->download('inventory-module.xlsx');
     }
 }
