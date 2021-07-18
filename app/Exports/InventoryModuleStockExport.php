@@ -3,7 +3,6 @@
 namespace App\Exports;
 
 use App\Models\ModuleStock;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromQuery;
@@ -24,15 +23,15 @@ class InventoryModuleStockExport implements FromQuery, WithMapping, WithHeadings
         return $statement;
     }
 
-    public function map($repair_job): array
+    public function map($module): array
     {
         return [
-            $repair_job->rownum,
-            $repair_job->type->brand->moduleName->category->name,
-            $repair_job->type->brand->moduleName->name,
-            $repair_job->type->brand->name,
-            $repair_job->type->name,
-            $repair_job->available,
+            $module->rownum,
+            $module->type->brand->moduleName->category->name,
+            $module->type->brand->moduleName->name,
+            $module->type->brand->name,
+            $module->type->name,
+            $module->available,
         ];
     }
 
