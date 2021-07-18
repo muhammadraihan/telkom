@@ -43,7 +43,7 @@
                                 <th>Nama Brand</th>
                                 <th>Created By</th>
                                 <th>Edited By</th>
-                                <th width="120px">Action</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                     </table>
@@ -87,30 +87,30 @@
 <script>
     $(document).ready(function(){
         $('#datatable').DataTable({
-            "processing": true,
-            "serverSide": true,
-            "responsive": true,
-            "order": [[ 0, "asc" ]],
-            "ajax":{
-                url:'{{route('brand.index')}}',
-                type : "GET",
-                dataType: 'json',
-                error: function(data){
-                    console.log(data);
-                    }
-            },
-            "columns": [
-            {data: 'DT_RowIndex', name: 'DT_RowIndex', searchable: false},
-            {data: 'module_category_uuid', name:'module_category_uuid'},
-            {data: 'module_name_uuid', name: 'module_name_uuid'},
-            {data: 'name', name: 'name'},
-            {data: 'created_by', name: 'created_by'},
-            {data: 'edited_by', name: 'edited_by'},
-            {data: 'action', name: 'action', orderable: false, searchable: false},
-        ]
-    });
-    // Delete Data
-    $('#datatable').on('click', '.delete-btn[data-url]', function (e) {
+                "processing": true,
+                "serverSide": true,
+                "responsive": true,
+                "order": [[ 0, "asc" ]],
+                "ajax":{
+                    url:'{{route('brand.index')}}',
+                    type : "GET",
+                    dataType: 'json',
+                    error: function(data){
+                        console.log(data);
+                        }
+                },
+                "columns": [
+                    {data: 'DT_RowIndex', name: 'DT_RowIndex', searchable: false},
+                    {data: 'module_category_uuid', name:'module_category_uuid'},
+                    {data: 'module_name_uuid', name: 'module_name_uuid'},
+                    {data: 'name', name: 'name'},
+                    {data: 'created_by', name: 'created_by'},
+                    {data: 'edited_by', name: 'edited_by'},
+                    {data: 'action', name: 'action', orderable: false, searchable: false, width:'*'},
+                ]
+        });
+        // Delete Data
+        $('#datatable').on('click', '.delete-btn[data-url]', function (e) {
             e.preventDefault();
             var id = $(this).attr('data-id');
             var url = $(this).attr('data-url');

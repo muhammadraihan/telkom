@@ -41,7 +41,7 @@
                                 <th>Category</th>
                                 <th>Created By</th>
                                 <th>Edited By</th>
-                                <th width="120px">Action</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                     </table>
@@ -84,8 +84,8 @@
 <script src="{{asset('js/datagrid/datatables/datatables.bundle.js')}}"></script>
 <script>
     $(document).ready(function(){
-       var table = $('#datatable').DataTable({
-            "processing": true,
+       $('#datatable').DataTable({
+           "processing": true,
             "serverSide": true,
             "responsive": true,
             "order": [[ 0, "asc" ]],
@@ -98,15 +98,15 @@
                     }
             },
             "columns": [
-            {data: 'DT_RowIndex', name: 'DT_RowIndex',searchable: false},
-            {data: 'name', name: 'name'},
-            {data: 'created_by', name: 'created_by'},
-            {data: 'edited_by', name: 'edited_by'},
-            {data: 'action', name: 'action', orderable: false, searchable: false},
-        ]
-    });
-    // Delete Data
-    $('#datatable').on('click', '.delete-btn[data-url]', function (e) {
+                {data: 'DT_RowIndex', name: 'DT_RowIndex',searchable: false},
+                {data: 'name', name: 'name'},
+                {data: 'created_by', name: 'created_by'},
+                {data: 'edited_by', name: 'edited_by'},
+                {data: 'action', name: 'action', orderable: false, searchable: false, width:'*'},
+            ],
+        });
+        // Delete Data
+        $('#datatable').on('click', '.delete-btn[data-url]', function (e) {
             e.preventDefault();
             var id = $(this).attr('data-id');
             var url = $(this).attr('data-url');

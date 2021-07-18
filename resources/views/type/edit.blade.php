@@ -85,8 +85,6 @@
         $('.brand').select2();
         $('.name').select2();
         $('.category').select2();
-        
-
         $("#module_category").change(function(){
             var category_uuid = $(this).val();
             $.ajax({

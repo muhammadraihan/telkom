@@ -29,39 +29,40 @@
                     {!! Form::open(['route' => 'stock.store','method' => 'POST','class' =>
                     'needs-validation','novalidate']) !!}
                     <div class="form-row">
-                    <div class="form-group col-md-3 mb-3">
-                        {{ Form::label('module_category_uuid','Module Category',['class' => 'required form-label'])}}
-                        {!! Form::select('module_category_uuid', $category, '', ['id' => 'module_category','class' => 'category
-                        form-control'.($errors->has('module_category_uuid') ? 'is-invalid':''), 'required'
-                        => '', 'placeholder' => 'Select Module Category ...']) !!}
-                        @if ($errors->has('module_category_uuid'))
-                        <div class="invalid-feedback">{{ $errors->first('module_category_uuid') }}</div>
-                        @endif
-                    </div>
-                    <div class="form-group col-md-3 mb-3">
-                        {{ Form::label('module_name','Module Name',['class' => 'required form-label'])}}
-                        <select id="module_name" class="name form-control select2" name="module_name">
-                        </select>
-                        @if ($errors->has('module_name'))
-                        <div class="help-block text-danger">{{ $errors->first('module_name') }}</div>
-                        @endif
-                    </div>
-                    <div class="form-group col-md-3 mb-3">
-                        {{ Form::label('module_brand','Module Brand',['class' => 'required form-label'])}}
-                        <select id="module_brand" class="brand form-control select2" name="module_brand">
-                        </select>
-                        @if ($errors->has('module_brand'))
-                        <div class="help-block text-danger">{{ $errors->first('module_brand') }}</div>
-                        @endif
-                    </div>
-                    <div class="form-group col-md-3 mb-3">
-                        {{ Form::label('module_type','Module type',['class' => 'required form-label'])}}
-                        <select id="module_type" class="type form-control select2" name="module_type">
-                        </select>
-                        @if ($errors->has('module_type'))
-                        <div class="help-block text-danger">{{ $errors->first('module_type') }}</div>
-                        @endif
-                    </div>
+                        <div class="form-group col-md-3 mb-3">
+                            {{ Form::label('module_category_uuid','Module Category',['class' => 'required form-label'])}}
+                            {!! Form::select('module_category_uuid', $category, '', ['id' => 'module_category','class'
+                            => 'category
+                            form-control'.($errors->has('module_category_uuid') ? 'is-invalid':''), 'required'
+                            => '', 'placeholder' => 'Select Module Category ...']) !!}
+                            @if ($errors->has('module_category_uuid'))
+                            <div class="invalid-feedback">{{ $errors->first('module_category_uuid') }}</div>
+                            @endif
+                        </div>
+                        <div class="form-group col-md-3 mb-3">
+                            {{ Form::label('module_name','Module Name',['class' => 'required form-label'])}}
+                            <select id="module_name" class="name form-control select2" name="module_name">
+                            </select>
+                            @if ($errors->has('module_name'))
+                            <div class="help-block text-danger">{{ $errors->first('module_name') }}</div>
+                            @endif
+                        </div>
+                        <div class="form-group col-md-3 mb-3">
+                            {{ Form::label('module_brand','Module Brand',['class' => 'required form-label'])}}
+                            <select id="module_brand" class="brand form-control select2" name="module_brand">
+                            </select>
+                            @if ($errors->has('module_brand'))
+                            <div class="help-block text-danger">{{ $errors->first('module_brand') }}</div>
+                            @endif
+                        </div>
+                        <div class="form-group col-md-3 mb-3">
+                            {{ Form::label('module_type','Module type',['class' => 'required form-label'])}}
+                            <select id="module_type" class="type form-control select2" name="module_type">
+                            </select>
+                            @if ($errors->has('module_type'))
+                            <div class="help-block text-danger">{{ $errors->first('module_type') }}</div>
+                            @endif
+                        </div>
                     </div>
                     <div class="form-group col-md-4 mb-3">
                         {{ Form::label('available','Available',['class' => 'required form-label'])}}
@@ -70,11 +71,12 @@
                         <div class="invalid-feedback">{{ $errors->first('available') }}</div>
                         @endif
                     </div>
-                <div
-                    class="panel-content border-faded border-left-0 border-right-0 border-bottom-0 d-flex flex-row align-items-center">
-                    <button class="btn btn-primary ml-auto" type="submit">Submit</button>
+                    <div
+                        class="panel-content border-faded border-left-0 border-right-0 border-bottom-0 d-flex flex-row align-items-center">
+                        <button class="btn btn-primary ml-auto" type="submit">Submit</button>
+                    </div>
+                    {!! Form::close() !!}
                 </div>
-                {!! Form::close() !!}
             </div>
         </div>
     </div>
@@ -137,24 +139,6 @@
                     });
                 }
             });
-        });
-        
-        // Generate a password string
-        function randString(){
-            var chars = "abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNP123456789";
-            var string_length = 8;
-            var randomstring = '';
-            for (var i = 0; i < string_length; i++) {
-                var rnum = Math.floor(Math.random() * chars.length);
-                randomstring += chars.substring(rnum, rnum + 1);
-            }
-            return randomstring;
-        }
-        
-        // Create a new password
-        $(".getNewPass").click(function(){
-            var field = $('#password').closest('div').find('input[name="password"]');
-            field.val(randString(field));
         });
     });
 </script>

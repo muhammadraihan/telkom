@@ -44,40 +44,22 @@
                         <div class="invalid-feedback">{{ $errors->first('name') }}</div>
                         @endif
                     </div>
-                <div
-                    class="panel-content border-faded border-left-0 border-right-0 border-bottom-0 d-flex flex-row align-items-center">
-                    <button class="btn btn-primary ml-auto" type="submit">Submit</button>
+                    <div
+                        class="panel-content border-faded border-left-0 border-right-0 border-bottom-0 d-flex flex-row align-items-center">
+                        <button class="btn btn-primary ml-auto" type="submit">Submit</button>
+                    </div>
+                    {!! Form::close() !!}
                 </div>
-                {!! Form::close() !!}
             </div>
         </div>
     </div>
-</div>
-@endsection
+    @endsection
 
-@section('js')
-<script src="{{asset('js/formplugins/select2/select2.bundle.js')}}"></script>
-<script>
-    $(document).ready(function(){
+    @section('js')
+    <script src="{{asset('js/formplugins/select2/select2.bundle.js')}}"></script>
+    <script>
+        $(document).ready(function(){
         $('.category').select2();
-        
-        // Generate a password string
-        function randString(){
-            var chars = "abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNP123456789";
-            var string_length = 8;
-            var randomstring = '';
-            for (var i = 0; i < string_length; i++) {
-                var rnum = Math.floor(Math.random() * chars.length);
-                randomstring += chars.substring(rnum, rnum + 1);
-            }
-            return randomstring;
-        }
-        
-        // Create a new password
-        $(".getNewPass").click(function(){
-            var field = $('#password').closest('div').find('input[name="password"]');
-            field.val(randString(field));
-        });
     });
-</script>
-@endsection
+    </script>
+    @endsection
