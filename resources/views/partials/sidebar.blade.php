@@ -177,7 +177,8 @@
                         </a>
                     </li>
                     <li>
-                        <a href="" title="Module Repair" data-filter-tags="repair management">
+                        <a href="{{route('report.total-module-percentage')}}" title="Module Repair Percentage"
+                            data-filter-tags="Total Module Percentage">
                             <i class="fal fa-file-excel"></i>
                             <span class="nav-link-text" data-i18n="nav.repair_management">Total Module Percentage</span>
                         </a>
