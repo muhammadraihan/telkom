@@ -184,9 +184,11 @@
                         </a>
                     </li>
                     <li>
-                        <a href="" title="Witel" data-filter-tags="">
+                        <a href="{{route('report.total-module-repair-comparison')}}"
+                            title="Total Module Repair Comparison" data-filter-tags="Total Module Repair Comparison">
                             <i class="fal fa-file-excel"></i>
-                            <span class="nav-link-text" data-i18n="nav.repair_management">Total Repair</span>
+                            <span class="nav-link-text" data-i18n="nav.repair_management">Total Module Repair
+                                Comparison</span>
                         </a>
                     </li>
                     @endhasanyrole
