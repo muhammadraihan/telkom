@@ -64,4 +64,9 @@ class ItemReplaceDetail extends Model
     {
         return $this->belongsTo(User::class, 'edited_by', 'uuid');
     }
+
+    public function ModuleType()
+    {
+        return $this->belongsTo(ModuleType::class, 'module_type_uuid', 'uuid');
+    }
 }

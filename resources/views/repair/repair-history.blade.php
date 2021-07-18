@@ -42,7 +42,7 @@
                                 <th>Assign To</th>
                                 <th>Repair Status</th>
                                 <th>Job Status</th>
-                                <th>Job Date</th>
+                                <th>Assign Date</th>
                                 <th>Job Finished</th>
                                 <th>Repair Time</th>
                                 <th>Action</th>
@@ -100,7 +100,7 @@
                 {data: 'assign_to'},
                 {data: 'repair_status'},
                 {data: 'job_status'},
-                {data: 'created_at'},
+                {data: 'assign_at'},
                 {data: 'updated_at'},
                 {data: 'time_to_repair',searchable:false},
                 {data: 'action',searchable:false,orderable: false},

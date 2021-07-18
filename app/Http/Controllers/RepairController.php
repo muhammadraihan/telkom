@@ -6,6 +6,7 @@ use App\Models\Material;
 use App\Models\RepairJobOrder;
 use App\Models\Ticketing;
 use App\Models\User;
+use App\Traits\Authorizable;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -18,6 +19,7 @@ use URL;
 
 class RepairController extends Controller
 {
+    use Authorizable;
     /**
      * Display a listing of the resource.
      *
@@ -123,7 +125,7 @@ class RepairController extends Controller
             $repair_job_order->edited_by = Auth::user()->uuid;
             $repair_job_order->save();
 
-            if ($repair_job_order->urgent->status == 0) {
+            if (isset($repair_job_order->urgent->status) && $repair_job_order->urgent->status == 0) {
                 // update ticket status
                 $ticket = Ticketing::uuid($repair_job_order->repair->ticket->uuid);
                 $ticket->item_status = 1; // job status in tech progress
@@ -138,7 +140,7 @@ class RepairController extends Controller
         }
         // now is save to commit update and redirect to index
         DB::commit();
-        toastr()->success('Ticket No.' . $ticket->ticket_number . ' di assign ke ' . $technician->name, 'Success');
+        toastr()->success('Ticket di assign ke ' . $technician->name, 'Success');
         return redirect()->route('repair.index');
     }
 
@@ -210,7 +212,7 @@ class RepairController extends Controller
                 'job_status',
                 'time_to_repair',
                 'assign_to',
-                'created_at',
+                'assign_at',
                 'updated_at',
             )->latest()->where('job_status', 1)->get();
             return Datatables::of($repair_jobs)
@@ -231,8 +233,8 @@ class RepairController extends Controller
                 ->editColumn('assign_to', function ($repair_job) {
                     return $repair_job->UserAssign->name;
                 })
-                ->editColumn('created_at', function ($repair_job) {
-                    return Carbon::parse($repair_job->created_at)->translatedFormat('j M Y H:i');
+                ->editColumn('assign_at', function ($repair_job) {
+                    return Carbon::parse($repair_job->assign_at)->translatedFormat('j M Y H:i');
                 })
                 ->editColumn('updated_at', function ($repair_job) {
                     return Carbon::parse($repair_job->updated_at)->translatedFormat('j M Y H:i');

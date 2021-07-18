@@ -102,19 +102,19 @@
                     }
             },
             "columns": [
-            {data: 'DT_RowIndex', name: 'DT_RowIndex',searchable: false},
-            {data: 'category', },
-            {data: 'name',},
-            {data: 'brand',},
-            {data: 'module_type_uuid',},
-            {data: 'available',},
-            {data: 'created_by',},
-            {data: 'created_at',},
-            {data: 'action', orderable: false, searchable: false},
-        ]
-    });
-    // Delete Data
-    $('#datatable').on('click', '.delete-btn[data-url]', function (e) {
+                {data: 'DT_RowIndex', name: 'DT_RowIndex',searchable: false},
+                {data: 'category', },
+                {data: 'name',},
+                {data: 'brand',},
+                {data: 'module_type_uuid',},
+                {data: 'available',},
+                {data: 'created_by',},
+                {data: 'created_at',},
+                {data: 'action', orderable: false, searchable: false, width:'*'},
+            ]
+        });
+        // Delete Data
+        $('#datatable').on('click', '.delete-btn[data-url]', function (e) {
             e.preventDefault();
             var id = $(this).attr('data-id');
             var url = $(this).attr('data-url');

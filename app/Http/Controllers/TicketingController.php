@@ -9,6 +9,7 @@ use App\Models\RepairJobOrder;
 use App\Models\Ticketing;
 use App\Models\WarehouseJobOrder;
 use App\Models\Witel;
+use App\Traits\Authorizable;
 use Illuminate\Http\Request;
 
 use Carbon\Carbon;
@@ -22,6 +23,8 @@ use URL;
 
 class TicketingController extends Controller
 {
+    use Authorizable;
+
     /**
      * Display a listing of the resource.
      *

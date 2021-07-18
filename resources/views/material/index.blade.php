@@ -102,19 +102,19 @@
                     }
             },
             "columns": [
-            {data: 'DT_RowIndex', name: 'DT_RowIndex', searchable:false},
-            {data: 'category'},
-            {data: 'module_name_uuid', name: 'module_name_uuid'},
-            {data: 'material_type', name: 'material_type'},
-            {data: 'material_description', name: 'material_description'},
-            {data: 'volume', name: 'volume'},
-            {data: 'available', name: 'available'},
-            {data: 'unit_price', name: 'unit_price'},
-            {data: 'action', width:'10%', orderable: false, searchable: false},
-        ]
-    });
-    // Delete Data
-    $('#datatable').on('click', '.delete-btn[data-url]', function (e) {
+                {data: 'DT_RowIndex', name: 'DT_RowIndex', searchable:false},
+                {data: 'category'},
+                {data: 'module_name_uuid', name: 'module_name_uuid'},
+                {data: 'material_type', name: 'material_type'},
+                {data: 'material_description', name: 'material_description'},
+                {data: 'volume', name: 'volume'},
+                {data: 'available', name: 'available'},
+                {data: 'unit_price', name: 'unit_price'},
+                {data: 'action', width:'10%', orderable: false, searchable: false},
+            ]
+        });
+        // Delete Data
+        $('#datatable').on('click', '.delete-btn[data-url]', function (e) {
             e.preventDefault();
             var id = $(this).attr('data-id');
             var url = $(this).attr('data-url');

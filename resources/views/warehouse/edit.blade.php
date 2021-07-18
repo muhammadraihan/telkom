@@ -438,10 +438,10 @@
         });
         $('#replace_status').change(function() {
             var status = $(this).val();
-            if(status == 1){
+            if(status == 3){
                 $('#stock-form').show();
             } 
-            if(status == 2) {
+            if(status == 4) {
                 $('#stock-form').hide();
             }
         });

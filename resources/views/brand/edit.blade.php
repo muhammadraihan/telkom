@@ -66,15 +66,15 @@
             </div>
         </div>
     </div>
-    @endsection
+</div>
+@endsection
 
-    @section('js')
-    <script src="{{asset('js/formplugins/select2/select2.bundle.js')}}"></script>
-    <script>
-        $(document).ready(function(){
+@section('js')
+<script src="{{asset('js/formplugins/select2/select2.bundle.js')}}"></script>
+<script>
+    $(document).ready(function(){
         $('.name').select2();
         $('.category').select2();
-
 
         $("#module_category").change(function(){
             var category_uuid = $(this).val();
@@ -91,35 +91,6 @@
                 }
             });
         });
-        
-        // Generate a password string
-        function randString(){
-            var chars = "abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNP123456789";
-            var string_length = 8;
-            var randomstring = '';
-            for (var i = 0; i < string_length; i++) {
-                var rnum = Math.floor(Math.random() * chars.length);
-                randomstring += chars.substring(rnum, rnum + 1);
-            }
-            return randomstring;
-        }
-        
-        // Create a new password
-        $(".getNewPass").click(function(){
-            var field = $('#password').closest('div').find('input[name="password"]');
-            field.val(randString(field));
-        });
-
-        //Enable input and button change password
-        $('#enablePassChange').click(function() {
-            if ($(this).is(':checked')) {
-                $('#passwordForm').attr('disabled',false); //enable input
-                $('#getNewPass').attr('disabled',false); //enable button
-            } else {
-                    $('#passwordForm').attr('disabled', true); //disable input
-                    $('#getNewPass').attr('disabled', true); //disable button
-            }
-        });
     });
-    </script>
-    @endsection
+</script>
+@endsection

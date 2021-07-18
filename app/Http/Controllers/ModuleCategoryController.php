@@ -4,18 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\ModuleCategory;
-
+use App\Traits\Authorizable;
 use Auth;
 use DataTables;
-use DB;
-use File;
-use Hash;
-use Image;
-use Response;
 use URL;
 
 class ModuleCategoryController extends Controller
 {
+    use Authorizable;
     /**
      * Display a listing of the resource.
      *
@@ -23,29 +19,26 @@ class ModuleCategoryController extends Controller
      */
     public function index()
     {
-        $category = ModuleCategory::all();
         if (request()->ajax()) {
-            $data = ModuleCategory::get();
-
+            $data = ModuleCategory::all();
             return Datatables::of($data)
-                    ->addIndexColumn()
-                    ->editColumn('created_by',function($row){
-                        return $row->userCreate->name;
-                    })
-                    ->editColumn('edited_by',function($row){
-                        return $row->userEdit->name ?? null;
-                    })
-                    ->addColumn('action', function($row){
-                        return '
-                        <a class="btn btn-success btn-sm btn-icon waves-effect waves-themed" href="'.route('category.edit',$row->uuid).'"><i class="fal fa-edit"></i></a>
-                        <a class="btn btn-danger btn-sm btn-icon waves-effect waves-themed delete-btn" data-url="'.URL::route('category.destroy',$row->uuid).'" data-id="'.$row->uuid.'" data-token="'.csrf_token().'" data-toggle="modal" data-target="#modal-delete"><i class="fal fa-trash-alt"></i></a>';
-                 })
-            ->removeColumn('id')
-            ->removeColumn('uuid')
-            ->rawColumns(['action'])
-            ->make(true);
+                ->addIndexColumn()
+                ->editColumn('created_by', function ($row) {
+                    return $row->userCreate->name;
+                })
+                ->editColumn('edited_by', function ($row) {
+                    return $row->userEdit->name ?? null;
+                })
+                ->addColumn('action', function ($row) {
+                    return '
+                        <a class="btn btn-success btn-sm btn-icon waves-effect waves-themed" href="' . route('category.edit', $row->uuid) . '"><i class="fal fa-edit"></i></a>
+                        <a class="btn btn-danger btn-sm btn-icon waves-effect waves-themed delete-btn" data-url="' . URL::route('category.destroy', $row->uuid) . '" data-id="' . $row->uuid . '" data-token="' . csrf_token() . '" data-toggle="modal" data-target="#modal-delete"><i class="fal fa-trash-alt"></i></a>';
+                })
+                ->removeColumn('id')
+                ->removeColumn('uuid')
+                ->rawColumns(['action'])
+                ->make(true);
         }
-
         return view('category.index');
     }
 
@@ -79,13 +72,11 @@ class ModuleCategoryController extends Controller
         $this->validate($request, $rules, $messages);
 
         $category = new ModuleCategory();
-        $category->name = $request->name;
+        $category->name = strtoupper($request->name);
         $category->created_by = Auth::user()->uuid;
+        $category->save();
 
-        $category->save();        
-
-        
-        toastr()->success('New Category Added','Success');
+        toastr()->success('New Category Added', 'Success');
         return redirect()->route('category.index');
     }
 
@@ -133,13 +124,11 @@ class ModuleCategoryController extends Controller
         $this->validate($request, $rules, $messages);
 
         $category = ModuleCategory::uuid($id);
-        $category->name = $request->name;
+        $category->name = strtoupper($request->name);
         $category->edited_by = Auth::user()->uuid;
+        $category->save();
 
-        $category->save();        
-
-        
-        toastr()->success('Category Edited','Success');
+        toastr()->success('Category Edited', 'Success');
         return redirect()->route('category.index');
     }
 
@@ -153,7 +142,7 @@ class ModuleCategoryController extends Controller
     {
         $category = ModuleCategory::uuid($id);
         $category->delete();
-        toastr()->success('Category Deleted','Success');
+        toastr()->success('Category Deleted', 'Success');
         return redirect()->route('category.index');
     }
 }

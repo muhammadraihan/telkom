@@ -29,7 +29,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-4 mb-3">
                             {{ Form::label('job_date','Job Date :',['class' => 'form-label'])}}
-                            {{\Carbon\Carbon::parse($repair_job->created_at)->translatedFormat('j M Y h:i:s')}}
+                            {{\Carbon\Carbon::parse($repair_job->assign_at)->translatedFormat('j M Y h:i:s')}}
                         </div>
                         <div class="form-group col-md-4 mb-3">
                             {{ Form::label('job_finished','Job Finished :',['class' => 'form-label'])}}
