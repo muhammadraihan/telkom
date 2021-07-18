@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\InventoryMaterialStockExport;
 use App\Exports\InventoryModuleStockExport;
 use App\Exports\ModuleHandleExport;
 use App\Exports\RepairModuleReplaceExport;
@@ -145,5 +146,15 @@ class ReportController extends Controller
     public function ModuleInventoryExport(Request $request)
     {
         return (new InventoryModuleStockExport)->download('inventory-module.xlsx');
+    }
+
+    public function MaterialInventory()
+    {
+        return view('reports.inventory-material');
+    }
+
+    public function MaterialInventoryExport(Request $request)
+    {
+        return (new InventoryMaterialStockExport)->download('inventory-material.xlsx');
     }
 }
