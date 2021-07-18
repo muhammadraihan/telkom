@@ -45,7 +45,6 @@ class TotalModuleByWitel implements FromArray, WithMapping, WithHeadings, Should
         $month = $this->month;
         $witel = $this->witel;
         $result = [];
-
         $module = RepairItem::select([DB::raw('count(*) as total'), 'module_type_uuid', 'ticket_uuid', 'created_at'])
             ->whereHas('ticket.unit.witel', function (Builder $q) use ($witel) {
                 $q->where('uuid', $witel);
@@ -62,13 +61,11 @@ class TotalModuleByWitel implements FromArray, WithMapping, WithHeadings, Should
             $result[$key]['module'] = $value->ModuleType->brand->moduleName->name;
             $result[$key]['count'] = $value->total;
         }
-
         return $result;
     }
 
     public function map($total): array
     {
-        dd($total);
         return [
             $total['module'],
             $total['count'],
