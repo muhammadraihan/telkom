@@ -60,6 +60,7 @@ Route::group(['prefix' => 'backoffice', 'middleware' => ['auth']], function () {
     Route::get('report/total-module/witel', 'ReportController@TotalModulePerWitel')->name('report.total-module-per-witel');
     Route::get('report/total-module/by-witel', 'ReportController@TotalModuleByWitel')->name('report.total-module-by-witel');
     Route::get('report/total-module-handle', 'ReportController@TotalModuleHandle')->name('report.total-module-handle');
+    Route::get('report/total-module-percentage', 'ReportController@TotalModulePercentage')->name('report.total-module-percentage');
 
     // report export
     Route::post('report/repair-module/tech/download', 'ReportController@RepairModuleTechExport')->name('download.repair-module-tech');
@@ -69,6 +70,7 @@ Route::group(['prefix' => 'backoffice', 'middleware' => ['auth']], function () {
     Route::post('report/total-module/witel/download', 'ReportController@TotalModulePerWitelExport')->name('download.total-module-per-witel');
     Route::post('report/total-module/by-witel/download', 'ReportController@TotalModuleByWitelExport')->name('download.total-module-by-witel');
     Route::post('report/total-module-handle/download', 'ReportController@TotalModuleHandleExport')->name('download.total-module-handle');
+    Route::post('report/total-module-percentage/download', 'ReportController@TotalModulePercentageExport')->name('download.total-module-percentage');
 
     // resource
     Route::resource('accessory', 'AccessoryController');
