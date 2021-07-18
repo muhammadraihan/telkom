@@ -198,7 +198,8 @@
                         </a>
                     </li>
                     <li>
-                        <a href="" title="" data-filter-tags="Inventory Material Stock">
+                        <a href="{{route('report.inventory-material')}}" title="Inventory Material Stock"
+                            data-filter-tags="Inventory Material Stock">
                             <i class="fal fa-file-excel"></i>
                             <span class="nav-link-text" data-i18n="nav.repair_management">Inventory Material
                                 Stock</span>
