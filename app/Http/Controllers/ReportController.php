@@ -7,9 +7,11 @@ use App\Exports\RepairModuleReplaceExport;
 use App\Exports\RepairModuleTechExport;
 use App\Exports\RepairModuleVendorExport;
 use App\Exports\TotalModuleByWitel;
+use App\Exports\TotalModuleHandleExport;
 use App\Exports\TotalModulePerWitel;
 use App\Models\Witel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ReportController extends Controller
 {
@@ -21,8 +23,8 @@ class ReportController extends Controller
     public function RepairModuleTechExport(Request $request)
     {
         return (new RepairModuleTechExport)
-            ->forYear(isset($request->year))
-            ->forMonth(isset($request->month))
+            ->forYear(isset($request->year) ? $request->year : '')
+            ->forMonth(isset($request->month) ? $request->month : '')
             ->download('repair-module-by-tech.xlsx');
     }
 
@@ -34,8 +36,8 @@ class ReportController extends Controller
     public function RepairModuleVendorExport(Request $request)
     {
         return (new RepairModuleVendorExport)
-            ->forYear(isset($request->year))
-            ->forMonth(isset($request->month))
+            ->forYear(isset($request->year) ? $request->year : '')
+            ->forMonth(isset($request->month) ? $request->month : '')
             ->download('repair-module-by-vendor.xlsx');
     }
 
@@ -47,8 +49,8 @@ class ReportController extends Controller
     public function ReplaceModuleExport(Request $request)
     {
         return (new RepairModuleReplaceExport)
-            ->forYear(isset($request->year))
-            ->forMonth(isset($request->month))
+            ->forYear(isset($request->year) ? $request->year : '')
+            ->forMonth(isset($request->month) ? $request->month : '')
             ->download('replace-module.xlsx');
     }
 
@@ -60,8 +62,8 @@ class ReportController extends Controller
     public function ModuleHandleExport(Request $request)
     {
         return (new ModuleHandleExport)
-            ->forYear(isset($request->year))
-            ->forMonth(isset($request->month))
+            ->forYear(isset($request->year) ? $request->year : '')
+            ->forMonth(isset($request->month) ? $request->month : '')
             ->download('module-handle.xlsx');
     }
 
@@ -73,8 +75,8 @@ class ReportController extends Controller
     public function TotalModulePerWitelExport(Request $request)
     {
         return (new TotalModulePerWitel)
-            ->forYear(isset($request->year))
-            ->forMonth(isset($request->month))
+            ->forYear(isset($request->year) ? $request->year : '')
+            ->forMonth(isset($request->month) ? $request->month : '')
             ->download('total-module-per-witel.xlsx');
     }
 
@@ -86,11 +88,23 @@ class ReportController extends Controller
 
     public function TotalModuleByWitelExport(Request $request)
     {
-        // dd($request->all());
         return (new TotalModuleByWitel)
             ->forWitel($request->witel_uuid)
-            ->forYear(isset($request->year))
-            ->forMonth(isset($request->month))
+            ->forYear(isset($request->year) ? $request->year : '')
+            ->forMonth(isset($request->month) ? $request->month : '')
             ->download('total-module-by-witel.xlsx');
+    }
+
+    public function TotalModuleHandle()
+    {
+        return view('reports.total-module-handle');
+    }
+
+    public function TotalModuleHandleExport(Request $request)
+    {
+        return (new TotalModuleHandleExport)
+            ->forYear(isset($request->year) ? $request->year : '')
+            ->forMonth(isset($request->month) ? $request->month : '')
+            ->download('total-module-handle.xlsx');
     }
 }
