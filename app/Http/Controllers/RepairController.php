@@ -6,6 +6,7 @@ use App\Models\Material;
 use App\Models\RepairJobOrder;
 use App\Models\Ticketing;
 use App\Models\User;
+use App\Traits\Authorizable;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -18,6 +19,7 @@ use URL;
 
 class RepairController extends Controller
 {
+    use Authorizable;
     /**
      * Display a listing of the resource.
      *

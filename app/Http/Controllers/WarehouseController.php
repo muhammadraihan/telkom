@@ -10,6 +10,7 @@ use App\Models\RepairJobVendor;
 use App\Models\Ticketing;
 use App\Models\WarehouseJobOrder;
 use Illuminate\Http\Request;
+use App\Traits\Authorizable;
 
 use Auth;
 use Carbon\Carbon;
@@ -23,6 +24,7 @@ use URL;
 
 class WarehouseController extends Controller
 {
+    use Authorizable;
     /**
      * Display a listing of the resource.
      *
@@ -101,7 +103,6 @@ class WarehouseController extends Controller
      */
     public function update(Request $request, $uuid)
     {
-        // dd($request->all());
         $warehouse_job = WarehouseJobOrder::uuid($uuid);
         // get repair item detail
         $repair_item = RepairItem::where('uuid', $warehouse_job->repair_item_uuid)->first();
@@ -138,7 +139,7 @@ class WarehouseController extends Controller
                 // save warehouse job order
                 $warehouse_job->item_status = 9; // item sent to customer
                 $warehouse_job->job_status = 1; // close warehouse job
-                $warehouse_job->notes = $request->warehouse_notes;
+                $warehouse_job->notes = strtoupper($request->warehouse_notes);
                 $warehouse_job->edited_by = Auth::user()->uuid;
                 $warehouse_job->save();
                 // update ticket
@@ -209,7 +210,7 @@ class WarehouseController extends Controller
                     $repair_item->save();
                     // update warehouse job order
                     $warehouse_job->item_status = 6; // replace module
-                    $warehouse_job->notes = $request->warehouse_notes;
+                    $warehouse_job->notes = strtoupper($request->warehouse_notes);
                     $warehouse_job->edited_by = Auth::user()->uuid;
                     $warehouse_job->save();
                     // update ticket
@@ -241,7 +242,7 @@ class WarehouseController extends Controller
                 try {
                     // update warehouse job order
                     $warehouse_job->item_status = 5; // claim warranty to vendor
-                    $warehouse_job->notes = $request->warehouse_notes;
+                    $warehouse_job->notes = strtoupper($request->warehouse_notes);
                     $warehouse_job->edited_by = Auth::user()->uuid;
                     $warehouse_job->save();
                     // update ticket
@@ -283,7 +284,7 @@ class WarehouseController extends Controller
                 $module_replace = new ItemReplaceDetail();
                 $module_replace->item_repair_uuid = $repair_item->uuid;
                 $module_replace->replace_status = $request->replace_status;
-                $module_replace->vendor_name = $request->vendor_name;
+                $module_replace->vendor_name = strtoupper($request->vendor_name);
                 $module_replace->module_type_uuid =  $request->module_type;
                 $module_replace->part_number = $request->part_number;
                 $module_replace->serial_number = $request->serial_number;
@@ -297,7 +298,7 @@ class WarehouseController extends Controller
                 $repair_item->save();
                 // update warehouse job order
                 $warehouse_job->item_status = 6; // replace module
-                $warehouse_job->notes = $request->warehouse_notes;
+                $warehouse_job->notes = strtoupper($request->warehouse_notes);
                 $warehouse_job->edited_by = Auth::user()->uuid;
                 $warehouse_job->save();
                 // update ticket
@@ -330,7 +331,7 @@ class WarehouseController extends Controller
             try {
                 // update warehouse job order
                 $warehouse_job->item_status = 7; // progress to vendor
-                $warehouse_job->notes = $request->warehouse_notes;
+                $warehouse_job->notes = strtoupper($request->warehouse_notes);
                 $warehouse_job->edited_by = Auth::user()->uuid;
                 $warehouse_job->save();
                 // if not urgent update ticket
@@ -371,14 +372,14 @@ class WarehouseController extends Controller
                     if ($warehouse_job->urgent_status == 1) {
                         $warehouse_job->stock_input = 1;
                     }
-                    $warehouse_job->notes = $request->warehouse_notes;
+                    $warehouse_job->notes = strtoupper($request->warehouse_notes);
                     $warehouse_job->edited_by = Auth::user()->uuid;
                     $warehouse_job->save();
                     // insert repair by vendor detail
                     $repair_vendor = new RepairJobVendor();
-                    $repair_vendor->vendor_name = $request->vendor_name;
+                    $repair_vendor->vendor_name = strtoupper($request->vendor_name);
                     $repair_vendor->repair_item_uuid = $repair_item->uuid;
-                    $repair_vendor->repair_notes = $request->repair_notes;
+                    $repair_vendor->repair_notes = strtoupper($request->repair_notes);
                     $repair_vendor->created_by = Auth::user()->uuid;
                     $repair_vendor->save();
                     if ($warehouse_job->urgent_status == 0) {
@@ -426,7 +427,7 @@ class WarehouseController extends Controller
                         $warehouse_job->stock_input = 1;
                     }
                     $warehouse_job->item_status = 6; // replace module
-                    $warehouse_job->notes = $request->warehouse_notes;
+                    $warehouse_job->notes = strtoupper($request->warehouse_notes);
                     $warehouse_job->edited_by = Auth::user()->uuid;
                     $warehouse_job->save();
 
@@ -437,7 +438,7 @@ class WarehouseController extends Controller
                         $module_replace = new ItemReplaceDetail();
                         $module_replace->item_repair_uuid = $repair_item->uuid;
                         $module_replace->replace_status = 4; // replace by vendor
-                        $module_replace->vendor_name = $request->vendor_name;
+                        $module_replace->vendor_name = strtoupper($request->vendor_name);
                         $module_replace->module_type_uuid =  $request->module_type;
                         $module_replace->part_number = $request->part_number;
                         $module_replace->serial_number = $request->serial_number;
@@ -507,7 +508,7 @@ class WarehouseController extends Controller
                 $repair_item->save();
                 // update warehouse job order
                 $warehouse_job->item_status = 6; // replace module
-                $warehouse_job->notes = $request->warehouse_notes;
+                $warehouse_job->notes = strtoupper($request->warehouse_notes);
                 $warehouse_job->edited_by = Auth::user()->uuid;
                 $warehouse_job->save();
                 // update ticket
@@ -546,7 +547,7 @@ class WarehouseController extends Controller
                 // save warehouse job order
                 $warehouse_job->item_status = 11; // item input to stock
                 $warehouse_job->job_status = 1; // close warehouse job
-                $warehouse_job->notes = $request->warehouse_notes;
+                $warehouse_job->notes = strtoupper($request->warehouse_notes);
                 $warehouse_job->edited_by = Auth::user()->uuid;
                 $warehouse_job->save();
             } catch (Exception $e) {

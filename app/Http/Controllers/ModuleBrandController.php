@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\ModuleBrand;
 use App\Models\ModuleCategory;
-
+use App\Traits\Authorizable;
 use Auth;
 use DataTables;
 use URL;
 
 class ModuleBrandController extends Controller
 {
+    use Authorizable;
     /**
      * Display a listing of the resource.
      *
@@ -20,7 +21,7 @@ class ModuleBrandController extends Controller
     public function index()
     {
         if (request()->ajax()) {
-            $data = ModuleBrand::get();
+            $data = ModuleBrand::all();
 
             return Datatables::of($data)
                 ->addIndexColumn()
@@ -46,7 +47,6 @@ class ModuleBrandController extends Controller
                 ->rawColumns(['action'])
                 ->make(true);
         }
-
         return view('brand.index');
     }
 
@@ -81,7 +81,7 @@ class ModuleBrandController extends Controller
 
         $this->validate($request, $rules, $messages);
         $brand = new ModuleBrand();
-        $brand->name = $request->name;
+        $brand->name = strtoupper($request->name);
         $brand->module_name_uuid = $request->module_name;
         $brand->created_by = Auth::user()->uuid;
         $brand->save();
@@ -136,12 +136,10 @@ class ModuleBrandController extends Controller
         $this->validate($request, $rules, $messages);
 
         $brand = ModuleBrand::uuid($id);
-        $brand->name = $request->name;
+        $brand->name = strtoupper($request->name);
         $brand->module_name_uuid = $request->module_name;
         $brand->edited_by = Auth::user()->uuid;
-
         $brand->save();
-
 
         toastr()->success('Brand Edited', 'Success');
         return redirect()->route('brand.index');

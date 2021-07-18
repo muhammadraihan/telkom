@@ -14,11 +14,13 @@ use App\Exports\TotalModulePercentageExport;
 use App\Exports\TotalModulePerWitel;
 use App\Exports\TotalModuleRepairExport;
 use App\Models\Witel;
+use App\Traits\Authorizable;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class ReportController extends Controller
 {
+    use Authorizable;
+
     public function RepairModuleTech()
     {
         return view('reports.repair-module-tech-export');

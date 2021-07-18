@@ -4,21 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\ModuleCategory;
-use App\Models\ModuleName;
-use App\Models\ModuleBrand;
 use App\Models\ModuleType;
-
+use App\Traits\Authorizable;
 use Auth;
 use DataTables;
-use DB;
-use File;
-use Hash;
-use Image;
-use Response;
 use URL;
 
 class ModuleTypeController extends Controller
 {
+    use Authorizable;
+
     /**
      * Display a listing of the resource.
      *
@@ -26,10 +21,8 @@ class ModuleTypeController extends Controller
      */
     public function index()
     {
-        $type = ModuleType::all();
         if (request()->ajax()) {
-            $data = ModuleType::get();
-
+            $data = ModuleType::all();
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->editColumn('created_by', function ($row) {
@@ -57,7 +50,6 @@ class ModuleTypeController extends Controller
                 ->rawColumns(['action'])
                 ->make(true);
         }
-
         return view('type.index');
     }
 
@@ -93,12 +85,10 @@ class ModuleTypeController extends Controller
         $this->validate($request, $rules, $messages);
 
         $type = new ModuleType();
-        $type->name = $request->name;
+        $type->name = strtoupper($request->name);
         $type->module_brand_uuid = $request->module_brand;
         $type->created_by = Auth::user()->uuid;
-
         $type->save();
-
 
         toastr()->success('New Type Added', 'Success');
         return redirect()->route('type.index');
@@ -150,12 +140,10 @@ class ModuleTypeController extends Controller
         $this->validate($request, $rules, $messages);
 
         $type = ModuleType::uuid($id);
-        $type->name = $request->name;
+        $type->name = strtoupper($request->name);
         $type->module_brand_uuid = $request->module_brand;
         $type->edited_by = Auth::user()->uuid;
-
         $type->save();
-
 
         toastr()->success('Type Edited', 'Success');
         return redirect()->route('type.index');

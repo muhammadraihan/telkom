@@ -4,18 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Witel;
-
+use App\Traits\Authorizable;
 use Auth;
 use DataTables;
-use DB;
-use File;
-use Hash;
-use Image;
-use Response;
 use URL;
 
 class WitelController extends Controller
 {
+    use Authorizable;
     /**
      * Display a listing of the resource.
      *
@@ -23,10 +19,8 @@ class WitelController extends Controller
      */
     public function index()
     {
-        $witel = Witel::all();
         if (request()->ajax()) {
-            $data = Witel::latest()->get();
-
+            $data = Witel::all();
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->editColumn('created_by', function ($row) {
@@ -81,9 +75,7 @@ class WitelController extends Controller
         $witel = new Witel();
         $witel->name = strtoupper($request->name);
         $witel->created_by = Auth::user()->uuid;
-
         $witel->save();
-
 
         toastr()->success('New Witel Added', 'Success');
         return redirect()->route('witel.index');
@@ -135,10 +127,7 @@ class WitelController extends Controller
         $witel = Witel::uuid($id);
         $witel->name = strtoupper($request->name);
         $witel->edited_by = Auth::user()->uuid;
-
         $witel->save();
-
-
 
         toastr()->success('Witel Edited', 'Success');
         return redirect()->route('witel.index');

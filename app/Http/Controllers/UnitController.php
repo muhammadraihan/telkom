@@ -5,18 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Unit;
 use App\Models\Witel;
-
+use App\Traits\Authorizable;
 use Auth;
 use DataTables;
-use DB;
-use File;
-use Hash;
-use Image;
-use Response;
 use URL;
 
 class UnitController extends Controller
 {
+    use Authorizable;
     /**
      * Display a listing of the resource.
      *
@@ -24,10 +20,8 @@ class UnitController extends Controller
      */
     public function index()
     {
-        $unit = Unit::all();
         if (request()->ajax()) {
-            $data = Unit::latest()->get();
-
+            $data = Unit::all();
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->editColumn('created_by', function ($row) {
@@ -88,9 +82,7 @@ class UnitController extends Controller
         $unit->name = strtoupper($request->name);
         $unit->witel_uuid = $request->witel_uuid;
         $unit->created_by = Auth::user()->uuid;
-
         $unit->save();
-
 
         toastr()->success('New Unit Added', 'Success');
         return redirect()->route('unit.index');
@@ -145,9 +137,7 @@ class UnitController extends Controller
         $unit->name = strtoupper($request->name);
         $unit->witel_uuid = $request->witel_uuid;
         $unit->edited_by = Auth::user()->uuid;
-
         $unit->save();
-
 
         toastr()->success('Unit Edited', 'Success');
         return redirect()->route('unit.index');
