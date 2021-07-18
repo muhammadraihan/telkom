@@ -127,46 +127,46 @@ class Helper
   {
     switch ($item_status) {
       case 0:
-        return '<span class="badge badge-secondary">Dalam antrian perbaikan</span>';
+        return '<span class="badge badge-secondary">DALAM ANTRIAN PERBAIKAN</span>';
         break;
       case 1:
-        return '<span class="badge badge-primary">Dalam penanganan oleh teknisi</span>';
+        return '<span class="badge badge-primary">DALAM PENANGANAN OLEH TEKNISI</span>';
         break;
       case 2:
-        return '<span class="badge badge-success">Telah diperbaiki oleh teknisi</span>';
+        return '<span class="badge badge-success">TELAH DIPERBAIKI OLEH TEKNISI</span>';
         break;
       case 3:
-        return '<span class="badge badge-danger">Tidak dapat diperbaiki teknisi</span>';
+        return '<span class="badge badge-danger">TIDAK DAPAT DIPERBAIKI TEKNISI</span>';
         break;
       case 4:
-        return '<span class="badge badge-warning">Butuh klaim garansi</span>';
+        return '<span class="badge badge-warning">BUTUH KLAIM GARANSI</span>';
         break;
       case 5:
-        return '<span class="badge badge-warning">Proses klaim garansi</span>';
+        return '<span class="badge badge-warning">PROSES KLAIM GARANSI</span>';
         break;
       case 6:
-        return '<span class="badge badge-info">Selesai penggantian module</span>';
+        return '<span class="badge badge-info">SELESAI PENGGANTIAN MODULE</span>';
         break;
       case 7:
-        return '<span class="badge badge-info">Dalam penanganan oleh vendor</span>';
+        return '<span class="badge badge-info">DALAM PENANGANAN OLEH VENDOR</span>';
         break;
       case 8:
-        return '<span class="badge badge-info">Selesai penanganan dari vendor</span>';
+        return '<span class="badge badge-info">SELESAI PENANGANAN DARI VENDOR</span>';
         break;
       case 9:
-        return '<span class="badge badge-success">Telah di kirim ke customer</span>';
+        return '<span class="badge badge-success">TELAH DI KIRIM KE CUSTOMER</span>';
         break;
       case 10:
-        return '<span class="badge badge-danger">Butuh penggantian segera</span>';
+        return '<span class="badge badge-danger">BUTUH PENGGANTIAN SEGERA</span>';
         break;
       case 11:
-        return '<span class="badge badge-primary">Module di input ke stock</span>';
+        return '<span class="badge badge-primary">MODULE DI INPUT KE STOCK</span>';
         break;
       case 12:
-        return '<span class="badge badge-danger">Ticket di cancel</span>';
+        return '<span class="badge badge-danger">TICKET DI CANCEL</span>';
         break;
       default:
-        return '<span class="badge badge-dark">None</span>';
+        return '<span class="badge badge-dark">NONE</span>';
         break;
     }
   }
@@ -181,13 +181,13 @@ class Helper
   {
     switch ($urgent_status) {
       case 0:
-        return '<span class="badge badge-success">Not Urgent</span>';
+        return '<span class="badge badge-success">NOT URGENT</span>';
         break;
       case 1:
-        return '<span class="badge badge-danger">Urgent</span>';
+        return '<span class="badge badge-danger">URGENT</span>';
         break;
       default:
-        return '<span class="badge badge-dark">Status Unknown</span>';
+        return '<span class="badge badge-dark">STATUS UNKNOWN</span>';
         break;
     }
   }
@@ -202,19 +202,19 @@ class Helper
   {
     switch ($ticket_status) {
       case 1:
-        return '<span class="badge badge-primary">Diproses ke bagian repair</span>';
+        return '<span class="badge badge-primary">DIPROSES KE BAGIAN REPAIR</span>';
         break;
       case 2:
-        return '<span class="badge badge-warning">Diproses ke bagian gudang</span>';
+        return '<span class="badge badge-warning">DIPROSES KE BAGIAN GUDANG</span>';
         break;
       case 3:
-        return '<span class="badge badge-success">Selesai</span>';
+        return '<span class="badge badge-success">SELESAI</span>';
         break;
       case 4:
-        return '<span class="badge badge-danger">Cancel</span>';
+        return '<span class="badge badge-danger">CANCEL</span>';
         break;
       default:
-        return '<span class="badge badge-dark">Status Unknown</span>';
+        return '<span class="badge badge-dark">STATUS UNKNOWN</span>';
         break;
     }
   }
@@ -229,16 +229,16 @@ class Helper
   {
     switch ($repair_status) {
       case 1:
-        return '<span class="badge badge-success">Repaired By Tech</span>';
+        return '<span class="badge badge-success">REPAIRED BY TECH</span>';
         break;
       case 2;
-        return '<span class="badge badge-success">Repaired By Vendor</span>';
+        return '<span class="badge badge-success">REPAIRED BY VENDOR</span>';
       case 3;
-        return '<span class="badge badge-info">Replace From Stock</span>';
+        return '<span class="badge badge-info">REPLACE FROM STOCK</span>';
       case 4;
-        return '<span class="badge badge-info">Replace From Vendor</span>';
+        return '<span class="badge badge-info">REPLACE FROM VENDOR</span>';
       default:
-        return '<span class="badge badge-secondary">Unknown</span>';
+        return '<span class="badge badge-secondary">UNKNOWN</span>';
         break;
     }
   }
@@ -247,12 +247,12 @@ class Helper
   {
     switch ($repair_item_status) {
       case 0:
-        return '<span class="badge badge-danger">Non Repair</span>';
+        return '<span class="badge badge-danger">NON REPAIR</span>';
         break;
       case 1;
-        return '<span class="badge badge-success">Repaired</span>';
+        return '<span class="badge badge-success">REPAIRED</span>';
       default:
-        return '<span class="badge badge-secondary">Unknown</span>';
+        return '<span class="badge badge-secondary">UNKNOWN</span>';
         break;
     }
   }
@@ -267,16 +267,16 @@ class Helper
   {
     switch ($repair_job_status) {
       case 0:
-        return '<span class="badge badge-primary">Dalam proses</span>';
+        return '<span class="badge badge-primary">DALAM PROSES</span>';
         break;
       case 1;
-        return '<span class="badge badge-success">Selesai</span>';
+        return '<span class="badge badge-success">SELESAI</span>';
         break;
       case 2;
-        return '<span class="badge badge-danger">Ticket cancel</span>';
+        return '<span class="badge badge-danger">TICKET CANCEL</span>';
         break;
       default:
-        return '<span class="badge badge-dark">Status Unknown</span>';
+        return '<span class="badge badge-dark">STATUS UNKNOWN</span>';
         break;
     }
   }
@@ -285,12 +285,12 @@ class Helper
   {
     switch ($warranty_status) {
       case 0:
-        return '<span class="badge badge-danger">Not Warranty</span>';
+        return '<span class="badge badge-danger">NOT WARRANTY</span>';
         break;
       case 1:
-        return '<span class="badge badge-info">Warranty</span>';
+        return '<span class="badge badge-info">WARRANTY</span>';
       default:
-        return '<span class="badge badge-secondary">Unknown</span>';
+        return '<span class="badge badge-secondary">UNKNOWN</span>';
         break;
     }
   }
