@@ -10,6 +10,7 @@ use App\Exports\TotalModuleByWitel;
 use App\Exports\TotalModuleHandleExport;
 use App\Exports\TotalModulePercentageExport;
 use App\Exports\TotalModulePerWitel;
+use App\Exports\TotalModuleRepairExport;
 use App\Models\Witel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -120,5 +121,18 @@ class ReportController extends Controller
             ->forYear(isset($request->year) ? $request->year : '')
             ->forMonth(isset($request->month) ? $request->month : '')
             ->download('total-module-percentage.xlsx');
+    }
+
+    public function TotalModuleRepairComparison()
+    {
+        return view('reports.total-module-repair-comparison');
+    }
+
+    public function TotalModuleRepairComparisonExport(Request $request)
+    {
+        return (new TotalModuleRepairExport)
+            ->forYear(isset($request->year) ? $request->year : '')
+            ->forMonth(isset($request->month) ? $request->month : '')
+            ->download('total-module-repair-comparison.xlsx');
     }
 }
