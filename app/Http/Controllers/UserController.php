@@ -7,6 +7,7 @@ use App\Traits\Authorizable;
 
 use App\Models\User;
 use App\Models\Role;
+use App\Models\Witel;
 use Carbon\Carbon;
 
 use Auth;
@@ -70,7 +71,8 @@ class UserController extends Controller
   public function create()
   {
     $roles = Role::all()->pluck('name', 'name');
-    return view('users.create', compact('roles'));
+    $witels = Witel::all()->pluck('name', 'uuid');
+    return view('users.create', compact('roles', 'witels'));
   }
 
   /**
@@ -81,7 +83,6 @@ class UserController extends Controller
    */
   public function store(Request $request)
   {
-    // dd(request()->all());
     // Validation
     $this->validate($request, [
       'name' => 'required|min:2',
@@ -97,6 +98,15 @@ class UserController extends Controller
     $user->name = $request->name;
     $user->email = $request->email;
     $user->password = Hash::make($password);
+    // if unit role selected
+    if ($request->role == "unit") {
+      $this->validate($request, [
+        'witel' => 'required',
+        'unit' => 'required',
+      ]);
+      // retrieve unit
+      $user->unit_uuid = $request->unit;
+    }
     $user->save();
     // assign role to user
     if ($request->get('role')) {
@@ -128,8 +138,8 @@ class UserController extends Controller
   {
     $roles = Role::all()->pluck('name', 'name');
     $user = User::uuid($uuid);
-    // dd($user->roles[0]['name']);
-    return view('users.edit', compact('roles', 'user'));
+    $witels = Witel::all();
+    return view('users.edit', compact('roles', 'user', 'witels'));
   }
 
   /**
