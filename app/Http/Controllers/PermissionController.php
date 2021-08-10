@@ -23,8 +23,10 @@ class PermissionController extends Controller
     {
         if (request()->ajax()) {
             DB::statement(DB::raw('set @rownum=0'));
-            $permissions = Permission::select([DB::raw('@rownum  := @rownum  + 1 AS rownum'),
-                'name', 'created_at']);
+            $permissions = Permission::select([
+                DB::raw('@rownum  := @rownum  + 1 AS rownum'),
+                'name', 'created_at'
+            ]);
             return DataTables::of($permissions)
                 ->editColumn('created_at', function ($permission) {
                     return $permission->created_at->format('l \\, jS F Y h:i:s A');
@@ -70,7 +72,7 @@ class PermissionController extends Controller
         } elseif ($request->permission_type == 'crud') {
             // validate input
             $this->validate($request, [
-                'resource' => 'required|min:3|max:100|alpha',
+                'resource' => 'required|min:3|max:100|alpha_dash',
             ]);
             // get checkbox value
             $crud = $request->input('action');
