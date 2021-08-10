@@ -11,7 +11,7 @@
     <div class="col-xl-6">
         <div id="panel-1" class="panel">
             <div class="panel-hdr">
-            <h2>Edit <span class="fw-300"><i>{{$user->name}}</i></span></h2>
+                <h2>Edit <span class="fw-300"><i>{{$user->name}}</i></span></h2>
                 <div class="panel-toolbar">
                     <a class="nav-link active" href="{{route('users.index')}}"><i class="fal fa-arrow-alt-left">
                         </i>
@@ -48,7 +48,8 @@
                             {{ Form::text('password',null,['id' => 'passwordForm','placeholder' => '********','class' => 'form-control '.($errors->has('password') ? 'is-invalid':''),'required','disabled' => 'disabled'])}}
                             <div class="input-group-append">
                                 <button id="getNewPass" type="button"
-                                    class="btn btn-primary waves-effect waves-themed getNewPass" disabled="disabled">Generate</button>
+                                    class="btn btn-primary waves-effect waves-themed getNewPass"
+                                    disabled="disabled">Generate</button>
                             </div>
                             @if ($errors->has('password'))
                             <div class="invalid-feedback">{{ $errors->first('password') }}</div>
@@ -63,12 +64,40 @@
                     </div>
                     <div class="form-group col-md-4 mb-3">
                         {!! Form::label('role', 'Role', ['class' => 'required form-label']) !!}
-                        {!! Form::select('role', $roles, $user->roles[0]['name'], ['class' => 'select2 form-control'.($errors->has('role') ? 'is-invalid':''), 'required'
-                        => '', 'placeholder' => 'Select a role ...']) !!}
+                        {!! Form::select('role', $roles, $user->roles[0]['name'], ['class' => 'select2
+                        form-control'.($errors->has('role') ? 'is-invalid':''), 'required'
+                        => '', 'placeholder' => 'Select a role ...',$user->roles[0]['name'] == "unit" ? 'disabled':''])
+                        !!}
                         @if ($errors->has('role'))
                         <div class="help-block text-danger">{{ $errors->first('role') }}</div>
                         @endif
                     </div>
+                    @if ($user->roles[0]['name'] == "unit")
+                    <div class="form-row">
+                        <div class="form-group col-md-3 mb-3">
+                            {{ Form::label('witel','Witel',['class' => 'required form-label'])}}
+                            <select id="witel" class="select2 form-control" name="witel">
+                                <option value="{{$user->unit->witel->uuid}}">{{$user->unit->witel->name}}
+                                </option>
+                                @foreach($witels as $witel)
+                                <option value="{{$witel->uuid}}">{{$witel->name}}</option>
+                                @endforeach
+                            </select>
+                            @if ($errors->has('witel'))
+                            <div class="help-block text-danger">{{ $errors->first('witel') }}</div>
+                            @endif
+                        </div>
+                        <div class="form-group col-md-3 mb-3">
+                            {{ Form::label('unit','Unit',['class' => 'required form-label'])}}
+                            <select id="unit" class="select2 form-control" name="unit">
+                                <option value="{{$user->unit->uuid}}">{{$user->unit->name}}
+                            </select>
+                            @if ($errors->has('unit'))
+                            <div class="help-block text-danger">{{ $errors->first('unit') }}</div>
+                            @endif
+                        </div>
+                    </div>
+                    @endif
                 </div>
                 <div
                     class="panel-content border-faded border-left-0 border-right-0 border-bottom-0 d-flex flex-row align-items-center">
@@ -114,6 +143,22 @@
                     $('#passwordForm').attr('disabled', true); //disable input
                     $('#getNewPass').attr('disabled', true); //disable button
             }
+        });
+
+        $("#witel").change(function(){
+            var witel_uuid = $(this).val();
+            $.ajax({
+                url:"{{route('getUnit')}}",
+                type: 'GET',
+                data: {witel_uuid:witel_uuid},
+                success: function(e) {
+                    $("#unit").empty();
+                    $("#unit").append('<option value="">Pilih Module Unit</option>');
+                    $.each(e, function(key, value) {
+                        $("#unit").append('<option value="'+ key +'">'+ value +'</option>');
+                    });
+                }
+            });
         });
     });
 </script>

@@ -233,7 +233,7 @@
                 </ul>
             </li>
             @endhasanyrole
-            @hasanyrole('superadmin|admin|customer-care')
+            @hasanyrole('superadmin|admin|customer-care|unit')
             <li>
                 <a href="{{route('ticketing.index')}}" title="Ticketing Management"
                     data-filter-tags="ticketing management">
