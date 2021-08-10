@@ -57,11 +57,34 @@
                     </div>
                     <div class="form-group col-md-4 mb-3">
                         {!! Form::label('role', 'Role', ['class' => 'required form-label']) !!}
-                        {!! Form::select('role', $roles, '', ['class' => 'select2 form-control'.($errors->has('role') ? 'is-invalid':''), 'required'
+                        {!! Form::select('role', $roles, '', ['id'=>'role','class' => 'select2
+                        form-control'.($errors->has('role') ?
+                        'is-invalid':''), 'required'
                         => '', 'placeholder' => 'Select a role ...']) !!}
                         @if ($errors->has('role'))
                         <div class="help-block text-danger">{{ $errors->first('role') }}</div>
                         @endif
+                    </div>
+                    <div id="unit-form" style="display:none">
+                        <div class="form-row">
+                            <div class="form-group col-md-3 mb-3">
+                                {{ Form::label('witel','Witel',['class' => 'required form-label'])}}
+                                {!! Form::select('witel', $witels, '', ['id' => 'witel','class' =>
+                                'select2 form-control'.($errors->has('witel') ? 'is-invalid':''), 'required'
+                                => '', 'placeholder' => 'Pilih Witel']) !!}
+                                @if ($errors->has('witel'))
+                                <div class="help-block text-danger">{{ $errors->first('witel') }}</div>
+                                @endif
+                            </div>
+                            <div class="form-group col-md-3 mb-3">
+                                {{ Form::label('unit','Unit',['class' => 'required form-label'])}}
+                                <select id="unit" class="form-control select2" name="unit">
+                                </select>
+                                @if ($errors->has('unit'))
+                                <div class="help-block text-danger">{{ $errors->first('unit') }}</div>
+                                @endif
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div
@@ -98,6 +121,35 @@
             var field = $('#password').closest('div').find('input[name="password"]');
             field.val(randString(field));
         });
+
+        $("#witel").change(function(){
+            var witel_uuid = $(this).val();
+            $.ajax({
+                url:"{{route('getUnit')}}",
+                type: 'GET',
+                data: {witel_uuid:witel_uuid},
+                success: function(e) {
+                    $("#unit").empty();
+                    $("#unit").append('<option value="">Pilih Unit</option>');
+                    $.each(e, function(key, value) {
+                        $("#unit").append('<option value="'+ key +'">'+ value +'</option>');
+                    });
+                }
+            });
+        });
+
+        $('#role').change(function() {
+            var role = $(this).val();
+            if(role == "unit"){
+                $('#unit-form').show();
+            } 
+            else {
+                $('#unit-form').hide();
+            }
+        });
     });
+    @if ($errors->has("witel") || $errors->has("unit"))
+    $('#unit-form').show();
+    @endif
 </script>
 @endsection
