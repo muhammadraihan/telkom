@@ -23,10 +23,12 @@
                     Active Ticket <span class="fw-300"><i>List</i></span>
                 </h2>
                 <div class="panel-toolbar">
+                    @can('add_users')
                     <a class="nav-link active" href="{{route('ticketing.create')}}"><i class="fal fa-plus-circle">
                         </i>
                         <span class="nav-link-text">Add New Ticket</span>
                     </a>
+                    @endcan
                     <a class="nav-link active" href="{{route('ticketing.history')}}"><i class="fal fa-list">
                         </i>
                         <span class="nav-link-text">Ticket History</span>
