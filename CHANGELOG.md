@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.3.2](https://git.wbaindonesia.com/wbaindonesia/telkom-service-mgmt-system/compare/v1.3.1...v1.3.2) (2021-08-10)
+
+
+### Bug Fixes
+
+* Update unit id on user update ([898ec94](https://git.wbaindonesia.com/wbaindonesia/telkom-service-mgmt-system/commit/898ec94ffbcceec226d8b47aea5183a9ed0a8d0f))
+
 ### [1.3.1](https://git.wbaindonesia.com/wbaindonesia/telkom-service-mgmt-system/compare/v1.3.0...v1.3.1) (2021-08-10)
 
 
