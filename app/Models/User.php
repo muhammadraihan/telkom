@@ -25,7 +25,7 @@ class User extends Authenticatable implements JWTSubject, CanResetPassword
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password','avatar','last_login_at','last_login_ip',
+        'name', 'email', 'unit_uuid', 'password', 'avatar', 'last_login_at', 'last_login_ip',
     ];
 
     /**
@@ -46,12 +46,12 @@ class User extends Authenticatable implements JWTSubject, CanResetPassword
         'email_verified_at' => 'datetime',
     ];
 
-      /**
+    /**
      * The attibutes for logging the event change
      *
      * @var array
      */
-    protected static $logAttributes = ['name', 'email','password','avatar'];
+    protected static $logAttributes = ['name', 'email', 'password', 'avatar'];
 
     /**
      * Logging name
@@ -85,7 +85,7 @@ class User extends Authenticatable implements JWTSubject, CanResetPassword
         return "Data has been {$eventName}";
     }
 
-     /**
+    /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      * @return mixed
      */
@@ -100,5 +100,15 @@ class User extends Authenticatable implements JWTSubject, CanResetPassword
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    /**
+     * Relation to unit
+     *
+     * @return void
+     */
+    public function unit()
+    {
+        return $this->belongsTo(Unit::class, 'unit_uuid', 'uuid');
     }
 }
