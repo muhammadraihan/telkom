@@ -169,6 +169,14 @@ class UserController extends Controller
       $password = trim($request->password);
       $user->password = Hash::make($password);
     }
+    if ($request->get('unit')) {
+      $this->validate($request, [
+        'witel' => 'required',
+        'unit' => 'required',
+      ]);
+      // retrieve unit
+      $user->unit_uuid = $request->unit;
+    }
     $user->save();
     // sync role to user if any roles changed
     if ($request->get('role')) {
