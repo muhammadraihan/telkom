@@ -33,6 +33,54 @@ class TicketingController extends Controller
     public function index()
     {
         if (request()->ajax()) {
+            $user = Auth::user();
+            $roles = $user->getRoleNames();
+            if ($roles[0] == "unit") {
+                $tickets = Ticketing::select(
+                    'id',
+                    'uuid',
+                    'uuid_unit',
+                    'ticket_number',
+                    'ticket_status',
+                    'item_status',
+                    'urgent_status',
+                    'note',
+                    'created_by',
+                    'created_at',
+                )->where('ticket_status', '!=', 3)->where('uuid_unit', $user->unit_uuid)
+                    ->get();
+
+                return Datatables::of($tickets)
+                    ->addIndexColumn()
+                    ->addColumn('witel', function ($row) {
+                        return $row->unit->witel->name;
+                    })
+                    ->editColumn('uuid_unit', function ($row) {
+                        return $row->unit->name;
+                    })
+                    ->editColumn('created_by', function ($row) {
+                        return $row->userCreate->name;
+                    })
+                    ->editColumn('created_at', function ($row) {
+                        return Carbon::parse($row->created_at)->translatedFormat('l\\, j F Y H:i');
+                    })
+                    ->editColumn('ticket_status', function ($row) {
+                        return Helper::TicketStatus($row->ticket_status);
+                    })
+                    ->editColumn('item_status', function ($row) {
+                        return Helper::ItemStatus($row->item_status);
+                    })
+                    ->editColumn('urgent_status', function ($row) {
+                        return Helper::UrgentStatus($row->urgent_status);
+                    })
+                    ->addColumn('action', function ($row) {
+                        return '<a class="btn btn-info btn-sm btn-icon waves-effect waves-themed" data-toggle="modal" id="detail-button" data-target="#detail-modal" data-attr="' . URL::route('ticketing.show', $row->uuid) . '" title="Detail Module" href=""><i class="fal fa-search-plus"></i></a>';
+                    })
+                    ->removeColumn('id')
+                    ->removeColumn('uuid')
+                    ->rawColumns(['action', 'ticket_status', 'item_status', 'urgent_status'])
+                    ->make();
+            }
             $tickets = Ticketing::select(
                 'id',
                 'uuid',
@@ -299,6 +347,53 @@ class TicketingController extends Controller
     public function history()
     {
         if (request()->ajax()) {
+            $user = Auth::user();
+            $roles = $user->getRoleNames();
+            if ($roles[0] == "unit") {
+                $tickets = Ticketing::select(
+                    'id',
+                    'uuid',
+                    'uuid_unit',
+                    'ticket_number',
+                    'ticket_status',
+                    'item_status',
+                    'urgent_status',
+                    'note',
+                    'created_by',
+                    'created_at',
+                )->where('uuid_unit', $user->unit_uuid)->get();
+
+                return Datatables::of($tickets)
+                    ->addIndexColumn()
+                    ->addColumn('witel', function ($row) {
+                        return $row->unit->witel->name;
+                    })
+                    ->editColumn('uuid_unit', function ($row) {
+                        return $row->unit->name;
+                    })
+                    ->editColumn('created_by', function ($row) {
+                        return $row->userCreate->name;
+                    })
+                    ->editColumn('created_at', function ($row) {
+                        return Carbon::parse($row->created_at)->translatedFormat('l\\, j F Y H:i');
+                    })
+                    ->editColumn('ticket_status', function ($row) {
+                        return Helper::TicketStatus($row->ticket_status);
+                    })
+                    ->editColumn('item_status', function ($row) {
+                        return Helper::ItemStatus($row->item_status);
+                    })
+                    ->editColumn('urgent_status', function ($row) {
+                        return Helper::UrgentStatus($row->urgent_status);
+                    })
+                    ->addColumn('action', function ($row) {
+                        return '<a class="btn btn-info btn-sm btn-icon waves-effect waves-themed" data-toggle="modal" id="detail-button" data-target="#detail-modal" data-attr="' . URL::route('ticketing.show', $row->uuid) . '" title="Detail Module" href=""><i class="fal fa-search-plus"></i></a>';
+                    })
+                    ->removeColumn('id')
+                    ->removeColumn('uuid')
+                    ->rawColumns(['action', 'ticket_status', 'item_status', 'urgent_status'])
+                    ->make();
+            }
             $tickets = Ticketing::select(
                 'id',
                 'uuid',
