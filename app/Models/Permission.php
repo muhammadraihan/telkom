@@ -55,7 +55,7 @@ class Permission extends \Spatie\Permission\Models\Permission
     {
         return "Data has been {$eventName}";
     }
-    
+
     public static function defaultPermissions()
     {
         return [
@@ -75,6 +75,72 @@ class Permission extends \Spatie\Permission\Models\Permission
             'delete_permissions',
 
             'view_logs',
+
+            'view_witel',
+            'add_witel',
+            'edit_witel',
+            'delete_witel',
+
+            'view_unit',
+            'add_unit',
+            'edit_unit',
+            'delete_unit',
+
+            'view_accessory',
+            'add_accessory',
+            'edit_accessory',
+            'delete_accessory',
+
+            'view_category',
+            'add_category',
+            'edit_category',
+            'delete_category',
+
+            'view_name',
+            'add_name',
+            'edit_name',
+            'delete_name',
+
+            'view_brand',
+            'add_brand',
+            'edit_brand',
+            'delete_brand',
+
+            'view_type',
+            'add_type',
+            'edit_type',
+            'delete_type',
+
+            'view_material',
+            'add_material',
+            'edit_material',
+            'delete_material',
+
+            'view_stock',
+            'add_stock',
+            'edit_stock',
+            'delete_stock',
+
+            'view_ticketing',
+            'add_ticketing',
+            'edit_ticketing',
+            'delete_ticketing',
+
+            'view_repair',
+            'add_repair',
+            'edit_repair',
+            'delete_repair',
+
+            'view_repair-job',
+            'add_repair-job',
+            'edit_repair-job',
+            'delete_repair-job',
+
+            'view_warehouse',
+            'add_warehouse',
+            'edit_warehouse',
+            'delete_warehouse',
+
         ];
     }
 }
