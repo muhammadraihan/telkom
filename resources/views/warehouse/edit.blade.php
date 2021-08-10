@@ -30,7 +30,7 @@
                     {!! Form::open(['route' => ['warehouse.update',$job_order->uuid],'method' =>
                     'PUT','class' =>
                     'needs-validation','enctype' => 'multipart/form-data','novalidate']) !!}
-                    {{-- Module repaired by tech, module done replace, mdoule done by vendor --}}
+                    {{-- Module repaired by tech, module done replace, module done by vendor --}}
                     @if ($job_order->item_status == 2 && $job_order->stock_input == 0|| $job_order->item_status == 6 &&
                     $job_order->stock_input == 0 || $job_order->item_status == 8 && $job_order->stock_input == 0 )
                     <div class="form-group col-md-4 mb-3">
@@ -237,7 +237,7 @@
                             </select>
                         </div>
                         <div class="form-group col-md-4 mb-3">
-                            {!! Form::label('vendor_status', 'Replace From', ['class' => 'required form-label']) !!}
+                            {!! Form::label('vendor_status', 'Progress Status', ['class' => 'required form-label']) !!}
                             {!! Form::select('vendor_status', [1 => 'Repair',2 =>'Replace'], '', ['id' =>
                             'vendor_status','class' => 'custom-select select2 '.($errors->has('vendor_status')
                             ?
