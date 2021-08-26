@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.3.3](https://git.wbaindonesia.com/wbaindonesia/telkom-service-mgmt-system/compare/v1.3.2...v1.3.3) (2021-08-26)
+
+
+### Features
+
+* Dashboard now have ticket summary ([242168c](https://git.wbaindonesia.com/wbaindonesia/telkom-service-mgmt-system/commit/242168c201dd13579ac4aefb4faebb64297f4dfe))
+
+
+### Bug Fixes
+
+* Remove category and module name in material crud ([c9c0dd5](https://git.wbaindonesia.com/wbaindonesia/telkom-service-mgmt-system/commit/c9c0dd592e8de40af28309f132a0788bf72530fd))
+* Remove category module relationship from repair progress page and logic process ([8b83ab8](https://git.wbaindonesia.com/wbaindonesia/telkom-service-mgmt-system/commit/8b83ab887ce8e711b23127342d2e73ee3754f7c4))
+
 ### [1.3.2](https://git.wbaindonesia.com/wbaindonesia/telkom-service-mgmt-system/compare/v1.3.1...v1.3.2) (2021-08-10)
 
 
