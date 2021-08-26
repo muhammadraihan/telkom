@@ -9,10 +9,7 @@
 @section('content')
 <div class="subheader">
     <h1 class="subheader-title">
-        <i class='subheader-icon fal fa-warehouse-alt'></i> Module: <span class='fw-300'>Stock</span>
-        <small>
-            Module for manage Module Stock.
-        </small>
+        <i class='subheader-icon fal fa-hdd'></i> Module
     </h1>
 </div>
 <div class="row">
@@ -44,7 +41,6 @@
                                 <th>Type</th>
                                 <th>Available</th>
                                 <th>Created By</th>
-                                <th>Created At</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -109,7 +105,6 @@
                 {data: 'module_type_uuid',},
                 {data: 'available',},
                 {data: 'created_by',},
-                {data: 'created_at',},
                 {data: 'action', orderable: false, searchable: false, width:'*'},
             ]
         });

@@ -5,10 +5,7 @@
 @section('content')
 <div class="subheader">
     <h1 class="subheader-title">
-        <i class='subheader-icon fal fa-universal-access'></i> Module: <span class='fw-300'>Role</span>
-        <small>
-            Module for manage roles.
-        </small>
+        <i class='subheader-icon fal fa-universal-access'></i> Roles
     </h1>
 </div>
 <div class="row">
@@ -93,5 +90,5 @@
     @if (count($errors) > 0)
     $('#role-modal').modal('show');
     @endif
-  </script>
+</script>
 @endsection

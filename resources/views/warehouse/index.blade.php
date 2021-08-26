@@ -9,10 +9,7 @@
 @section('content')
 <div class="subheader">
     <h1 class="subheader-title">
-        <i class='subheader-icon fal fa-warehouse-alt'></i> Module: <span class='fw-300'>Warehouse</span>
-        <small>
-            Module for manage warehouse.
-        </small>
+        <i class='subheader-icon fal fa-warehouse-alt'></i> Warehouse
     </h1>
 </div>
 <div class="row">

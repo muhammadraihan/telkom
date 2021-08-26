@@ -9,10 +9,7 @@
 @section('content')
 <div class="subheader">
     <h1 class="subheader-title">
-        <i class='subheader-icon fal fa-wrench'></i> Module: <span class='fw-300'>Repair Assign History</span>
-        <small>
-            Module for all repair assign history.
-        </small>
+        <i class='subheader-icon fal fa-wrench'></i> Repair Assign History
     </h1>
 </div>
 <div class="row">

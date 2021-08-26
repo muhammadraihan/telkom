@@ -11,7 +11,7 @@
     <div class="col-xl-6">
         <div id="panel-1" class="panel">
             <div class="panel-hdr">
-                <h2>Edit Tiket Number - <span class="fw-300"><i>{{$ticketing->ticket_number}}</i></span></h2>
+                <h2>Edit Ticket Number - <span class="fw-300"><i>{{$ticketing->ticket_number}}</i></span></h2>
                 <div class="panel-toolbar">
                     <a class="nav-link active" href="{{route('ticketing.index')}}"><i class="fal fa-arrow-alt-left">
                         </i>

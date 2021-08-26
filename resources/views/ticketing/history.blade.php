@@ -9,10 +9,7 @@
 @section('content')
 <div class="subheader">
     <h1 class="subheader-title">
-        <i class='subheader-icon fal fa-ticket'></i> Module: <span class='fw-300'>Complain Ticket</span>
-        <small>
-            Module for manage complain ticket
-        </small>
+        <i class='subheader-icon fal fa-ticket'></i> Ticket History
     </h1>
 </div>
 <div class="row">
@@ -20,7 +17,7 @@
         <div id="panel-1" class="panel">
             <div class="panel-hdr">
                 <h2>
-                    Ticket <span class="fw-300"><i>List</i></span>
+                    Ticket History<span class="fw-300"><i>List</i></span>
                 </h2>
                 <div class="panel-toolbar">
                     <a class="nav-link active" href="{{route('ticketing.index')}}"><i class="fal fa-arrow-alt-left">

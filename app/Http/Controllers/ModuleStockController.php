@@ -22,7 +22,7 @@ class ModuleStockController extends Controller
     public function index()
     {
         if (request()->ajax()) {
-            $data = ModuleStock::select('id', 'uuid', 'module_type_uuid', 'available', 'created_by', 'created_at')->get();
+            $data = ModuleStock::select('id', 'uuid', 'module_type_uuid', 'available', 'created_by')->get();
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->editColumn('module_type_uuid', function ($row) {
@@ -30,9 +30,6 @@ class ModuleStockController extends Controller
                 })
                 ->editColumn('created_by', function ($row) {
                     return $row->userCreate->name;
-                })
-                ->editColumn('created_at', function ($row) {
-                    return Carbon::parse($row->created_at)->translatedFormat('j F Y h:i:s');
                 })
                 ->addColumn('category', function ($row) {
                     return $row->type->brand->moduleName->category->name;
