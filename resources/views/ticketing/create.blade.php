@@ -138,20 +138,20 @@
                     </div>
                     <div class="form-group col-md-4 mb-3">
                         {{ Form::label('warranty_status','Status Garansi',['class' => 'required form-label'])}}
-                        {!! Form::select('warranty_status', array('0' => 'Non Warranty', '1' => 'Warranty'), '',
+                        {!! Form::select('warranty_status', array('0' => 'NON-WARRANTY', '1' => 'WARRANTY'), '',
                         ['id'=>'garansi','class'
                         => 'custom-select'.($errors->has('warranty_status') ? 'is-invalid':''), 'required'
-                        => '', 'placeholder' => 'Select Status Garansi ...']) !!}
+                        => '', 'placeholder' => 'Select Warranty Status']) !!}
                         @if ($errors->has('warranty_status'))
                         <div class="help-block text-danger">{{ $errors->first('warranty_status') }}</div>
                         @endif
                     </div>
                     <div class="form-group col-md-4 mb-3">
                         {{ Form::label('urgent_status','Status Urgensi',['class' => 'required form-label'])}}
-                        {!! Form::select('urgent_status', array('0' => 'Not Urgent', '1' => 'Urgent'), '',
+                        {!! Form::select('urgent_status', array('0' => 'NON-URGENT', '1' => 'URGENT'), '',
                         ['id'=>'urgent','class'
                         => 'custom-select'.($errors->has('urgent_status') ? 'is-invalid':''), 'required'
-                        => '', 'placeholder' => 'Select Status Urgensi ...']) !!}
+                        => '', 'placeholder' => 'Select Urgent Status']) !!}
                         @if ($errors->has('urgent_status'))
                         <div class="help-block text-danger">{{ $errors->first('urgent_status') }}</div>
                         @endif
