@@ -14,7 +14,7 @@ class Material extends Model
     use LogsActivity;
 
     protected $fillable = [
-        'module_category_uuid', 'module_name_uuid', 'material_type', 'material_description', 'volume', 'available', 'unit_price'
+        'material_type', 'material_description', 'volume', 'available', 'unit_price'
     ];
 
 
@@ -50,10 +50,5 @@ class Material extends Model
     public function getDescriptionForEvent(string $eventName): string
     {
         return "Data has been {$eventName}";
-    }
-
-    public function moduleName()
-    {
-        return $this->belongsTo(ModuleName::class, 'module_name_uuid', 'uuid');
     }
 }

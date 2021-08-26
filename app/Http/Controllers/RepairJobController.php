@@ -95,7 +95,7 @@ class RepairJobController extends Controller
     public function edit($uuid)
     {
         $repair_job = RepairJobOrder::uuid($uuid);
-        $materials = Material::where('module_name_uuid', $repair_job->repair->ModuleType->brand->moduleName->uuid)->where('available', '>', 0)->get();
+        $materials = Material::where('available', '>', 0)->get();
         return view('repair-job.edit', compact('repair_job', 'materials'));
     }
 
@@ -108,7 +108,6 @@ class RepairJobController extends Controller
      */
     public function update(Request $request, $uuid)
     {
-        // dd($request->all());
         $rules = [
             'repair_status' => 'required',
             'complain' => 'required',
