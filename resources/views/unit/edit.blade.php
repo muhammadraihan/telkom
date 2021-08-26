@@ -29,17 +29,17 @@
                     {!! Form::open(['route' => ['unit.update',$unit->uuid],'method' => 'PUT','class' =>
                     'needs-validation','novalidate']) !!}
                     <div class="form-group col-md-4 mb-3">
-                        {{ Form::label('witel_uuid','Nama Witel',['class' => 'required form-label'])}}
+                        {{ Form::label('witel_uuid','Witel',['class' => 'required form-label'])}}
                         {!! Form::select('witel_uuid', $witel, $unit->witel_uuid, ['class' => 'witel
                         form-control'.($errors->has('witel_uuid') ? 'is-invalid':''), 'required'
-                        => '', 'placeholder' => 'Select Nama Witel ...']) !!}
+                        => '', 'placeholder' => 'Select Witel']) !!}
                         @if ($errors->has('witel_uuid'))
                         <div class="invalid-feedback">{{ $errors->first('witel_uuid') }}</div>
                         @endif
                     </div>
                     <div class="form-group col-md-4 mb-3">
-                        {{ Form::label('name','Nama Unit',['class' => 'required form-label'])}}
-                        {{ Form::text('name', $unit->name,['placeholder' => 'Nama Unit','class' => 'form-control '.($errors->has('name') ? 'is-invalid':''),'required', 'autocomplete' => 'off'])}}
+                        {{ Form::label('name','Unit',['class' => 'required form-label'])}}
+                        {{ Form::text('name', $unit->name,['placeholder' => 'Unit','class' => 'form-control '.($errors->has('name') ? 'is-invalid':''),'required', 'autocomplete' => 'off'])}}
                         @if ($errors->has('name'))
                         <div class="invalid-feedback">{{ $errors->first('name') }}</div>
                         @endif

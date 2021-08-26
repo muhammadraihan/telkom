@@ -181,7 +181,7 @@ class Helper
   {
     switch ($urgent_status) {
       case 0:
-        return '<span class="badge badge-success">NOT URGENT</span>';
+        return '<span class="badge badge-success">NON-URGENT</span>';
         break;
       case 1:
         return '<span class="badge badge-danger">URGENT</span>';
@@ -247,7 +247,7 @@ class Helper
   {
     switch ($repair_item_status) {
       case 0:
-        return '<span class="badge badge-danger">NON REPAIR</span>';
+        return '<span class="badge badge-danger">NON-REPAIR</span>';
         break;
       case 1;
         return '<span class="badge badge-success">REPAIRED</span>';
@@ -285,7 +285,7 @@ class Helper
   {
     switch ($warranty_status) {
       case 0:
-        return '<span class="badge badge-danger">NOT WARRANTY</span>';
+        return '<span class="badge badge-danger">NON-WARRANTY</span>';
         break;
       case 1:
         return '<span class="badge badge-info">WARRANTY</span>';

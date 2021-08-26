@@ -9,10 +9,7 @@
 @section('content')
 <div class="subheader">
     <h1 class="subheader-title">
-        <i class='subheader-icon fal fa-users'></i> Module: <span class='fw-300'>Brand</span>
-        <small>
-            Module for manage Module Brand.
-        </small>
+        <i class='subheader-icon fal fa-box'></i> BRAND
     </h1>
 </div>
 <div class="row">
@@ -20,7 +17,7 @@
         <div id="panel-1" class="panel">
             <div class="panel-hdr">
                 <h2>
-                    Module Brand <span class="fw-300"><i>List</i></span>
+                    Brand <span class="fw-300"><i>List</i></span>
                 </h2>
                 <div class="panel-toolbar">
                     <a class="nav-link active" href="{{route('brand.create')}}"><i class="fal fa-plus-circle">
@@ -38,9 +35,9 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Module Category</th>
-                                <th>Nama Module</th>
-                                <th>Nama Brand</th>
+                                <th>Category</th>
+                                <th>Name</th>
+                                <th>Brand</th>
                                 <th>Created By</th>
                                 <th>Edited By</th>
                                 <th>Action</th>

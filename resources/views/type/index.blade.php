@@ -9,10 +9,7 @@
 @section('content')
 <div class="subheader">
     <h1 class="subheader-title">
-        <i class='subheader-icon fal fa-users'></i> Module: <span class='fw-300'>Type</span>
-        <small>
-            Module for manage Module Type.
-        </small>
+        <i class='subheader-icon fal fa-box'></i> Type
     </h1>
 </div>
 <div class="row">
@@ -20,7 +17,7 @@
         <div id="panel-1" class="panel">
             <div class="panel-hdr">
                 <h2>
-                    Module Type <span class="fw-300"><i>List</i></span>
+                    Type <span class="fw-300"><i>List</i></span>
                 </h2>
                 <div class="panel-toolbar">
                     <a class="nav-link active" href="{{route('type.create')}}"><i class="fal fa-plus-circle">
@@ -38,10 +35,10 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Module Category</th>
-                                <th>Module Name</th>
-                                <th>Nama Brand</th>
-                                <th>Nama Type</th>
+                                <th>Category</th>
+                                <th>Name</th>
+                                <th>Brand</th>
+                                <th>Type</th>
                                 <th>Created By</th>
                                 <th>Edited By</th>
                                 <th width="120px">Action</th>

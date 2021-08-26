@@ -33,7 +33,7 @@
                             {{ Form::label('witel','Witel',['class' => 'required form-label'])}}
                             {!! Form::select('witel', $witels, '', ['id' => 'witel','class' =>
                             'form-control'.($errors->has('witel') ? 'is-invalid':''), 'required'
-                            => '', 'placeholder' => 'Pilih Witel']) !!}
+                            => '', 'placeholder' => 'Select Witel']) !!}
                             @if ($errors->has('witel'))
                             <div class="help-block text-danger">{{ $errors->first('witel') }}</div>
                             @endif
@@ -72,7 +72,7 @@
                             {!! Form::select('module_category', $module_category, '', ['id' =>
                             'module_category','class' =>
                             'form-control'.($errors->has('module_category') ? 'is-invalid':''), 'required'
-                            => '', 'placeholder' => 'Pilih Module Category']) !!} @if ($errors->has('module_category'))
+                            => '', 'placeholder' => 'Select Module Category']) !!} @if ($errors->has('module_category'))
                             <div class="help-block text-danger">{{ $errors->first('module_category') }}</div>
                             @endif
                         </div>
@@ -125,7 +125,7 @@
                         </div>
                     </div>
                     <div class="form-group col-md-12 mb-3">
-                        {{ Form::label('accessories','Accessories',['class' => 'form-label'])}}
+                        {{ Form::label('accessories','Accessory',['class' => 'form-label'])}}
                         <div class="frame-wrap">
                             @foreach($accessories as $item)
                             <div class="custom-control custom-checkbox custom-control-inline">
@@ -137,7 +137,7 @@
                         </div>
                     </div>
                     <div class="form-group col-md-4 mb-3">
-                        {{ Form::label('warranty_status','Status Garansi',['class' => 'required form-label'])}}
+                        {{ Form::label('warranty_status','Warranty Status',['class' => 'required form-label'])}}
                         {!! Form::select('warranty_status', array('0' => 'NON-WARRANTY', '1' => 'WARRANTY'), '',
                         ['id'=>'garansi','class'
                         => 'custom-select'.($errors->has('warranty_status') ? 'is-invalid':''), 'required'
@@ -147,7 +147,7 @@
                         @endif
                     </div>
                     <div class="form-group col-md-4 mb-3">
-                        {{ Form::label('urgent_status','Status Urgensi',['class' => 'required form-label'])}}
+                        {{ Form::label('urgent_status','Urgent Status',['class' => 'required form-label'])}}
                         {!! Form::select('urgent_status', array('0' => 'NON-URGENT', '1' => 'URGENT'), '',
                         ['id'=>'urgent','class'
                         => 'custom-select'.($errors->has('urgent_status') ? 'is-invalid':''), 'required'
@@ -188,7 +188,7 @@
                 data: {witel_uuid:witel_uuid},
                 success: function(e) {
                     $("#unit").empty();
-                    $("#unit").append('<option value="">Pilih Unit</option>');
+                    $("#unit").append('<option value="">Select Unit</option>');
                     $.each(e, function(key, value) {
                         $("#unit").append('<option value="'+ key +'">'+ value +'</option>');
                     });
@@ -203,7 +203,7 @@
                 data: {category_uuid:category_uuid},
                 success: function(e) {
                     $("#module_name").empty();
-                    $("#module_name").append('<option value="">Pilih Module Name</option>');
+                    $("#module_name").append('<option value="">Select Module Name</option>');
                     $.each(e, function(key, value) {
                         $("#module_name").append('<option value="'+ key +'">'+ value +'</option>');
                     });
@@ -218,7 +218,7 @@
                 data: {name_uuid:name_uuid},
                 success: function(e) {
                     $("#module_brand").empty();
-                    $("#module_brand").append('<option value="">Pilih Module Brand</option>');
+                    $("#module_brand").append('<option value="">Select Module Brand</option>');
                     $.each(e, function(key, value) {
                         $("#module_brand").append('<option value="'+ key +'">'+ value +'</option>');
                     });
@@ -233,7 +233,7 @@
                 data: {brand_uuid:brand_uuid},
                 success: function(e) {
                     $("#module_type").empty();
-                    $("#module_type").append('<option value="">Pilih Module Type</option>');
+                    $("#module_type").append('<option value="">Select Module Type</option>');
                     $.each(e, function(key, value) {
                         $("#module_type").append('<option value="'+ key +'">'+ value +'</option>');
                     });

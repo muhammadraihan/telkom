@@ -9,10 +9,7 @@
 @section('content')
 <div class="subheader">
     <h1 class="subheader-title">
-        <i class='subheader-icon fal fa-users'></i> Module: <span class='fw-300'>Witel</span>
-        <small>
-            Module for manage Witel.
-        </small>
+        <i class='subheader-icon fal fa-users'></i> Witel
     </h1>
 </div>
 <div class="row">
@@ -38,7 +35,7 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Nama Witel</th>
+                                <th>Witel</th>
                                 <th>Created By</th>
                                 <th>Edited By</th>
                                 <th>Action</th>

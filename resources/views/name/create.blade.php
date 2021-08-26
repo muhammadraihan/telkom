@@ -29,17 +29,17 @@
                     {!! Form::open(['route' => 'name.store','method' => 'POST','class' =>
                     'needs-validation','novalidate']) !!}
                     <div class="form-group col-md-4 mb-3">
-                        {{ Form::label('module_category_uuid','Nama Kategori',['class' => 'required form-label'])}}
+                        {{ Form::label('module_category_uuid','Category',['class' => 'required form-label'])}}
                         {!! Form::select('module_category_uuid', $category, '', ['class' => 'category
                         form-control'.($errors->has('module_category_uuid') ? 'is-invalid':''), 'required'
-                        => '', 'placeholder' => 'Select Nama Kategori ...']) !!}
+                        => '', 'placeholder' => 'Select Category']) !!}
                         @if ($errors->has('module_category_uuid'))
                         <div class="invalid-feedback">{{ $errors->first('module_category_uuid') }}</div>
                         @endif
                     </div>
                     <div class="form-group col-md-4 mb-3">
-                        {{ Form::label('name','Nama Module',['class' => 'required form-label'])}}
-                        {{ Form::text('name',null,['placeholder' => 'Nama Module','class' => 'form-control '.($errors->has('name') ? 'is-invalid':''),'required', 'autocomplete' => 'off'])}}
+                        {{ Form::label('name','Module Name',['class' => 'required form-label'])}}
+                        {{ Form::text('name',null,['placeholder' => 'Module Name','class' => 'form-control '.($errors->has('name') ? 'is-invalid':''),'required', 'autocomplete' => 'off'])}}
                         @if ($errors->has('name'))
                         <div class="invalid-feedback">{{ $errors->first('name') }}</div>
                         @endif

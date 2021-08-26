@@ -11,10 +11,7 @@
 @section('content')
 <div class="subheader">
     <h1 class="subheader-title">
-        <i class='subheader-icon fal fa-users'></i> Export: <span class='fw-300'>Total Module By Witel</span>
-        <small>
-            Module for export total module by witel data.
-        </small>
+        <i class='subheader-icon fal fa-users'></i> Report: <span class='fw-300'>Total Module By Witel</span>
     </h1>
 </div>
 <div class="row">

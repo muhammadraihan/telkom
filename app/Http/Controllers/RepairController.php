@@ -62,7 +62,7 @@ class RepairController extends Controller
                         return '<a class="btn btn-info btn-sm btn-icon waves-effect waves-themed" data-toggle="modal" id="detail-button" data-target="#detail-modal" data-attr="' . URL::route('repair.show', $row->uuid) . '" title="Detail Module" href=""><i class="fal fa-search-plus"></i></a>';
                     }
                     return '<a class="btn btn-info btn-sm btn-icon waves-effect waves-themed" data-toggle="modal" id="detail-button" data-target="#detail-modal" data-attr="' . URL::route('repair.show', $row->uuid) . '" title="Detail Module" href=""><i class="fal fa-search-plus"></i></a>
-                    <a class="btn btn-success btn-sm btn-icon waves-effect waves-themed" href="' . route('repair.edit', $row->uuid) . '" title="Progress Tiket Ke Teknisi"><i class="fal fa-wrench"></i></a>';
+                    <a class="btn btn-success btn-sm btn-icon waves-effect waves-themed" href="' . route('repair.edit', $row->uuid) . '" title="Progress Ticket to Repair"><i class="fal fa-wrench"></i></a>';
                 })
                 ->removeColumn('id')
                 ->removeColumn('uuid')
@@ -186,7 +186,7 @@ class RepairController extends Controller
                         return '<a class="btn btn-info btn-sm btn-icon waves-effect waves-themed" data-toggle="modal" id="detail-button" data-target="#detail-modal" data-attr="' . URL::route('repair.show', $row->uuid) . '" title="Detail Module" href=""><i class="fal fa-search-plus"></i></a>';
                     }
                     return '<a class="btn btn-info btn-sm btn-icon waves-effect waves-themed" data-toggle="modal" id="detail-button" data-target="#detail-modal" data-attr="' . URL::route('repair.show', $row->uuid) . '" title="Detail Module" href=""><i class="fal fa-search-plus"></i></a>
-                    <a class="btn btn-success btn-sm btn-icon waves-effect waves-themed" href="' . route('repair.edit', $row->uuid) . '" title="Progress Tiket Ke Teknisi"><i class="fal fa-wrench"></i></a>';
+                    <a class="btn btn-success btn-sm btn-icon waves-effect waves-themed" href="' . route('repair.edit', $row->uuid) . '" title="Progress Ticket To Repair"><i class="fal fa-wrench"></i></a>';
                 })
                 ->removeColumn('id')
                 ->removeColumn('uuid')

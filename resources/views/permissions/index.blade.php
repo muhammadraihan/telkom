@@ -3,16 +3,13 @@
 @section('title', 'Permission Management')
 
 @section('css')
-    <link rel="stylesheet" media="screen, print" href="{{asset('css/datagrid/datatables/datatables.bundle.css')}}">
+<link rel="stylesheet" media="screen, print" href="{{asset('css/datagrid/datatables/datatables.bundle.css')}}">
 @endsection
 
 @section('content')
 <div class="subheader">
     <h1 class="subheader-title">
-        <i class='subheader-icon fal fa-table'></i> Module: <span class='fw-300'>Permission</span>
-        <small>
-            Module for manage access permissions.
-        </small>
+        <i class='subheader-icon fal fa-table'></i> Permissions
     </h1>
 </div>
 <div class="row">
@@ -24,7 +21,8 @@
                 </h2>
                 <div class="panel-toolbar">
                     @can('add_permissions')
-                    <a class="nav-link active" href="{{route('permissions.create')}}"><i class="fal fa-plus-circle"> </i>
+                    <a class="nav-link active" href="{{route('permissions.create')}}"><i class="fal fa-plus-circle">
+                        </i>
                         <span class="nav-link-text">Add New</span>
                     </a>
                     @endcan
@@ -52,9 +50,9 @@
 @endsection
 
 @section('js')
-    <script src="{{asset('js/datagrid/datatables/datatables.bundle.js')}}"></script>
-    <script>
-        $(document).ready(function(){
+<script src="{{asset('js/datagrid/datatables/datatables.bundle.js')}}"></script>
+<script>
+    $(document).ready(function(){
             $('#datatable').DataTable( {
                 "processing": true,
                 "serverSide": true,
@@ -74,5 +72,5 @@
                 ]
             });
         });
-    </script>
+</script>
 @endsection

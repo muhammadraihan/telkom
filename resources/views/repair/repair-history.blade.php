@@ -9,10 +9,7 @@
 @section('content')
 <div class="subheader">
     <h1 class="subheader-title">
-        <i class='subheader-icon fal fa-wrench'></i> Module: <span class='fw-300'>Repair Job History</span>
-        <small>
-            Module for manage Repair Job History.
-        </small>
+        <i class='subheader-icon fal fa-wrench'></i> Repair History
     </h1>
 </div>
 <div class="row">
@@ -20,7 +17,7 @@
         <div id="panel-1" class="panel">
             <div class="panel-hdr">
                 <h2>
-                    Repair Job <span class="fw-300"><i>History</i></span>
+                    Repair <span class="fw-300"><i>History</i></span>
                 </h2>
                 <div class="panel-toolbar">
                     <a class="nav-link active" href="{{route('repair.index')}}"><i class="fal fa-arrow-alt-left">

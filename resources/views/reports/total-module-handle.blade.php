@@ -10,10 +10,7 @@
 @section('content')
 <div class="subheader">
     <h1 class="subheader-title">
-        <i class='subheader-icon fal fa-file-excel'></i> Export: <span class='fw-300'>Total Module Handle</span>
-        <small>
-            Module for export total module handle data.
-        </small>
+        <i class='subheader-icon fal fa-file-excel'></i> Report: <span class='fw-300'>Total Module Handle</span>
     </h1>
 </div>
 <div class="row">

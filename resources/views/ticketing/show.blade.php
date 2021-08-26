@@ -2,7 +2,7 @@
     <div class="col-xl-6">
         <div id="panel-1" class="panel">
             <div class="panel-hdr">
-                <h2>Tiket Nomor :<span class="fw-300"><i>{{ $repair_item->ticket->ticket_number }}</i></span></h2>
+                <h2>Ticket Number :<span class="fw-300"><i>{{ $repair_item->ticket->ticket_number }}</i></span></h2>
             </div>
             <div class="panel-container show">
                 <div class="panel-content">

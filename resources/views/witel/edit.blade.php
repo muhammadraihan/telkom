@@ -29,8 +29,8 @@
                     {!! Form::open(['route' => ['witel.update',$witel->uuid],'method' => 'PUT','class' =>
                     'needs-validation','novalidate']) !!}
                     <div class="form-group col-md-4 mb-3">
-                        {{ Form::label('name','Nama Witel',['class' => 'required form-label'])}}
-                        {{ Form::text('name',$witel->name,['placeholder' => 'Nama Witel','class' => 'form-control '.($errors->has('name') ? 'is-invalid':''),'required', 'autocomplete' => 'off'])}}
+                        {{ Form::label('name','Witel',['class' => 'required form-label'])}}
+                        {{ Form::text('name',$witel->name,['placeholder' => 'Witel','class' => 'form-control '.($errors->has('name') ? 'is-invalid':''),'required', 'autocomplete' => 'off'])}}
                         @if ($errors->has('name'))
                         <div class="invalid-feedback">{{ $errors->first('name') }}</div>
                         @endif
