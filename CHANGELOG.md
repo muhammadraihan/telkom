@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.3.2](https://git.wbaindonesia.com/wbaindonesia/telkom-service-mgmt-system/compare/v1.3.1...v1.3.2) (2021-08-10)
+
+
+### Bug Fixes
+
+* Update unit id on user update ([898ec94](https://git.wbaindonesia.com/wbaindonesia/telkom-service-mgmt-system/commit/898ec94ffbcceec226d8b47aea5183a9ed0a8d0f))
+
+### [1.3.1](https://git.wbaindonesia.com/wbaindonesia/telkom-service-mgmt-system/compare/v1.3.0...v1.3.1) (2021-08-10)
+
+
+### Features
+
+* Add unit for unit role ([d7ebd13](https://git.wbaindonesia.com/wbaindonesia/telkom-service-mgmt-system/commit/d7ebd13551563ca8446c4ef14ef08daa827cce81))
+* Filtering ticket for unit role ([5794021](https://git.wbaindonesia.com/wbaindonesia/telkom-service-mgmt-system/commit/5794021ee33782145a6650679af8e13c5c14b1de))
+
+
+### Bug Fixes
+
+* Decrease toastr notification timeout ([deb3bf1](https://git.wbaindonesia.com/wbaindonesia/telkom-service-mgmt-system/commit/deb3bf14281f23377e6e4ceb3e9f831850b8f1f6))
+* Remove edit button in ticket history ([3d2fac9](https://git.wbaindonesia.com/wbaindonesia/telkom-service-mgmt-system/commit/3d2fac9f5322c2c17b57a0aecfdd22c080e6ad39))
+* Resource name now can include dash ([9388d0f](https://git.wbaindonesia.com/wbaindonesia/telkom-service-mgmt-system/commit/9388d0f67d42b56137c9e208646ba86fa359837e))
+
 ## [1.3.0](https://git.wbaindonesia.com/wbaindonesia/telkom-service-mgmt-system/compare/v1.3.0-alpha.2...v1.3.0) (2021-07-18)
 
 
