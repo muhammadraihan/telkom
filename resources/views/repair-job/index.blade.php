@@ -9,10 +9,7 @@
 @section('content')
 <div class="subheader">
     <h1 class="subheader-title">
-        <i class='subheader-icon fal fa-wrench'></i> Module: <span class='fw-300'>Repair Job Order</span>
-        <small>
-            Module for manage repair Job Order.
-        </small>
+        <i class='subheader-icon fal fa-wrench'></i> Repair Job
     </h1>
 </div>
 <div class="row">
@@ -20,7 +17,7 @@
         <div id="panel-1" class="panel">
             <div class="panel-hdr">
                 <h2>
-                    Repair Job Order <span class="fw-300"><i>List</i></span>
+                    Repair Job <span class="fw-300"><i>List</i></span>
                 </h2>
                 <div class="panel-toolbar">
                     @role('repair')

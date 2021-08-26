@@ -29,8 +29,8 @@
                     {!! Form::open(['route' => ['category.update',$category->uuid],'method' => 'PUT','class' =>
                     'needs-validation','novalidate']) !!}
                     <div class="form-group col-md-4 mb-3">
-                        {{ Form::label('name','Nama Kategori',['class' => 'required form-label'])}}
-                        {{ Form::text('name',$category->name,['placeholder' => 'Nama Kategori','class' => 'form-control '.($errors->has('name') ? 'is-invalid':''),'required', 'autocomplete' => 'off'])}}
+                        {{ Form::label('name','Category',['class' => 'required form-label'])}}
+                        {{ Form::text('name',$category->name,['placeholder' => 'Category','class' => 'form-control '.($errors->has('name') ? 'is-invalid':''),'required', 'autocomplete' => 'off'])}}
                         @if ($errors->has('name'))
                         <div class="invalid-feedback">{{ $errors->first('name') }}</div>
                         @endif

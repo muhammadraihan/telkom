@@ -60,8 +60,8 @@
                         </div>
                     </div>
                     <div class="form-group col-md-4 mb-3">
-                        {{ Form::label('name','Nama Type',['class' => 'required form-label'])}}
-                        {{ Form::text('name', $type->name,['placeholder' => 'Nama Type','class' => 'form-control '.($errors->has('name') ? 'is-invalid':''),'required', 'autocomplete' => 'off'])}}
+                        {{ Form::label('name','Module Type',['class' => 'required form-label'])}}
+                        {{ Form::text('name', $type->name,['placeholder' => 'Module Type','class' => 'form-control '.($errors->has('name') ? 'is-invalid':''),'required', 'autocomplete' => 'off'])}}
                         @if ($errors->has('name'))
                         <div class="invalid-feedback">{{ $errors->first('name') }}</div>
                         @endif

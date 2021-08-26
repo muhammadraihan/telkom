@@ -2,7 +2,7 @@
     <div class="col-lg-12">
         <div id="panel-1" class="panel">
             <div class="panel-hdr">
-                <h2>Tiket Nomor :<span class="fw-300"><i>{{ $repair_job->repair->ticket->ticket_number }}</i></span>
+                <h2>Ticket Number :<span class="fw-300"><i>{{ $repair_job->repair->ticket->ticket_number }}</i></span>
                 </h2>
                 <a class="nav-link active" href="#"><i class="fal fa-calendar-alt">
                     </i>

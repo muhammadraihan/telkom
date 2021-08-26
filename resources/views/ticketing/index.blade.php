@@ -9,10 +9,7 @@
 @section('content')
 <div class="subheader">
     <h1 class="subheader-title">
-        <i class='subheader-icon fal fa-ticket'></i> Module: <span class='fw-300'>Complain Ticket</span>
-        <small>
-            Module for manage complain ticket
-        </small>
+        <i class='subheader-icon fal fa-ticket'></i> Complain Ticket
     </h1>
 </div>
 <div class="row">

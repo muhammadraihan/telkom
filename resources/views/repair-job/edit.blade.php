@@ -94,7 +94,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-4 mb-3">
                             {{ Form::label('complain','Complain',['class' => 'required form-label'])}}
-                            {{ Form::textarea('complain', '',['placeholder' => 'complain','class' => 'form-control '.($errors->has('complain') ? 'is-invalid':''),'required'])}}
+                            {{ Form::textarea('complain', '',['placeholder' => 'Complain Notes','class' => 'form-control '.($errors->has('complain') ? 'is-invalid':''),'required'])}}
                             @if ($errors->has('complain'))
                             <div class="invalid-feedback">{{ $errors->first('complain') }}</div>
                             @endif

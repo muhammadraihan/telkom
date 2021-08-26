@@ -14,7 +14,7 @@ Login
         class="page-logo m-0 w-100 align-items-center justify-content-center rounded border-bottom-left-radius-0 border-bottom-right-radius-0 px-4">
         <a href="javascript:void(0)" class="page-logo-link press-scale-down d-flex align-items-center">
             <img src="{{asset('img/telkom_logo.png')}}" alt="App logo" aria-roledescription="logo">
-            <span class="page-logo-text mr-1">Secure Login</span>
+            <span class="page-logo-text mr-1">{{env('APP_NAME')}}</span>
             <i class="fal fa-angle-down d-inline-block ml-1 fs-lg color-primary-300"></i>
         </a>
     </div>
@@ -25,9 +25,6 @@ Login
                 <label class="form-label" for="email">Email</label>
                 <input type="email" id="email" class="form-control @error('email') is-invalid @enderror" name="email"
                     value="{{ old('email') }}" required autocomplete="email" placeholder="email">
-                <span class="help-block">
-                    Your registered email to app
-                </span>
                 @error('email')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
@@ -38,10 +35,6 @@ Login
                 <label class="form-label" for="password">Password</label>
                 <input type="password" id="password" class="form-control @error('password') is-invalid @enderror"
                     placeholder="password" name="password" required autocomplete="current-password">
-                <span class="help-block">
-                    Your password
-                </span>
-
                 @error('password')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>

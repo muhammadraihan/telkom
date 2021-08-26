@@ -10,10 +10,7 @@
 @section('content')
 <div class="subheader">
     <h1 class="subheader-title">
-        <i class='subheader-icon fal fa-file-excel'></i> Export: <span class='fw-300'>Module Repair By Vendor</span>
-        <small>
-            Module for export repair module data.
-        </small>
+        <i class='subheader-icon fal fa-file-excel'></i> Report: <span class='fw-300'>Module Repair By Vendor</span>
     </h1>
 </div>
 <div class="row">

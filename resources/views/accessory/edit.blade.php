@@ -29,8 +29,8 @@
                     {!! Form::open(['route' => ['accessory.update',$accessory->uuid],'method' => 'PUT','class' =>
                     'needs-validation','novalidate']) !!}
                     <div class="form-group col-md-4 mb-3">
-                        {{ Form::label('name','Nama Aksesoris',['class' => 'required form-label'])}}
-                        {{ Form::text('name',$accessory->name,['placeholder' => 'Nama Aksesoris','class' => 'form-control '.($errors->has('name') ? 'is-invalid':''),'required', 'autocomplete' => 'off'])}}
+                        {{ Form::label('name','Accessory',['class' => 'required form-label'])}}
+                        {{ Form::text('name',$accessory->name,['placeholder' => 'Accessory','class' => 'form-control '.($errors->has('name') ? 'is-invalid':''),'required', 'autocomplete' => 'off'])}}
                         @if ($errors->has('name'))
                         <div class="invalid-feedback">{{ $errors->first('name') }}</div>
                         @endif

@@ -29,29 +29,9 @@
                     {!! Form::open(['route' => 'material.store','method' => 'POST','class' =>
                     'needs-validation','novalidate']) !!}
                     <div class="form-row">
-                        <div class="form-group col-md-4 mb-3">
-                            {{ Form::label('module_category_uuid','Module Category',['class' => 'required form-label'])}}
-                            {!! Form::select('module_category_uuid', $category, '', ['id' => 'module_category','class'
-                            => 'category
-                            form-control'.($errors->has('module_category_uuid') ? 'is-invalid':''), 'required'
-                            => '', 'placeholder' => 'Select Module Category ...']) !!}
-                            @if ($errors->has('module_category_uuid'))
-                            <div class="invalid-feedback">{{ $errors->first('module_category_uuid') }}</div>
-                            @endif
-                        </div>
-                        <div class="form-group col-md-4 mb-3">
-                            {{ Form::label('module_name','Module Name',['class' => 'required form-label'])}}
-                            <select id="module_name" class="name form-control select2" name="module_name">
-                            </select>
-                            @if ($errors->has('module_name'))
-                            <div class="help-block text-danger">{{ $errors->first('module_name') }}</div>
-                            @endif
-                        </div>
-                    </div>
-                    <div class="form-row">
                         <div class="form-group col-md-3 mb-3">
-                            {{ Form::label('material_type','Jenis Material',['class' => 'required form-label'])}}
-                            {{ Form::text('material_type',null,['placeholder' => 'Jenis Material','class' => 'form-control '.($errors->has('material_type') ? 'is-invalid':''),'required', 'autocomplete' => 'off'])}}
+                            {{ Form::label('material_type','Material Type',['class' => 'required form-label'])}}
+                            {{ Form::text('material_type',null,['placeholder' => 'Material Type','class' => 'form-control '.($errors->has('material_type') ? 'is-invalid':''),'required', 'autocomplete' => 'off'])}}
                             @if ($errors->has('material_type'))
                             <div class="invalid-feedback">{{ $errors->first('material_type') }}</div>
                             @endif
@@ -73,17 +53,8 @@
                             <div class="invalid-feedback">{{ $errors->first('available') }}</div>
                             @endif
                         </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-4 mb-3">
-                            {{ Form::label('material_description','Deskripsi Material',['class' => 'required form-label'])}}
-                            {{ Form::textarea('material_description',null,['placeholder' => 'Deskripsi Material','class' => 'form-control '.($errors->has('material_description') ? 'is-invalid':''),'required', 'autocomplete' => 'off'])}}
-                            @if ($errors->has('material_description'))
-                            <div class="invalid-feedback">{{ $errors->first('material_description') }}</div>
-                            @endif
-                        </div>
-                        <div class="form-group col-md-4 mb-3">
-                            {{ Form::label('unit_price','Harga Satuan',['class' => 'required form-label'])}}
+                        <div class="form-group col-md-3 mb-3">
+                            {{ Form::label('unit_price','Price',['class' => 'required form-label'])}}
                             <div class="input-group">
                                 <div class="input-group-append">
                                     <span class="input-group-text">
@@ -95,6 +66,15 @@
                                 <div class="invalid-feedback">{{ $errors->first('unit_price') }}</div>
                                 @endif
                             </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-4 mb-3">
+                            {{ Form::label('material_description','Material Description',['class' => 'required form-label'])}}
+                            {{ Form::textarea('material_description',null,['placeholder' => 'Material Description','class' => 'form-control '.($errors->has('material_description') ? 'is-invalid':''),'required', 'autocomplete' => 'off'])}}
+                            @if ($errors->has('material_description'))
+                            <div class="invalid-feedback">{{ $errors->first('material_description') }}</div>
+                            @endif
                         </div>
                     </div>
                     <div

@@ -20,7 +20,7 @@ class InventoryMaterialStockExport implements FromQuery, WithMapping, WithHeadin
     public function query()
     {
         DB::statement(DB::raw('set @rownum=0'));
-        $statement = Material::select([DB::raw('@rownum  := @rownum  + 1 AS rownum'), 'module_name_uuid', 'material_type', 'material_description', 'available', 'volume', 'unit_price']);
+        $statement = Material::select([DB::raw('@rownum  := @rownum  + 1 AS rownum'), 'material_type', 'material_description', 'available', 'volume', 'unit_price']);
         return $statement;
     }
 
@@ -28,8 +28,6 @@ class InventoryMaterialStockExport implements FromQuery, WithMapping, WithHeadin
     {
         return [
             $material->rownum,
-            $material->moduleName->category->name,
-            $material->moduleName->name,
             $material->material_type,
             $material->material_description,
             $material->available,
@@ -42,8 +40,6 @@ class InventoryMaterialStockExport implements FromQuery, WithMapping, WithHeadin
     {
         return [
             'NO',
-            'MODULE CATEGORY',
-            'MODULE NAME',
             'MATERIAL',
             'DESKRIPSI',
             'AVAILABLE',

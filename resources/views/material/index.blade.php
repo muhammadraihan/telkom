@@ -9,10 +9,7 @@
 @section('content')
 <div class="subheader">
     <h1 class="subheader-title">
-        <i class='subheader-icon fal fa-users'></i> Module: <span class='fw-300'>Material</span>
-        <small>
-            Module for manage Material.
-        </small>
+        <i class='subheader-icon fal fa-microchip'></i> Material
     </h1>
 </div>
 <div class="row">
@@ -38,13 +35,11 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Module Category</th>
-                                <th>Module Name</th>
                                 <th>Material</th>
                                 <th>Desc. Material</th>
-                                <th>Volume</th>
                                 <th>Available</th>
-                                <th>Unit Price</th>
+                                <th>Volume</th>
+                                <th>Price Per Volume</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -103,13 +98,11 @@
             },
             "columns": [
                 {data: 'DT_RowIndex', name: 'DT_RowIndex', searchable:false},
-                {data: 'category'},
-                {data: 'module_name_uuid', name: 'module_name_uuid'},
-                {data: 'material_type', name: 'material_type'},
+                {data: 'material_type', name: 'material_type',width:'20%'},
                 {data: 'material_description', name: 'material_description'},
-                {data: 'volume', name: 'volume'},
                 {data: 'available', name: 'available'},
-                {data: 'unit_price', name: 'unit_price'},
+                {data: 'volume', name: 'volume'},
+                {data: 'unit_price', name: 'unit_price', width:'15%'},
                 {data: 'action', width:'10%', orderable: false, searchable: false},
             ]
         });
