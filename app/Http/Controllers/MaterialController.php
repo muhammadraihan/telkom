@@ -25,12 +25,6 @@ class MaterialController extends Controller
             $data = Material::all();
             return Datatables::of($data)
                 ->addIndexColumn()
-                ->editColumn('module_name_uuid', function ($row) {
-                    return $row->moduleName->name;
-                })
-                ->addColumn('category', function ($row) {
-                    return $row->moduleName->category->name;
-                })
                 ->editColumn('unit_price', function ($row) {
                     return $row->unit_price ? 'Rp.' . ' ' . number_format($row->unit_price, 2) : '';
                 })
@@ -68,8 +62,6 @@ class MaterialController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'module_name' => 'required',
-            'module_category_uuid' => 'required',
             'material_type' => 'required',
             'material_description' => 'required',
             'volume' => 'required',
@@ -88,7 +80,6 @@ class MaterialController extends Controller
         $formattedprice = str_replace(',', '', $unit_price);
 
         $material = new Material();
-        $material->module_name_uuid = $request->module_name;
         $material->material_type = strtoupper($request->material_type);
         $material->material_description = strtoupper($request->material_description);
         $material->volume = strtoupper($request->volume);
@@ -121,9 +112,8 @@ class MaterialController extends Controller
      */
     public function edit($id)
     {
-        $category = ModuleCategory::all()->pluck('name', 'uuid');
         $material = Material::uuid($id);
-        return view('material.edit', compact('category', 'material'));
+        return view('material.edit', compact('material'));
     }
 
     /**
@@ -136,8 +126,6 @@ class MaterialController extends Controller
     public function update(Request $request, $id)
     {
         $rules = [
-            'module_name' => 'required',
-            'module_category_uuid' => 'required',
             'material_type' => 'required',
             'material_description' => 'required',
             'volume' => 'required',
@@ -156,7 +144,6 @@ class MaterialController extends Controller
         $formattedprice = str_replace(',', '', $unit_price);
 
         $material = Material::uuid($id);
-        $material->module_name_uuid = $request->module_name;
         $material->material_type = strtoupper($request->material_type);
         $material->material_description = strtoupper($request->material_description);
         $material->volume = strtoupper($request->volume);
