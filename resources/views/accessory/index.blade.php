@@ -9,7 +9,7 @@
 @section('content')
 <div class="subheader">
     <h1 class="subheader-title">
-        <i class='subheader-icon fal fa-clipboard-list'></i> Accessory
+        <i class='subheader-icon fal fa-clipboard-list'></i> Accessories
     </h1>
 </div>
 <div class="row">
@@ -17,7 +17,6 @@
         <div id="panel-1" class="panel">
             <div class="panel-hdr">
                 <h2>
-                    Accessory <span class="fw-300"><i>List</i></span>
                 </h2>
                 <div class="panel-toolbar">
                     <a class="nav-link active" href="{{route('accessory.create')}}"><i class="fal fa-plus-circle">

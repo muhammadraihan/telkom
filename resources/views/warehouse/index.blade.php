@@ -17,7 +17,6 @@
         <div id="panel-1" class="panel">
             <div class="panel-hdr">
                 <h2>
-                    Warehouse Job<span class="fw-300"><i>List</i></span>
                 </h2>
                 <a class="nav-link active" href="{{route('warehouse.history')}}"><i class="fal fa-list">
                     </i>

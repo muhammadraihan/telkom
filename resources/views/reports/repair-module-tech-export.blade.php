@@ -18,7 +18,6 @@
         <div id="panel-1" class="panel">
             <div class="panel-hdr">
                 <h2>
-                    MODULE REPAIR BY TECH
                 </h2>
             </div>
             <div class="panel-container show">

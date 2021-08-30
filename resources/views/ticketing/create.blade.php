@@ -11,7 +11,7 @@
     <div class="col-xl-6">
         <div id="panel-1" class="panel">
             <div class="panel-hdr">
-                <h2>Add<span class="fw-300"><i>Customer</i></span></h2>
+                <h2></h2>
                 <div class="panel-toolbar">
                     <a class="nav-link active" href="{{route('ticketing.index')}}"><i class="fal fa-arrow-alt-left">
                         </i>

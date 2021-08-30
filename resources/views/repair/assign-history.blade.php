@@ -17,7 +17,6 @@
         <div id="panel-1" class="panel">
             <div class="panel-hdr">
                 <h2>
-                    Assign <span class="fw-300"><i>History</i></span>
                 </h2>
                 <div class="panel-toolbar">
                     <a class="nav-link active" href="{{route('repair.index')}}"><i class="fal fa-arrow-alt-left">

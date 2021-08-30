@@ -18,7 +18,6 @@
         <div id="panel-1" class="panel">
             <div class="panel-hdr">
                 <h2>
-                    ALL MODULE HANDLE
                 </h2>
             </div>
             <div class="panel-container show">

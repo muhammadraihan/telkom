@@ -13,7 +13,6 @@
         <div id="panel-1" class="panel">
             <div class="panel-hdr">
                 <h2>
-                    Roles <span class="fw-300"><i>List</i></span>
                 </h2>
                 <div class="panel-toolbar">
                     @can('add_roles')
