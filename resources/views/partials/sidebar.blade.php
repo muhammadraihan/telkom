@@ -56,10 +56,10 @@
                 </a>
                 <ul>
                     <li>
-                        <a href="{{route('accessory.index')}}" title="Accessory Data"
+                        <a href="{{route('accessory.index')}}" title="Accessories Data"
                             data-filter-tags="accessory managements">
                             <i class="fal fa-clipboard-check"></i>
-                            <span class="nav-link-text" data-i18n="nav.accessory_data">Accessory</span>
+                            <span class="nav-link-text" data-i18n="nav.accessory_data">Accessories</span>
                         </a>
                     </li>
                     <li>

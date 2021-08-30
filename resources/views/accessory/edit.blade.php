@@ -11,7 +11,7 @@
     <div class="col-xl-6">
         <div id="panel-1" class="panel">
             <div class="panel-hdr">
-                <h2>Edit <span class="fw-300"><i>{{$accessory->name}}</i></span></h2>
+                <h2></h2>
                 <div class="panel-toolbar">
                     <a class="nav-link active" href="{{route('accessory.index')}}"><i class="fal fa-arrow-alt-left">
                         </i>
@@ -29,8 +29,8 @@
                     {!! Form::open(['route' => ['accessory.update',$accessory->uuid],'method' => 'PUT','class' =>
                     'needs-validation','novalidate']) !!}
                     <div class="form-group col-md-4 mb-3">
-                        {{ Form::label('name','Accessory',['class' => 'required form-label'])}}
-                        {{ Form::text('name',$accessory->name,['placeholder' => 'Accessory','class' => 'form-control '.($errors->has('name') ? 'is-invalid':''),'required', 'autocomplete' => 'off'])}}
+                        {{ Form::label('name','Accessories',['class' => 'required form-label'])}}
+                        {{ Form::text('name',$accessory->name,['placeholder' => 'Accessories','class' => 'form-control '.($errors->has('name') ? 'is-invalid':''),'required', 'autocomplete' => 'off'])}}
                         @if ($errors->has('name'))
                         <div class="invalid-feedback">{{ $errors->first('name') }}</div>
                         @endif

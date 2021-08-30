@@ -17,7 +17,6 @@
         <div id="panel-1" class="panel">
             <div class="panel-hdr">
                 <h2>
-                    Material <span class="fw-300"><i>List</i></span>
                 </h2>
                 <div class="panel-toolbar">
                     <a class="nav-link active" href="{{route('material.create')}}"><i class="fal fa-plus-circle">

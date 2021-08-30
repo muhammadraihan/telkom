@@ -11,8 +11,7 @@
     <div class="col-xl-6">
         <div class="panel">
             <div class="panel-hdr">
-                <h2>Assign Ticket Number <span
-                        class="fw-300"><i>{{$repair_job->repair->ticket->ticket_number}}</i></span></h2>
+                <h2></h2>
                 <div class="panel-toolbar">
                     <a class="nav-link active" href="{{route('repair.index')}}"><i class="fal fa-arrow-alt-left">
                         </i>

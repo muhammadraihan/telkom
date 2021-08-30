@@ -7,7 +7,7 @@
     <div class="col-xl-12">
         <div id="panel-1" class="panel">
             <div class="panel-hdr">
-                <h2>Permission <span class="fw-300"><i>Create</i></span></h2>
+                <h2></h2>
                 <div class="panel-toolbar">
                     <a class="nav-link active" href="{{route('permissions.index')}}"><i class="fal fa-arrow-alt-left">
                         </i>
@@ -22,18 +22,19 @@
                 <div class="panel-content">
                     <div class="frame-wrap">
                         <div class="custom-control custom-radio custom-control-inline">
-                            <input type="radio" class="custom-control-input" id="basic" name="permission_type" value="basic" {{ (old('permission_type') == 'basic') ? 'checked' : '' }}>
+                            <input type="radio" class="custom-control-input" id="basic" name="permission_type"
+                                value="basic" {{ (old('permission_type') == 'basic') ? 'checked' : '' }}>
                             <label class="custom-control-label" for="basic" data-toggle="tooltip"
                                 title="Form to create Single Permission" data-placement="auto">Basic Permission</label>
                         </div>
                         <div class="custom-control custom-radio custom-control-inline">
-                            <input type="radio" class="custom-control-input" id="crud" name="permission_type" value="crud" {{ (old('permission_type') == 'crud') ? 'checked' : '' }}>
+                            <input type="radio" class="custom-control-input" id="crud" name="permission_type"
+                                value="crud" {{ (old('permission_type') == 'crud') ? 'checked' : '' }}>
                             <label class="custom-control-label" for="crud" data-toggle="tooltip"
                                 title="Form to create CRUD Permissions" data-placement="auto">CRUD Permissions</label>
                         </div>
                     </div>
-                    <div id="form-1" style="display:none"
-                        class="form-group">
+                    <div id="form-1" style="display:none" class="form-group">
                         <div class="panel-tag">
                             <p> Form with <code>*</code> Can not be empty.</p>
                             <p> Use _ for divider between action and slug. i.e : add_users.</p>
@@ -46,8 +47,7 @@
                             @endif
                         </div>
                     </div>
-                    <div id="form-2" style="display:none"
-                        class="form-group">
+                    <div id="form-2" style="display:none" class="form-group">
                         <div class="panel-tag">
                             <p> Form with <code>*</code> Can not be empty.</p>
                             <p> Use plural word for resource name. i.e : users</p>
@@ -66,19 +66,23 @@
                             {{ Form::label('crud','CRUD Actions',['class' => 'form-label'])}}
                             <div class="frame-wrap">
                                 <div class="custom-control custom-checkbox custom-control-inline">
-                                    <input type="checkbox" class="custom-control-input" id="add" name="action[]" value="add">
+                                    <input type="checkbox" class="custom-control-input" id="add" name="action[]"
+                                        value="add">
                                     <label class="custom-control-label" for="add">Create</label>
                                 </div>
                                 <div class="custom-control custom-checkbox custom-control-inline">
-                                    <input type="checkbox" class="custom-control-input" id="view" name="action[]" value="view">
+                                    <input type="checkbox" class="custom-control-input" id="view" name="action[]"
+                                        value="view">
                                     <label class="custom-control-label" for="view">Read</label>
                                 </div>
                                 <div class="custom-control custom-checkbox custom-control-inline">
-                                    <input type="checkbox" class="custom-control-input" id="edit" name="action[]" value="edit">
+                                    <input type="checkbox" class="custom-control-input" id="edit" name="action[]"
+                                        value="edit">
                                     <label class="custom-control-label" for="edit">Update</label>
                                 </div>
                                 <div class="custom-control custom-checkbox custom-control-inline">
-                                    <input type="checkbox" class="custom-control-input" id="delete" name="action[]" value="delete">
+                                    <input type="checkbox" class="custom-control-input" id="delete" name="action[]"
+                                        value="delete">
                                     <label class="custom-control-label" for="delete">Delete</label>
                                 </div>
                             </div>

@@ -19,7 +19,6 @@
         <div id="panel-1" class="panel">
             <div class="panel-hdr">
                 <h2>
-                    TOTAL MODULE BY WITEL
                 </h2>
             </div>
             <div class="panel-container show">

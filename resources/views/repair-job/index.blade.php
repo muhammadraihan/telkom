@@ -17,7 +17,6 @@
         <div id="panel-1" class="panel">
             <div class="panel-hdr">
                 <h2>
-                    Repair Job <span class="fw-300"><i>List</i></span>
                 </h2>
                 <div class="panel-toolbar">
                     @role('repair')
